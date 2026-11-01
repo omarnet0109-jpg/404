@@ -1,0 +1,19 @@
+{
+  "scene_id": "episode-01-scene-001",
+  "episode": 1,
+  "title_ar": "عنوان المشهد",
+  "description_ar": "اكتب وصف المشهد هنا. هذا قالب فقط وليس جزءًا معتمدًا من المسلسل.",
+  "location_ar": "المكان",
+  "time_ar": "الوقت",
+  "character_reference_notes": "",
+  "shots": [
+    {
+      "shot_id": "shot-01",
+      "description_ar": "وصف اللقطة بالعربي",
+      "prompt_en": "A cinematic shot describing the exact action, setting, lighting, camera and continuity.",
+      "negative_prompt": "text, logo, watermark",
+      "duration_seconds": 5,
+      "seed": 40401
+    }
+  ]
+}
