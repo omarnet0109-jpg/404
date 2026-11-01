@@ -1,0 +1,23 @@
+name: Validate 404 production
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate approved scene files
+        run: python studio.py validate-scenes
+      - name: Validate template and build example manifest
+        run: |
+          python studio.py validate templates/scene.json
+          python studio.py plan templates/scene.json
