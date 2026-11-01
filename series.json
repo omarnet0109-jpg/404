@@ -1,0 +1,13 @@
+{
+  "series_id": "404",
+  "title": "404",
+  "language": "ar-EG",
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 24
+  },
+  "visual_style": "cinematic, realistic lighting, coherent character appearance",
+  "production_status": "preproduction",
+  "notes": "Plot and cast will be defined from the creator's scene descriptions."
+}
