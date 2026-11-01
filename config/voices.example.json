@@ -1,0 +1,9 @@
+{
+  "voices": {
+    "LAYLA": "",
+    "WIDAD": "",
+    "SABER": ""
+  },
+  "voices_previewed_and_approved": false,
+  "notes": "Choose three different licensed voices in ElevenLabs. Audition the actual Egyptian colloquial lines. Do not set approved true until a native Egyptian reviewer confirms the accents and ages."
+}
