@@ -1,0 +1,11 @@
+{
+  "provider": "VoiceTut-TTS (local, Apache-2.0)",
+  "model": "mohammedaly22/VoiceTut-TTS",
+  "voices": {
+    "LAYLA": "Yasmin",
+    "WIDAD": "Hanan",
+    "SABER": "Shaker"
+  },
+  "voices_previewed_and_approved": false,
+  "note": "PROVISIONAL, not reviewed. Names are actual VoiceTut built-in speakers. Listen before using for final output; named voices do not guarantee the intended ages. No voice cloning without consent."
+}
