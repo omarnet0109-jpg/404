@@ -1,13 +1,22 @@
 {
   "series_id": "404",
-  "title": "404",
+  "title": "الحي 404",
   "language": "ar-EG",
   "video": {
-    "width": 1280,
-    "height": 720,
-    "fps": 24
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "aspect_ratio": "9:16"
   },
-  "visual_style": "cinematic, realistic lighting, coherent character appearance",
-  "production_status": "preproduction",
-  "notes": "Plot and cast will be defined from the creator's scene descriptions."
+  "visual_style": "High-quality cinematic stylized 3D animated feature, identical character identities from reference images, warm amber lanterns on wet stone alley against blue moonlight, restrained camera movement",
+  "production_status": "Episode 1 storyboard prepared; reference photo assets and external generation/TTS/lip-sync engine not connected; no final video output.",
+  "notes": "Plot and cast will be defined from the creator's scene descriptions.",
+  "title_en": "Neighborhood 404",
+  "cast_ids": [
+    "LAYLA",
+    "WIDAD",
+    "SABER"
+  ],
+  "character_bible": "characters/character_bible.json",
+  "canonical_location": "Old Egyptian alley at night, unchanged geometry, green door on frame right, yellow lantern above door, upper-floor wooden window, same moon, wet cobblestones."
 }
