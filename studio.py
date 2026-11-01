@@ -173,8 +173,12 @@ def render_scene(scene_path: Path, workflow_path: Path, base_url: str, timeout_s
             history = comfy_request(base_url, f"/history/{prompt_id}")
             task = history.get(prompt_id)
             if task:
-                if task.get("status", {}).get("status_str") == "error":
+                status = task.get("status", {}).get("status_str")
+                if status == "error":
                     raise RuntimeError(f"{shot['shot_id']}: ComfyUI reported an error")
+                if status != "success":
+                    time.sleep(3)
+                    continue
                 videos = []
                 for output in task.get("outputs", {}).values():
                     for group in ("videos", "gifs", "animations"):
