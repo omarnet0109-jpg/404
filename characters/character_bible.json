@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "series": "الحي 404",
+  "identity_lock": true,
+  "allowed_characters": [
+    "LAYLA",
+    "WIDAD",
+    "SABER"
+  ],
+  "continuity_rule": "Only the three characters authorized by the creator may appear. The uploaded references are canonical, not prompts for redesign.",
+  "reference_images": [
+    {
+      "id": "ensemble",
+      "source_file": "1000540682.png",
+      "repo_target": "assets/references/ensemble.png",
+      "sha256": "fdba7ebbbf2215b7a752cd1d05e587755809edd39d0948274bd87c9f06dfc825",
+      "purpose": "All three characters, relative positions, alley geometry and lighting"
+    },
+    {
+      "id": "SABER",
+      "source_file": "1000540683.png",
+      "repo_target": "assets/references/saber.png",
+      "sha256": "a8d0b11f5f290bd338ffa37edc9b2d86428a49f20b22c5afaf763a8651f0150d",
+      "purpose": "Saber facial identity and clothing"
+    },
+    {
+      "id": "LAYLA",
+      "source_file": "1000540684.png",
+      "repo_target": "assets/references/layla.png",
+      "sha256": "ee6a81d4b8f0a45fa0ce422c90de5c81720fdb8816d54ca93a28ae3f3d65fc71",
+      "purpose": "Layla facial identity and clothing"
+    },
+    {
+      "id": "WIDAD",
+      "source_file": "1000540685.png",
+      "repo_target": "assets/references/widad.png",
+      "sha256": "1941395a4ea535f4fd0b11a096b43453db5c7ce7b40d437cbb5e79cb71e670c1",
+      "purpose": "Widad facial identity and clothing"
+    }
+  ],
+  "characters": {
+    "LAYLA": {
+      "name_ar": "ليلى",
+      "age": 27,
+      "visual": "Egyptian young adult woman with shoulder-length dark-brown curly/wavy hair, large expressive dark eyebrows, blue denim jacket over a light cream shirt, dark loose cargo trousers, lace-up brown boots, brown crossbody satchel, old beige papers tied with string. Maintain exact face from reference.",
+      "voice": "Young adult natural Egyptian Arabic female, clear, inquisitive, no MSA.",
+      "position": "center",
+      "voice_id": "layla_ar_eg",
+      "allowed_image_reference": [
+        "ensemble",
+        "LAYLA"
+      ]
+    },
+    "WIDAD": {
+      "name_ar": "الحاجة وداد",
+      "age": 65,
+      "visual": "Elderly Egyptian woman with wrinkles, gray hair covered, dark black-charcoal shawl edged with burgundy geometric patterns, burgundy skirt, gold hoop earrings. Maintain exact face from reference.",
+      "voice": "Senior Egyptian Arabic female, low measured and firm with anxiety and restraint, no MSA.",
+      "position": "to the left of Layla",
+      "voice_id": "widad_ar_eg",
+      "allowed_image_reference": [
+        "ensemble",
+        "WIDAD"
+      ]
+    },
+    "SABER": {
+      "name_ar": "عم صابر",
+      "age": 65,
+      "visual": "Older Egyptian man with thick gray-black mustache, pronounced eyebrows, knitted beige skull cap, cream galabeya, brown cable-knit cardigan, brown shoes. Maintain exact face from reference.",
+      "voice": "Older Egyptian Arabic male, slightly husky and dry humor; no MSA.",
+      "position": "to the right of Layla at green door",
+      "voice_id": "saber_ar_eg",
+      "allowed_image_reference": [
+        "ensemble",
+        "SABER"
+      ]
+    }
+  },
+  "location_lock": {
+    "name": "الحارة المصرية القديمة ليلًا",
+    "camera_reference": "ensemble",
+    "description": "An unchanged narrow ancient Egyptian alley at night. Worn stone and plaster buildings; wet cobblestones and warm reflections; green carved wooden door permanently to the RIGHT of frame; ornate golden wall lantern ABOVE the door; dark wooden first-floor window on the same house; distant balconies and old shutters, laundry line and distant clock tower; full moon against deep blue sky. Warm lamp light contrasting moon-blue ambient lighting.",
+    "do_not_change": [
+      "building geometry",
+      "green door right",
+      "lantern above door",
+      "first-floor window above the right-side house",
+      "wet stone pavement",
+      "moonlit warm/cool grade",
+      "stairs and balconies"
+    ]
+  },
+  "generation_rules": [
+    "Use actual uploaded images as image-conditioning assets rather than verbal descriptions alone.",
+    "For talking shots lock a single speaker and explicit mouth-closed identities for others.",
+    "No re-casting, wardrobe changes, alternate alley, new extras, narration, captions, on-screen text or invented dialogue.",
+    "Video cannot be marked final without independently verified frames, actor identity matching, Arabic speech and lip synchronization.",
+    "One spoken line at a time. Lip sync from the assigned actor's separate audio clip.",
+    "Reference assets target paths are reserved; binary image uploads are still pending."
+  ]
+}
