@@ -2,7 +2,7 @@
 // Lightweight 2D storyboard player. Never claims to be AI video or speech.
 (()=> {
 const el=id=>document.getElementById(id),canvas=el("screen"),ctx=canvas.getContext("2d",{alpha:false}),W=360,H=640;
-let shots=[], t=0, playing=false, recording=false, raf=0, last=0;
+let shots=[], t=0, playing=false, recording=false, raf=0, last=0, lastPaint=0;
 const names={LAYLA:"ليلى",WIDAD:"الحاجة وداد",SABER:"عم صابر"};
 const green="#284f41",gold="#ffc977",sky="#141e35";
 function shape(fill,x,y,w,h){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}
@@ -71,8 +71,8 @@ function background(shot,sec){
 }
 function render(){if(!shots.length)return;const shot=currentShot();background(shot,t);const speech=shot.dialogue_ar?.trim();el("caption").hidden=!speech;if(speech){el("speaker").textContent=names[shot.speaker]||"";el("dialogueText").textContent=speech}el("timeline").value=String(Math.round(t*10));el("elapsed").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(Math.floor(t%60)).padStart(2,"0");el("status").textContent="اللقطة "+shot.shot_id.toUpperCase()+" • "+(shot.end_seconds-shot.start_seconds)+" ثواني • تجربة 2D سريعة بدون GPU"}
 function stop(){playing=false;el("play").textContent="▶ تشغيل المعاينة";cancelAnimationFrame(raf)}
-function loop(now){if(!playing)return;const dt=Math.min((now-last)/1000,0.13);last=now;t=Math.min(60,t+dt);render();if(t>=60){stop();return}raf=requestAnimationFrame(loop)}
-function play(){if(!shots.length)return;if(playing){stop();return}if(t>=60)t=0;playing=true;last=performance.now();el("play").textContent="⏸ إيقاف مؤقت";raf=requestAnimationFrame(loop)}
+function loop(now){if(!playing)return;const dt=Math.min((now-last)/1000,0.13);last=now;t=Math.min(60,t+dt);if(now-lastPaint>=1000/24||t>=60){render();lastPaint=now}if(t>=60){stop();return}raf=requestAnimationFrame(loop)}
+function play(){if(!shots.length)return;if(playing){stop();return}if(t>=60)t=0;playing=true;last=performance.now();lastPaint=0;el("play").textContent="⏸ إيقاف مؤقت";raf=requestAnimationFrame(loop)}
 async function recordPreview(){
  if(recording || !shots.length)return;
  if(typeof MediaRecorder==="undefined"||typeof canvas.captureStream!=="function"){
