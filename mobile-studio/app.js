@@ -3,7 +3,7 @@
 const $ = id => document.getElementById(id);
 const LABEL = {LAYLA:"ليلى",WIDAD:"الحاجة وداد",SABER:"عم صابر",ensemble:"الحارة والمجموعة"};
 const KEYS = {drafts:"studio404.drafts.v1",backend:"studio404.backend",token:"studio404.token",refs:"studio404.references.v1"};
-let scene=null, bible=null, dialogue=null, drafts={}, refs={}, selected=null, editId=null, pendingInstall=null, polling=null, outputUrl=null;
+let scene=null, bible=null, dialogue=null, drafts={}, refs={}, selected=null, editId=null, pendingInstall=null, polling=null, outputUrl=null, engineReady=false;
 const readJSON = (key, fallback={}) => { try{return JSON.parse(localStorage.getItem(key)||"null")??fallback}catch{return fallback} };
 const saveJSON = (key,obj) => {try{localStorage.setItem(key,JSON.stringify(obj))}catch{toast("تعذر حفظ المسودة على الجهاز")} };
 const clean = value => (value??"").toString();
@@ -41,7 +41,7 @@ function populateCast(){
 }
 function editShot(id){editId=id;const s=scene.shots.find(x=>x.shot_id===id);if(!s)return;$("editDialogTitle").textContent=id.toUpperCase()+" — تحرير اللقطة";$("editPrompt").value=promptFor(s);$("editDialog").showModal()}
 function selectShot(id){selected=id;const s=scene.shots.find(x=>x.shot_id===id);if(!s)return;$("renderPrompt").value=promptFor(s);$("referenceType").value=s.speaker||"ensemble";updateRefState()}
-function updateRefState(){const kind=$("referenceType").value;const asset=refs[kind];$("referenceStatus").textContent=asset?"المرجع مرفوع ✓":"المرجع لم يُرفع بعد"}
+function updateRefState(){const kind=$("referenceType").value;const asset=refs[kind];$("referenceStatus").textContent=!engineReady?"المحرك غير متصل — الرفع متوقف":asset?"مرجع تم رفعه مسبقًا (قد تحتاج إلى إعادة الرفع)":"المرجع لم يُرفع بعد"}
 function serverInfo(){const base=$("serverUrl").value.trim().replace(/\/+$/,"");const token=$("serverToken").value; if(!base)throw Error("أضف عنوان خادم الاستوديو من الإعدادات أولًا");let url;try{url=new URL(base)}catch{throw Error("عنوان الخادم غير صحيح")};if(url.protocol!=="https:"&&!(url.protocol==="http:"&&["localhost","127.0.0.1"].includes(url.hostname)))throw Error("لا يمكن إرسال المفتاح عبر HTTP غير آمن. استخدم HTTPS");if(!token)throw Error("أضف مفتاح دخول خادم الاستوديو");return {base:url.href.replace(/\/$/,""),token}}
 async function request(path,init={}){
  const {base,token}=serverInfo(),controller=new AbortController(),time=setTimeout(()=>controller.abort(),45000);
@@ -49,7 +49,19 @@ async function request(path,init={}){
  try{const response=await fetch(base+path,{...init,headers,signal:controller.signal});if(!response.ok){let description="";try{const body=await response.json();description=body.detail||body.error||""}catch{}throw Error("خطأ "+response.status+": "+(typeof description==="string"?description:JSON.stringify(description)))}return response}finally{clearTimeout(time)}
 }
 function log(s){$("productionLog").textContent=s}
-function updateOnline(online,description){$("stateDot").classList.toggle("online",online);$("connectionLabel").textContent=online?"المحرك متصل":"المحرك غير متصل";if(description)$("productionState").textContent=description}
+function updateOnline(online,description){
+ engineReady=Boolean(online);
+ $("stateDot").classList.toggle("online",engineReady);
+ $("connectionLabel").textContent=engineReady?"المحرك متصل":"المحرك غير متصل";
+ $("uploadButton").disabled=!engineReady;
+ $("renderButton").disabled=!engineReady;
+ $("engineStateTitle").textContent=engineReady?"المحرك متصل وجاهز لاختبار التوليد":"محرك الفيديو غير متصل حاليًا";
+ $("engineStateMessage").textContent=engineReady
+  ?"تقدر الآن ترفع صورة مرجعية أصلية وتجرب توليد لقطة. راجع جودة النتيجة بنفسك قبل اعتمادها."
+  :"اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.";
+ if(description)$("productionState").textContent=description;
+ updateRefState();
+}
 async function checkServer(){
  $("checkButton").disabled=true;
  try{const r=await request("/api/health");const data=await r.json();const ready=!!(data.comfyui_connected&&data.workflow_configured);updateOnline(ready,ready?"خادم التوليد متصل وقالب ComfyUI جاهز. قبل اعتماد النتائج، راجع الصوت وحركة الشفايف.":"وصلنا للخادم، لكن محرك ComfyUI أو قالب الفيديو غير جاهز.");toast(ready?"تم الاتصال بمحرك التوليد":"الخادم متاح، لكن التوليد غير جاهز");return ready}
@@ -57,6 +69,7 @@ async function checkServer(){
  finally{$("checkButton").disabled=false}
 }
 async function upload(){
+ if(!engineReady){toast("توليد الفيديو والرفع متوقفان لعدم وجود خادم GPU متصل");return}
  const file=$("referenceFile").files[0];
  if(!file){toast("اختار صورة الشخصية أو الحارة من هاتفك");return}
  if(file.size>15*1024*1024){toast("حجم الصورة يجب ألا يزيد عن 15MB");return}
@@ -66,6 +79,7 @@ async function upload(){
  finally{$("uploadButton").disabled=false}
 }
 async function render(){
+ if(!engineReady){toast("المحرك غير متصل. لا يمكن توليد فيديو حقيقي الآن");return}
  const s=scene.shots.find(x=>x.shot_id===selected);if(!s)return;
  const ref=refs[$("referenceType").value];
  if(!ref){toast("ارفع صورة مرجعية أولًا للحفاظ على الشخصية");return}
@@ -104,7 +118,7 @@ function bind(){
  $("referenceType").addEventListener("change",updateRefState);
  $("uploadButton").addEventListener("click",upload);$("renderButton").addEventListener("click",render);
  $("exportButton").addEventListener("click",exportScene);
- $("saveSettings").addEventListener("click",()=>{try{serverInfo();sessionStorage.setItem(KEYS.backend,$("serverUrl").value.trim());sessionStorage.setItem(KEYS.token,$("serverToken").value);toast("تم حفظ الاتصال للجلسة الحالية")}catch(e){toast(e.message)}});
+ $("saveSettings").addEventListener("click",()=>{try{serverInfo();sessionStorage.setItem(KEYS.backend,$("serverUrl").value.trim());sessionStorage.setItem(KEYS.token,$("serverToken").value);checkServer()}catch(e){toast(e.message)}});
  $("checkButton").addEventListener("click",checkServer);
  $("confirmEdit").addEventListener("click",e=>{if(!$("editPrompt").value.trim()){e.preventDefault();toast("الوصف لا يمكن أن يكون فارغًا");return}drafts[editId]=$("editPrompt").value.trim();saveJSON(KEYS.drafts,drafts);populateShots();toast("تم حفظ المسودة محليًا")});
  $("resetDrafts").addEventListener("click",()=>{if(!confirm("حذف جميع تعديلات المشاهد المحلية؟"))return;drafts={};saveJSON(KEYS.drafts,drafts);populateShots();toast("تمت إزالة المسودات")});
@@ -114,7 +128,7 @@ function bind(){
 }
 async function boot(){
  bind();drafts=readJSON(KEYS.drafts,{});refs=readJSON(KEYS.refs,{});
- $("serverUrl").value=sessionStorage.getItem(KEYS.backend)||"";$("serverToken").value=sessionStorage.getItem(KEYS.token)||"";
+ $("serverUrl").value=sessionStorage.getItem(KEYS.backend)||"";$("serverToken").value=sessionStorage.getItem(KEYS.token)||"";updateOnline(false);
  try{
  const [sr,cr,dr]=await Promise.all(["./data/scene.json","./data/characters.json","./data/dialogue.json"].map(async x=>{const r=await fetch(x);if(!r.ok)throw Error("لم يتم تحميل "+x);return r.json()}));
  scene=sr;bible=cr;dialogue=dr;
