@@ -101,3 +101,9 @@ python production/assemble_episode.py
 
 - [فتح صفحة GPU المجانية في 404 Studio](https://omarnet0109-jpg.github.io/404/mobile-studio/free-gpu.html)
 - [شرح التكامل وحدوده](docs/FREE_ZERO_GPU.md)
+
+## استوديو الصوت المصري للشخصيات
+
+[فتح استوديو الأصوات مباشرة من الموبايل](https://omarnet0109-jpg.github.io/404/mobile-studio/voice-studio.html) لتجربة الجمل التسع ثم تثبيت تسجيل مرخّص لكل شخصية (ليلى، وداد، صابر) ببصمة SHA-256 محفوظة محليًا. **الأصوات التجريبية VoiceTut لا تصلح للنشر التجاري**؛ الصوت الناتج يحتاج مراجعة ثم lip-sync ومزج مع الفيديو.
+
+تفاصيل الهوية والترخيص: [Voice Cast](docs/VOICE_CAST.md).
