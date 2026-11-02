@@ -13,10 +13,10 @@
 <section class="view active" id="view-home" aria-labelledby="homeTitle">
 <div class="eyebrow"><span class="point"></span> مشروع مسلسل أصلي • الإنتاج الأول</div>
 <div class="hero"><span class="kicker">EPISODE 01  /  60 SECONDS</span><h1 id="homeTitle">الحي <em>404</em></h1><p>الشباك — الليلة اللي اتفتح فيها الممنوع.</p><div class="hero-foot"><span class="chip">🎬 كرتون 3D</span><span class="chip">9:16 عمودي</span><span class="chip">🇪🇬 مصري</span></div><div class="moon">◕</div></div>
-<div class="panel tip" id="planStatus"><strong>✓ الخطة الحالية: مجانية ومفتوحة المصدر</strong><p>إدارة الحلقة والمشاهد متاحة على موبايلك. توليد فيديو بالذكاء الاصطناعي يحتاج GPU متصلة بمحرك ComfyUI؛ موارد GPU المجانية غير مضمونة. خيار الاشتراك المدفوع غير مفعل ولن يشتغل تلقائيًا.</p></div>
+<div class="panel tip" id="planStatus"><strong>✓ الخطة الحالية: مجانية ومفتوحة المصدر</strong><p>إدارة المشاهد متاحة على موبايلك، وتوليد فيديوهات قصيرة عبر GPU عامة مجانية متاح من زر «توليد فيديو». محرك ComfyUI الخاص غير متصل. الخدمات المجانية محدودة وغير مضمونة، ومفيش اشتراك مدفوع مفعل.</p></div>
 <div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
 <div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
-<div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
+<div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">توليد فيديو تجريبي متاح من زر GPU المجانية. استضافة ComfyUI الخاصة لم يتم توصيلها.</p></div></div>
 <div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><a class="action secondary" href="./quick-preview.html" style="text-decoration:none">▶ معاينة سريعة <span>↗</span></a></div>
 <div class="panel tip" id="savedVideosLaunch" style="margin-top:15px"><strong>🎞️ مكتبتي الخاصة — فيديوهاتي محفوظة</strong><p>الفيديوهات اللي تولّدها تتخزن فعليًا على نفس الموبايل والمتصفح، وتقدر ترجع تشوفها وتنزّل نسخة احتياطية. ده حفظ محلي مش قفل دخول للموقع العام.</p><a href="./library.html" class="action primary full" style="text-decoration:none">فتح فيديوهاتي المحفوظة ↗</a></div>
 <div class="panel tip" id="voiceStudioLaunch" style="margin-top:15px"><strong>🎙️ أصوات ليلى ووداد وصابر بالمصري</strong><p>اتفتح استوديو صوت مستقل لتجربة الجمل التسعة واختيار صوت لكل شخصية، مع تثبيت مرجع صوت مرخّص للمسلسل كله. الأصوات الجاهزة للتجربة فقط.</p><a href="./voice-studio.html" class="action primary full" style="text-decoration:none">فتح استوديو الأصوات المصرية ↗</a></div>
@@ -38,7 +38,7 @@
 </section>
 <section class="view" id="view-production" aria-labelledby="productionTitle">
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
-<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
+<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">ComfyUI الخاص غير متصل — التوليد المجاني الخارجي متاح</strong><p id="engineStateMessage">محرك ComfyUI الخاص غير متصل. لكن تقدر تولّد لقطة حقيقية على ZeroGPU من الزر الموجود تحت. الخدمة مجانية ومحدودة، ومش محتاج سيرفر أو اشتراك.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
 <div class="panel tip" id="freeGpuLab">
 <a class="action secondary full" href="./library.html" style="text-decoration:none">🎞️ عرض الفيديوهات اللي عملتها قبل كده ↗</a>
 <a class="action primary full" href="./free-gpu.html" style="text-decoration:none">🎬 توليد لقطة حقيقية على GPU مجانية عامة ↗</a>
