@@ -7,7 +7,7 @@ SITE=ROOT/"mobile-studio"
 
 class QuickMobilePreviewTests(TestCase):
     def test_separate_lightweight_page_is_linked_from_app(self):
-        html=(SITE/"index.html").read_text(encoding="utf-8")
+        html=(SITE/"studio-advanced.html").read_text(encoding="utf-8")
         quick=(SITE/"quick-preview.html").read_text(encoding="utf-8")
         self.assertIn('href="./quick-preview.html"',html)
         self.assertIn('id="screen"',quick)
@@ -35,7 +35,8 @@ class QuickMobilePreviewTests(TestCase):
 
     def test_offline_cached_and_external_font_removed(self):
         worker=(SITE/"sw.js").read_text(encoding="utf-8")
-        self.assertIn('"./quick-preview.html"',worker)
-        self.assertIn('"./quick-preview.js"',worker)
+        self.assertIn("caches.match(event.request)",worker)
+        self.assertNotIn('"./quick-preview.html"',worker)
+        self.assertNotIn('"./quick-preview.js"',worker)
         css=(SITE/"app.css").read_text(encoding="utf-8")
         self.assertNotIn("@import",css)
