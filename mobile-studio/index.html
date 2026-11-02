@@ -35,6 +35,14 @@
 <section class="view" id="view-production" aria-labelledby="productionTitle">
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
 <div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
+<div class="panel tip" id="freeGpuLab">
+<h3>جرّب فيديو مجاني بنموذج Wan 2.2</h3>
+<p>النموذج مفتوح المصدر ومربوط بملفات السيناريو والشخصيات. شغّل تجربة قصيرة من Google Colab على GPU مجانية لو متاحة، ثم نزّل الفيديو هنا للمراجعة. Colab لا يشتغل كسيرفر دائم للتطبيق، ومش مضمون يوفّر GPU مجانًا.</p>
+<a class="action primary full" href="https://colab.research.google.com/github/omarnet0109-jpg/404/blob/main/notebooks/404_wan22_free_video.ipynb" target="_blank" rel="noopener noreferrer" style="text-decoration:none">فتح تجربة Wan 2.2 المجانية ↗</a>
+<div class="field"><label for="localPreviewInput">مراجعة فيديو تجربة تم تنزيله على الموبايل (محلي فقط)</label>
+<input type="file" id="localPreviewInput" accept="video/mp4,video/webm,video/quicktime"></div>
+<div id="localPreviewBox"></div>
+</div>
 <div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
 <div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
 <div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
