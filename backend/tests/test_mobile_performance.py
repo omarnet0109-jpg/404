@@ -9,7 +9,7 @@ PWA = ROOT / "mobile-studio"
 class MobilePerformanceTests(TestCase):
     def test_static_asset_bundle_is_small(self):
         # No multi-GB AI model or bundled video should enter the mobile app.
-        names = ["index.html","app.css","app.js","quick-preview.html","quick-preview.js","free-gpu.html","free-gpu.js","sw.js"]
+        names = ["index.html","app.css","app.js","quick-preview.html","quick-preview.js","free-gpu.html","free-gpu.js","library.html","library.js","media-vault.js","sw.js"]
         total = sum((PWA/name).stat().st_size for name in names)
         self.assertLess(total, 170_000, "PWA static code grew too heavy for low-end mobile devices")
         for suffix in ("safetensors","ckpt","mp4"):
@@ -17,7 +17,7 @@ class MobilePerformanceTests(TestCase):
 
     def test_cached_static_loads_without_waiting_for_network(self):
         sw = (PWA/"sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE = "404-studio-v13"',sw)
+        self.assertIn('const CACHE = "404-studio-v14"',sw)
         self.assertIn("caches.match(event.request)",sw)
         self.assertIn("if (cached)",sw)
         self.assertIn("return cached",sw)
