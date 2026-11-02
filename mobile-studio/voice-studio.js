@@ -214,7 +214,13 @@ async function generate(){
     else note("المحرك بيجهز الصوت باللهجة المصرية...");
    }else if(event.type==="data"){
     const uri=safeAudio(event);
-    const media=node("audio");media.controls=true;media.preload="none";media.src=uri;
+    const media=node("audio");media.controls=true;media.preload="metadata";media.src=uri;
+    media.addEventListener("loadedmetadata",()=>{
+      if(Number.isFinite(media.duration)&&media.duration>line.end-line.start+0.1){
+        note("⚠️ الجملة اتولدت لكن طولها "+media.duration.toFixed(1)+" ثانية، واللقطة وقتها "+(line.end-line.start)+
+          " ثواني. ما نقصش الكلام؛ نراجع سرعة الصوت أو مونتاج المشهد قبل دمج الفيديو.",true);
+      }
+    });
     const link=node("a","فتح ملف الصوت WAV وتنزيله");link.href=uri;link.target="_blank";link.rel="noopener noreferrer";
     const details=node("p",p.mode==="demo"?"تجربة فقط — الصوت الجاهز غير مرخّص للنشر التجاري.":"مرجع صوت مرخّص ثابت: "+p.sha256.slice(0,12)+"…");
     details.className="small";
