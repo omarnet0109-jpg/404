@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b101c"><title>تركيب الفيديو والصوت | 404 Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b101c;--panel:#172238;--gold:#e1b578;--muted:#a6b8d0;--fg:#f6f4f0;--border:#394e69}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.9 Tahoma,Arial,sans-serif}
+main{max-width:720px;margin:auto;padding:16px 14px 65px}
+header{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 22px}
+header a,a{color:var(--gold)}
+h1{font-size:26px;margin:0 0 6px}h2{font-size:18px;margin:0 0 8px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:16px;margin:15px 0}
+small,.hint{color:var(--muted);font-size:12px;line-height:1.9}
+label{display:block;font-weight:700;margin:13px 0 5px}
+select,input[type=file]{background:#0c1728;border:1px solid var(--border);border-radius:10px;color:var(--fg);width:100%;min-height:46px;padding:9px;font:inherit}
+.btn{border:0;border-radius:11px;background:var(--gold);color:#122033;font:bold 14px Tahoma,Arial;padding:13px 18px;min-height:48px;cursor:pointer}
+.btn.secondary{background:#30435d;color:var(--fg);border:1px solid #546883}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.actions>*{flex:1}
+video{display:block;max-height:540px;width:100%;background:black;border-radius:12px}
+#status{overflow-wrap:anywhere;font-size:13px;color:var(--muted);line-height:2}
+.warning{border-color:#88724e;background:#292637}
+.tag{font-weight:700;color:var(--gold)}
+#finished{margin-top:15px}
+#finished a{display:inline-block;margin:10px 0}
+</style></head><body><main>
+<header><a href="./library.html">← مكتبتي</a><small>404 STUDIO · LOCAL MIX</small></header>
+<h1>🎞️ ركّب الصوت على الفيديو</h1>
+<p class="hint">الأداة بتركّب صوت الشخصية على لقطة الفيديو من مكتبتك، وبترجع تحفظ ملف جديد على نفس الموبايل. مش محتاجة GPU أو Colab أو اشتراك.</p>
+<div class="panel warning">
+<strong>الفرق المهم: تركيب صوت ≠ مزامنة شفايف</strong>
+<p class="hint">الملف الناتج فيه صوت وفيديو متزامنين زمنيًا من البداية، لكنه <b>مش</b> تعديل ذكاء اصطناعي لحركة الفم. لو الجملة أطول من اللقطة، الصورة الأخيرة بتفضل ظاهرة لحد ما الصوت يخلص. جودة الناتج تعتمد على دعم المتصفح للتسجيل المحلي.</p>
+</div>
+<section class="panel">
+<h2>اختار لقطة من شغلك</h2>
+<label for="video">الفيديو المحفوظ</label>
+<select id="video"></select>
+<label for="audio">صوت الشخصية لنفس اللقطة</label>
+<select id="audio"></select>
+<p class="hint" id="match">المفروض الصوت يكون لنفس الشخصية ونفس رقم اللقطة.</p>
+<div class="actions">
+<button type="button" id="combine" class="btn">▶ دمج الصوت والفيديو محليًا</button>
+<a href="./voice-studio.html" class="btn secondary" style="text-align:center;text-decoration:none">توليد صوت مصري</a>
+</div>
+<p id="status" role="status" aria-live="polite">اختار الفيديو، ثم صوت نفس الشخصية، واضغط دمج.</p>
+<div id="finished"></div>
+</section>
+<section class="panel">
+<h2>معايير المراجعة</h2>
+<p class="hint">افتح الملف الناتج واتأكد من صوت الشخصية، وضوح الكلام، وبداية الصوت الصحيحة. ما تعتمدش فيديو صامت على إنه نهائي، ولا تستخدم صوتًا تجريبيًا غير مرخّص في نشر تجاري.</p>
+<a href="./library.html">فتح الفيديوهات والأصوات المحفوظة</a>
+</section>
+<script defer src="./media-vault.js?v=1"></script>
+<script defer src="./voice-audio-vault.js?v=1"></script>
+<script defer src="./compositor.js?v=1"></script>
+</main></body></html>
