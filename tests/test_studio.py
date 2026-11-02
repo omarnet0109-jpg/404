@@ -42,7 +42,7 @@ class StudioTests(unittest.TestCase):
             "seed": "{{SEED}}", "note": "seed={{SEED}}",
         }}}
         result = studio.inject_workflow(workflow, shot)
-        self.assertEqual(result["1"]["inputs"]["width"], 1280)
+        self.assertEqual(result["1"]["inputs"]["width"], self.settings["video"]["width"])
         self.assertEqual(result["1"]["inputs"]["frames"], 120)
         self.assertEqual(result["1"]["inputs"]["seed"], 40401)
         self.assertEqual(result["1"]["inputs"]["note"], "seed=40401")
