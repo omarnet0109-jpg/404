@@ -1,4 +1,4 @@
-const CACHE = "404-studio-v2";
+const CACHE = "404-studio-v3";
 const CORE = ["./","./index.html","./app.css","./app.js","./icon.svg","./manifest.webmanifest","./data/scene.json","./data/characters.json","./data/dialogue.json"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
