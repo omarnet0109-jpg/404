@@ -4,7 +4,7 @@ from unittest import TestCase
 
 
 ROOT = Path(__file__).resolve().parents[2]
-HTML = ROOT / "mobile-studio" / "index.html"
+HTML = ROOT / "mobile-studio" / "studio-advanced.html"
 JS = ROOT / "mobile-studio" / "app.js"
 
 
