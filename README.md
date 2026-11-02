@@ -69,3 +69,16 @@ python production/assemble_episode.py
 - [تعليمات المسار المجاني](docs/FREE_PRODUCTION.md)
 - الملف المرجعي المطلوب للتشغيل: `404_mobile_reference_assets.zip` (تم تسليمه في محادثة ChatGPT؛ لم تُرفع الصور الثنائية لهذا المستودع).
 - **الوضع الحالي:** أعددنا الأدوات والملفات، **لم** نُنتج بعد الفيديو النهائي أو تحريك الشفايف؛ استوديو Colab يعتمد على توفر GPU مجانية وتفاعل صاحب حساب Google للتشغيل.
+
+
+## 404 Studio — تطبيق موبايل قابل للتثبيت (PWA)
+
+واجهة عربية جديدة داخل [mobile-studio/](mobile-studio/) لإدارة الحلقة الأولى، تعديل لقطاتها محليًا، تثبيت الشخصيات، وتصدير JSON. بها رفع مراجع صورة وإرسال طلب توليد إلى [backend/api.py](backend/api.py) عند توفر خادم GPU بخاصية ComfyUI وقالب workflow صالح. تصميم للهاتف ولا يتطلب تثبيت Python على الهاتف.
+
+- **التطبيق:** [mobile-studio/index.html](mobile-studio/index.html)
+- **خادم GPU الآمن:** [backend/api.py](backend/api.py)
+- **التشغيل والنشر:** [mobile-studio/README.md](mobile-studio/README.md)
+- **اختبارات النشر:** [.github/workflows/deploy-studio.yml](.github/workflows/deploy-studio.yml)
+- **GitHub Pages:** فعّل `Settings → Pages → Build and deployment → GitHub Actions` مرة واحدة، ثم تأكد من نجاح الـworkflow. الرابط المتوقع بعد النشر: `https://omarnet0109-jpg.github.io/404/`.
+
+> **ليس حلقة فيديو نهائية:** من دون سيرفر GPU وملف workflow فعلي لتوليد الفيديو، التطبيق يوفر أدوات تنظيم وإدارة فقط. توليد الكلام المصري ومزامنة الشفايف والربط الصوتي النهائي ما زالوا مراحل إنتاج منفصلة، وغير مدمجين كزر واحد في الـPWA بعد.
