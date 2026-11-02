@@ -225,8 +225,19 @@ async function generate(){
     const details=node("p",p.mode==="demo"?"تجربة فقط — الصوت الجاهز غير مرخّص للنشر التجاري.":"مرجع صوت مرخّص ثابت: "+p.sha256.slice(0,12)+"…");
     details.className="small";
     $("resultArea").replaceChildren(media,link,details);
-    note("✅ الجملة اتولدت. اسمع النطق والمدة وقارن بصوت الشخصية قبل الموافقة.");
     success=true;
+    try{
+      const voiceIdentity=p.mode==="licensed"?p.sha256:"demo:"+p.speaker;
+      const item=await globalThis.Studio404AudioVault.fromRemote(uri,actor,line.shot_id,voiceIdentity);
+      const gallery=node("a","✅ الصوت محفوظ — فتح مكتبتي");
+      gallery.href="./library.html?shot="+encodeURIComponent(line.shot_id)+"&actor="+encodeURIComponent(actor);
+      gallery.style.display="block";$("resultArea").append(gallery);
+      note("✅ اتولد واتحفظ الصوت الحقيقي على الموبايل باسم "+item.name+". راجع النطق والمدة قبل تركيب الفيديو.");
+    }catch(saveError){
+      const hint=node("p","الصوت اتولد لكن ما اتحفظش تلقائيًا: "+saveError.message+" نزّل WAV وأضفه من مكتبة الوسائط.");
+      hint.className="small";$("resultArea").append(hint);
+      note("الصوت شغال الآن. لو عايز تحتفظ بيه افتح رابط WAV ونزّله، وبعدها استورده في المكتبة.");
+    }
    }
   }
   if(!success)throw Error("انتهت المحاولة من غير ملف صوت. ربما الحصة المجانية خلصت.");
