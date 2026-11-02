@@ -41,8 +41,9 @@ class MobilePerformanceTests(TestCase):
         self.assertIn('id="generateVideo"', html)
         self.assertIn('href="./free-gpu.html"', (PWA/"studio-advanced.html").read_text(encoding="utf-8"))
         sw = (PWA/"sw.js").read_text(encoding="utf-8")
-        self.assertIn('"./free-gpu.html"', sw)
-        self.assertIn('"./free-gpu.js"', sw)
+        self.assertIn('"./simple.js"', sw)
+        self.assertIn('"./simple-characters.js"', sw)
+        self.assertNotIn('"./free-gpu.html"', sw)
 
     def test_quick_preview_caps_frames_to_reduce_phone_cpu(self):
         js=(PWA/"quick-preview.js").read_text(encoding="utf-8")
