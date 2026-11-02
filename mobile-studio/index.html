@@ -46,10 +46,17 @@
 <section class="view" id="view-settings" aria-labelledby="settingsTitle">
 <div class="page-head"><div><span class="eyebrow">ENGINE SETTINGS</span><h1 id="settingsTitle">الإعدادات</h1></div></div>
 <div class="panel tip"><h3>الخطة: مجانية الآن، مدفوعة مستقبلًا</h3><p>لم يتم ربط أي مزود مدفوع أو تفعيل دفع آلي. عندما نقرر الترقية، سنضيف مزودًا جديدًا خلف الخادم، مع حد تكلفة وموافقة صريحة. سيرفر GPU نفسه قد تكون له تكلفة حتى مع الأدوات المفتوحة المصدر.</p></div>
-<div class="panel"><h3>ربط سيرفر التوليد</h3><p class="muted">ضع عنوان خادم الـ API الخاص بك. لا تضع عنوان ComfyUI المفتوح على الإنترنت مباشرة؛ استخدم الجسر الآمن الموجود في المشروع.</p>
+<div class="panel info-panel" id="simpleEngineStatus">
+  <h3>حالة توليد الفيديو: غير متصل</h3>
+  <p>دي مش بيانات ناقصة منك. لسه ما فيش سيرفر GPU مجاني متصل بالمشروع، ومش مطلوب منك تكتب عنوان أو مفتاح أو تدفع حاجة. حاليًا تقدر تراجع المشاهد وتعدّل أوصافها وتصدّر المشروع.</p>
+  <button type="button" class="action primary full" data-open="shots">فتح المشاهد الجاهزة ←</button>
+</div>
+<details class="panel" id="advancedServerSetup"><summary style="cursor:pointer;font-weight:800">إعدادات المحرك المتقدمة (للمطورين فقط)</summary>
+<p class="muted">لا تستخدم هذه الإعدادات إلا بعد تشغيل خادم ComfyUI فعلي وتجهيز رابط HTTPS ومفتاح وصول خاص به. لا تضع كلمة سر GitHub أو أي مفتاح آخر هنا.</p>
+<div><h3>ربط سيرفر التوليد</h3><p class="muted">العنوان والمفتاح يُصدرهما خادم الإنتاج الخاص، وليسا بيانات حساب GitHub.</p>
 <div class="field"><label for="serverUrl">عنوان خادم الاستوديو HTTPS</label><input id="serverUrl" type="url" autocomplete="url" placeholder="https://your-studio-backend.example"></div>
 <div class="field"><label for="serverToken">مفتاح دخول الخادم</label><input id="serverToken" type="password" autocomplete="off" placeholder="مفتاح APP_API_TOKEN"></div>
-<div class="form-actions"><button class="action primary" id="checkButton">اختبار الاتصال</button><button class="action secondary" id="saveSettings">حفظ للجلسة</button></div><p class="small muted">مفتاح الدخول يُحفظ في ذاكرة جلسة المتصفح فقط، ولا يُرسل إلى GitHub.</p></div>
+<div class="form-actions"><button class="action primary" id="checkButton">اختبار الاتصال</button><button class="action secondary" id="saveSettings">حفظ للجلسة</button></div><p class="small muted">مفتاح الدخول يُحفظ في ذاكرة جلسة المتصفح فقط، ولا يُرسل إلى GitHub.</p></div></details>
 <div class="panel tip"><h3>تثبيت التطبيق</h3><p>من Chrome على أندرويد: القائمة ⋮ ثم «إضافة إلى الشاشة الرئيسية». ومن Safari على iPhone: مشاركة ثم «إضافة إلى الشاشة الرئيسية» بعد نشر الموقع.</p><button class="outline-btn" id="installGuide">إرشادات التثبيت</button></div>
 <div class="panel danger-zone"><h3>بيانات المسودات</h3><p class="muted">التحرير المحلي محفوظ على جهازك فقط. يمكن تصديره قبل تنظيف المتصفح.</p><button class="outline-btn" id="resetDrafts">حذف تعديلاتي المحلية</button></div>
 </section>
