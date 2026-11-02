@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1221"><meta name="description" content="استوديو الحي 404 — إدارة مشاهد وأصوات وتوليد فيديو بالذكاء الاصطناعي">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="./icon.svg"><link rel="stylesheet" href="./app.css">
+<title>404 Studio | استوديو الحي</title>
+</head>
+<body>
+<div class="app-shell">
+<header class="topbar"><div class="brand"><span class="brand-mark">404<span class="brand-dot">.</span></span><span class="brand-label">STUDIO <small>استوديو الحي</small></span></div><div class="top-actions"><span class="state-dot" id="stateDot"></span><span id="connectionLabel">المحرك غير متصل</span><button class="icon-button" id="installButton" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">↧</button></div></header>
+<main>
+<section class="view active" id="view-home" aria-labelledby="homeTitle">
+<div class="eyebrow"><span class="point"></span> مشروع مسلسل أصلي • الإنتاج الأول</div>
+<div class="hero"><span class="kicker">EPISODE 01  /  60 SECONDS</span><h1 id="homeTitle">الحي <em>404</em></h1><p>الشباك — الليلة اللي اتفتح فيها الممنوع.</p><div class="hero-foot"><span class="chip">🎬 كرتون 3D</span><span class="chip">9:16 عمودي</span><span class="chip">🇪🇬 مصري</span></div><div class="moon">◕</div></div>
+<div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
+<div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
+<div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
+<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><button class="action secondary" data-open="production">إنتاج لقطة <span>↗</span></button></div>
+<div class="section-heading"><h2>خط الإنتاج</h2></div>
+<div class="pipeline"><div><b class="on">01</b><span>السيناريو</span></div><i></i><div><b class="on">02</b><span>المراجع</span></div><i></i><div><b>03</b><span>التوليد</span></div><i></i><div><b>04</b><span>المراجعة</span></div></div>
+</section>
+<section class="view" id="view-shots" aria-labelledby="shotsTitle">
+<div class="page-head"><div><span class="eyebrow">الحلقة الأولى · الشباك</span><h1 id="shotsTitle">لوحة المشاهد</h1></div><button class="outline-btn" id="exportButton">تصدير JSON ↧</button></div>
+<p class="muted intro">كل لقطة لها وقت ومتحدث ووصف. تعديلاتك تُحفظ محليًا على جهازك، ولا تغير السيناريو الأصلي على GitHub.</p>
+<div id="shotsList" class="shots-list"><div class="loading">جاري تحميل السيناريو...</div></div>
+</section>
+<section class="view" id="view-cast" aria-labelledby="castTitle">
+<div class="page-head"><div><span class="eyebrow">Character Bible</span><h1 id="castTitle">الشخصيات الثابتة</h1></div></div>
+<p class="muted intro">ثلاث شخصيات فقط. لا يتم تبديل الوجه أو الملابس أو الصوت بين الحلقات.</p>
+<div id="castList" class="cast-list"></div>
+<div class="panel tip"><strong>🔒 قواعد ثابتة</strong><p>الحارة القديمة، الباب الأخضر يمين الكادر، والفانوس الأصفر أعلى الباب. ممنوع إضافة ممثلين جدد أو تبديل أصوات الحوار.</p></div>
+</section>
+<section class="view" id="view-production" aria-labelledby="productionTitle">
+<div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
+<div class="panel info-panel"><strong>المحرّك: ComfyUI مفتوح المصدر</strong><p>الموبايل هو لوحة التحكم؛ التوليد الفعلي يحتاج خادم GPU شغّال ومتصل بالتطبيق. لا تُنشأ ملفات فيديو وهمية عند غيابه.</p></div>
+<div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
+<div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
+<div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
+<div class="upload-line"><button class="outline-btn" id="uploadButton">رفع المرجع إلى المحرك</button><span class="muted" id="referenceStatus">المرجع لم يُرفع</span></div>
+<button class="action primary full" id="renderButton">توليد اللقطة المختارة ↗</button>
+<div id="jobPanel" class="panel job-panel hidden"><div class="section-heading"><h2>متابعة التوليد</h2><span id="jobStatus" class="status-pill">انتظار</span></div><p id="jobDescription"></p><div id="jobOutput"></div></div>
+<div id="productionLog" class="log" role="status" aria-live="polite">لا توجد مهام تشغيل حاليًا.</div>
+</section>
+<section class="view" id="view-settings" aria-labelledby="settingsTitle">
+<div class="page-head"><div><span class="eyebrow">ENGINE SETTINGS</span><h1 id="settingsTitle">الإعدادات</h1></div></div>
+<div class="panel"><h3>ربط سيرفر التوليد</h3><p class="muted">ضع عنوان خادم الـ API الخاص بك. لا تضع عنوان ComfyUI المفتوح على الإنترنت مباشرة؛ استخدم الجسر الآمن الموجود في المشروع.</p>
+<div class="field"><label for="serverUrl">عنوان خادم الاستوديو HTTPS</label><input id="serverUrl" type="url" autocomplete="url" placeholder="https://your-studio-backend.example"></div>
+<div class="field"><label for="serverToken">مفتاح دخول الخادم</label><input id="serverToken" type="password" autocomplete="off" placeholder="مفتاح APP_API_TOKEN"></div>
+<div class="form-actions"><button class="action primary" id="checkButton">اختبار الاتصال</button><button class="action secondary" id="saveSettings">حفظ للجلسة</button></div><p class="small muted">مفتاح الدخول يُحفظ في ذاكرة جلسة المتصفح فقط، ولا يُرسل إلى GitHub.</p></div>
+<div class="panel tip"><h3>تثبيت التطبيق</h3><p>من Chrome على أندرويد: القائمة ⋮ ثم «إضافة إلى الشاشة الرئيسية». ومن Safari على iPhone: مشاركة ثم «إضافة إلى الشاشة الرئيسية» بعد نشر الموقع.</p><button class="outline-btn" id="installGuide">إرشادات التثبيت</button></div>
+<div class="panel danger-zone"><h3>بيانات المسودات</h3><p class="muted">التحرير المحلي محفوظ على جهازك فقط. يمكن تصديره قبل تنظيف المتصفح.</p><button class="outline-btn" id="resetDrafts">حذف تعديلاتي المحلية</button></div>
+</section>
+</main>
+<nav class="bottom-nav" aria-label="القائمة الرئيسية"><button class="tab active" data-target="home"><span>⌂</span>الرئيسية</button><button class="tab" data-target="shots"><span>▤</span>المشاهد</button><button class="tab" data-target="cast"><span>♙</span>الشخصيات</button><button class="tab" data-target="production"><span>◉</span>الإنتاج</button><button class="tab" data-target="settings"><span>⚙</span>الإعدادات</button></nav>
+</div>
+<dialog id="editDialog"><form method="dialog" class="dialog-body"><div class="section-heading"><h2 id="editDialogTitle">تعديل اللقطة</h2><button class="icon-button" value="cancel" aria-label="إغلاق">✕</button></div><label for="editPrompt">وصف الحركة</label><textarea id="editPrompt" rows="8" maxlength="5000"></textarea><p class="muted small">المسودة تظل في متصفحك إلى أن تصدرها وتقرر اعتمادها.</p><div class="form-actions"><button class="action primary" id="confirmEdit" value="save">حفظ المسودة</button><button class="action secondary" value="cancel">إلغاء</button></div></form></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="./app.js" defer></script>
+</body></html>
