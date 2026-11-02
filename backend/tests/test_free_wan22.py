@@ -62,7 +62,7 @@ class WanFreeRunnerTests(TestCase):
                 wan.validate_comfy_url(url)
 
     def test_mobile_studio_links_to_free_gpu_lab_with_local_review(self):
-        html=(ROOT/"mobile-studio"/"index.html").read_text(encoding="utf-8")
+        html=(ROOT/"mobile-studio"/"studio-advanced.html").read_text(encoding="utf-8")
         code=(ROOT/"mobile-studio"/"app.js").read_text(encoding="utf-8")
         self.assertIn("notebooks/404_wan22_free_video.ipynb",html)
         self.assertIn('id="localPreviewInput"',html)
