@@ -25,6 +25,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
+from backend.engine_modes import EngineNotAvailable, available_engine_modes, select_engine
+
 BASE = Path(__file__).resolve().parents[1]
 DB_FILE = Path(os.environ.get("STUDIO_DB_FILE", str(BASE / "backend" / "data" / "studio.db")))
 COMFY_URL = os.environ.get("COMFYUI_URL", "http://127.0.0.1:8188").rstrip("/")
@@ -149,8 +151,21 @@ async def history_for(prompt_id: str) -> dict | None:
     return data.get(prompt_id)
 
 
+def require_free_engine():
+    try:
+        return select_engine()
+    except EngineNotAvailable as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+
+@app.get("/api/engine-modes", dependencies=[Depends(require_token)])
+async def engine_modes():
+    return {"modes": available_engine_modes(), "selected": require_free_engine().id}
+
+
 @app.get("/api/health", dependencies=[Depends(require_token)])
 async def health():
+    engine = require_free_engine()
     workflow_configured = WORKFLOW_FILE.is_file()
     try:
         await comfy("GET", "/queue")
@@ -161,12 +176,14 @@ async def health():
         "name": "404 Studio", "comfyui_connected": connected,
         "workflow_configured": workflow_configured,
         "video_ready": bool(connected and workflow_configured),
+        "engine": {**engine.public_status(), "video_engine_ready": bool(connected and workflow_configured)},
         "message": "Video is generated on the remote GPU, not on the mobile device.",
     }
 
 
 @app.post("/api/assets", dependencies=[Depends(require_token)])
 async def upload_image(image: UploadFile = File(...), reference_type: str = Form(...)):
+    require_free_engine()
     if reference_type not in {"ensemble", "LAYLA", "WIDAD", "SABER"}:
         raise HTTPException(422, "Unknown character reference")
     original = Path(image.filename or "").name
@@ -214,6 +231,7 @@ class RenderRequest(BaseModel):
 
 @app.post("/api/render", dependencies=[Depends(require_token)])
 async def render(request: RenderRequest):
+    require_free_engine()
     if not WORKFLOW_FILE.is_file():
         raise HTTPException(503, "Create a ComfyUI API workflow at COMFYUI_WORKFLOW first")
     shot = next((s for s in scene_data()["shots"] if s["shot_id"] == request.shot_id), None)
