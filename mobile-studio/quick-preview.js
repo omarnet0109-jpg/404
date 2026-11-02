@@ -51,6 +51,23 @@ function background(shot,sec){
  ctx.fillText("الحي 404  •  معاينة مرسومة فقط",180,35);
  ctx.fillStyle="#ffffffc9";ctx.font="12px Tahoma,Arial";
  ctx.fillText("لقطة "+shot.shot_id.toUpperCase()+"  |  "+(shot.speaker?names[shot.speaker]:"بدون حوار"),180,62);
+ const speech=shot.dialogue_ar?.trim();
+ if(speech){
+  const words=speech.split(/\\s+/),lines=[];let current="";
+  ctx.font="bold 13px Tahoma,Arial";
+  for(const word of words){
+   const proposed=current?current+" "+word:word;
+   if(ctx.measureText(proposed).width>320 && current){lines.push(current);current=word}
+   else current=proposed;
+  }
+  if(current)lines.push(current);
+  const shown=lines.slice(0,4);
+  shape("#111a30e6",12,H-35-shown.length*21,336,shown.length*21+23);
+  ctx.fillStyle="#ffe2b3";ctx.font="bold 11px Tahoma,Arial";
+  ctx.fillText(names[shot.speaker]||"",180,H-25-shown.length*21);
+  ctx.fillStyle="#fff";ctx.font="bold 13px Tahoma,Arial";
+  shown.forEach((line,i)=>ctx.fillText(line,180,H-30-(shown.length-1-i)*21));
+ }
 }
 function render(){if(!shots.length)return;const shot=currentShot();background(shot,t);const speech=shot.dialogue_ar?.trim();el("caption").hidden=!speech;if(speech){el("speaker").textContent=names[shot.speaker]||"";el("dialogueText").textContent=speech}el("timeline").value=String(Math.round(t*10));el("elapsed").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(Math.floor(t%60)).padStart(2,"0");el("status").textContent="اللقطة "+shot.shot_id.toUpperCase()+" • "+(shot.end_seconds-shot.start_seconds)+" ثواني • تجربة 2D سريعة بدون GPU"}
 function stop(){playing=false;el("play").textContent="▶ تشغيل المعاينة";cancelAnimationFrame(raf)}
