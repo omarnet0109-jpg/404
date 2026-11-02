@@ -39,10 +39,11 @@ input[type=file]{font-size:12px}
 <select id="scene" aria-label="اللقطة"></select>
 <label for="prompt">2. وصف حركة اللقطة (جاهز من السيناريو)</label>
 <textarea id="prompt" rows="5" maxlength="4500" aria-label="وصف اللقطة"></textarea>
-<label for="reference">3. اختار صورة الشخصية الأصلية من الموبايل</label>
+<label for="reference">3. الصورة الأصلية (مرة واحدة لكل شخصية فقط)</label>
 <input id="reference" type="file" accept="image/png,image/jpeg,image/webp" aria-label="صورة الشخصية">
 <img id="photoPreview" alt="معاينة الصورة المحددة">
-<p class="hint" id="photoHelp">اختار صورة الشخصية نفسها؛ مش ملف ZIP. الصور مش بتتبعت لأي مكان إلا بعد موافقتك وضغط توليد.</p>
+<p class="hint" id="photoHelp">لو صورة الشخصية اتسجلت قبل كده، التطبيق هيستخدمها تلقائيًا. أول مرة فقط اختار الصورة الأصلية بدون تعديل. مش هنبعتها للخدمة إلا بعد موافقتك على التوليد.</p>
+<p id="savedReferenceStatus" class="hint" role="status">جارٍ فحص صور الشخصيات المحفوظة...</p>
 <div class="consent">
 <input type="checkbox" id="consent">
 <label for="consent">أوافق على إرسال الصورة ووصف المشهد إلى خدمة Hugging Face العامة لتوليد الفيديو. فاهم إن الخدمة خارجية وقد تحتفظ ببيانات التشغيل وفق شروطها.</label>
@@ -63,5 +64,6 @@ input[type=file]{font-size:12px}
 </section>
 <p class="hint">ملحوظة: نجاح إنشاء فيديو قصير لا يعني إن الحلقة 60 ثانية اكتملت أو إن الصوت المصري والليب-سينك اتعملوا. النموذج الخارجي قد يغير ملامح الشخصية، لذلك النتيجة لازم تتراجع.</p>
 <script defer src="./media-vault.js?v=1"></script>
-<script defer src="./free-gpu.js?v=12"></script>
+<script defer src="./character-bank.js?v=1"></script>
+<script defer src="./free-gpu.js?v=13"></script>
 </main></body></html>
