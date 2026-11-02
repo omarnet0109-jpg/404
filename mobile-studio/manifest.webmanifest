@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "استوديو الحي 404",
+  "short_name": "404 Studio",
+  "description": "استوديو إدارة وتوليد مشاهد مسلسل الحي 404",
+  "dir": "rtl",
+  "lang": "ar",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#0c1221",
+  "background_color": "#0c1221",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
