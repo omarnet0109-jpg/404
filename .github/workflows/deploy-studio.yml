@@ -23,6 +23,7 @@ jobs:
       - name: Validate JavaScript and JSON
         run: |
           node --check mobile-studio/app.js
+          node --check mobile-studio/quick-preview.js
           node --check mobile-studio/sw.js
           python -m json.tool mobile-studio/data/scene.json > /dev/null
           python -m json.tool mobile-studio/data/characters.json > /dev/null
