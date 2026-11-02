@@ -17,7 +17,8 @@
 <div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
 <div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
 <div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
-<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><button class="action secondary" data-open="production">حالة محرك الفيديو <span>↗</span></button></div>
+<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><a class="action secondary" href="./quick-preview.html" style="text-decoration:none">▶ معاينة سريعة <span>↗</span></a></div>
+<div class="panel tip" style="margin-top:15px"><strong>معاينة الحلقة بدون تهنيج</strong><p>اضغط «معاينة سريعة» علشان تشوف ترتيب الـ16 لقطة والحوار فورًا من الموبايل، من غير Colab ولا GPU. دي معاينة مرسومة للتوقيت، مش توليد فيديو بالذكاء الاصطناعي.</p></div>
 <div class="section-heading"><h2>خط الإنتاج</h2></div>
 <div class="pipeline"><div><b class="on">01</b><span>السيناريو</span></div><i></i><div><b class="on">02</b><span>المراجع</span></div><i></i><div><b>03</b><span>التوليد</span></div><i></i><div><b>04</b><span>المراجعة</span></div></div>
 </section>
@@ -36,11 +37,14 @@
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
 <div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
 <div class="panel tip" id="freeGpuLab">
-<h3>جرّب فيديو مجاني بنموذج Wan 2.2</h3>
-<p>النموذج مفتوح المصدر ومربوط بملفات السيناريو والشخصيات. شغّل تجربة قصيرة من Google Colab على GPU مجانية لو متاحة، ثم نزّل الفيديو هنا للمراجعة. Colab لا يشتغل كسيرفر دائم للتطبيق، ومش مضمون يوفّر GPU مجانًا.</p>
-<a class="action primary full" href="https://colab.research.google.com/github/omarnet0109-jpg/404/blob/main/notebooks/404_wan22_free_video.ipynb" target="_blank" rel="noopener noreferrer" style="text-decoration:none">فتح تجربة Wan 2.2 المجانية ↗</a>
-<div class="field"><label for="localPreviewInput">مراجعة فيديو تجربة تم تنزيله على الموبايل (محلي فقط)</label>
-<input type="file" id="localPreviewInput" accept="video/mp4,video/webm,video/quicktime"></div>
+<h3>اشتغل بسرعة من الموبايل — من غير Colab</h3>
+<p>راجع ترتيب المشاهد والحوار والحركة المبدئية فورًا. المعاينة 2D مرسومة للتخطيط، مش فيديو AI. توليد فيديو AI حقيقي من الصورة يحتاج GPU متصلة، وهي غير متوفرة حاليًا في التطبيق.</p>
+<a class="action primary full" href="./quick-preview.html" style="text-decoration:none">▶ فتح المعاينة السريعة للـ16 لقطة</a>
+<details style="margin-top:12px"><summary style="cursor:pointer;color:#acb8cb">تجربة النموذج الثقيل على Colab (اختياري للمطورين)</summary>
+<p>Colab صفحة ثقيلة على الموبايل، ومش مطلوبة لاستخدام الاستوديو. استخدمها فقط عند توفر GPU مجانية وعند الرغبة بتجربة Wan 2.2.</p>
+<a class="outline-btn" href="https://colab.research.google.com/github/omarnet0109-jpg/404/blob/main/notebooks/404_wan22_free_video.ipynb" target="_blank" rel="noopener noreferrer">فتح Colab الاختياري</a>
+</details>
+<div class="field"><label for="localPreviewInput">لو عندك فيديو مولّد بالفعل، شوفه هنا على جهازك فقط</label><input type="file" id="localPreviewInput" accept="video/mp4,video/webm,video/quicktime"></div>
 <div id="localPreviewBox"></div>
 </div>
 <div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
