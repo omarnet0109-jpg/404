@@ -2,7 +2,7 @@
 // Lightweight 2D storyboard player. Never claims to be AI video or speech.
 (()=> {
 const el=id=>document.getElementById(id),canvas=el("screen"),ctx=canvas.getContext("2d",{alpha:false}),W=360,H=640;
-let shots=[], t=0, playing=false, raf=0, last=0, drawnSecond=-1;
+let shots=[], t=0, playing=false, recording=false, raf=0, last=0;
 const names={LAYLA:"ليلى",WIDAD:"الحاجة وداد",SABER:"عم صابر"};
 const green="#284f41",gold="#ffc977",sky="#141e35";
 function shape(fill,x,y,w,h){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}
@@ -52,16 +52,53 @@ function background(shot,sec){
  ctx.fillStyle="#ffffffc9";ctx.font="12px Tahoma,Arial";
  ctx.fillText("لقطة "+shot.shot_id.toUpperCase()+"  |  "+(shot.speaker?names[shot.speaker]:"بدون حوار"),180,62);
 }
-function render(){if(!shots.length)return;const shot=currentShot();background(shot,t);const speech=shot.dialogue_ar?.trim();el("caption").hidden=!speech;if(speech){el("speaker").textContent=names[shot.speaker]||"";el("dialogueText").textContent=speech}el("timeline").value=String(Math.round(t*10));el("elapsed").textContent="00:"+String(Math.floor(t)).padStart(2,"0");el("status").textContent="اللقطة "+shot.shot_id.toUpperCase()+" • "+(shot.end_seconds-shot.start_seconds)+" ثواني • تجربة 2D سريعة بدون GPU"}
+function render(){if(!shots.length)return;const shot=currentShot();background(shot,t);const speech=shot.dialogue_ar?.trim();el("caption").hidden=!speech;if(speech){el("speaker").textContent=names[shot.speaker]||"";el("dialogueText").textContent=speech}el("timeline").value=String(Math.round(t*10));el("elapsed").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(Math.floor(t%60)).padStart(2,"0");el("status").textContent="اللقطة "+shot.shot_id.toUpperCase()+" • "+(shot.end_seconds-shot.start_seconds)+" ثواني • تجربة 2D سريعة بدون GPU"}
 function stop(){playing=false;el("play").textContent="▶ تشغيل المعاينة";cancelAnimationFrame(raf)}
 function loop(now){if(!playing)return;const dt=Math.min((now-last)/1000,0.13);last=now;t=Math.min(60,t+dt);render();if(t>=60){stop();return}raf=requestAnimationFrame(loop)}
 function play(){if(!shots.length)return;if(playing){stop();return}if(t>=60)t=0;playing=true;last=performance.now();el("play").textContent="⏸ إيقاف مؤقت";raf=requestAnimationFrame(loop)}
+async function recordPreview(){
+ if(recording || !shots.length)return;
+ if(typeof MediaRecorder==="undefined"||typeof canvas.captureStream!=="function"){
+  el("status").textContent="متصفحك لا يدعم تصدير WebM من Canvas؛ المعاينة المباشرة ما زالت شغالة.";return;
+ }
+ const mime=["video/webm;codecs=vp8","video/webm"].find(type=>MediaRecorder.isTypeSupported(type));
+ if(!mime){el("status").textContent="تصدير WebM غير مدعوم في المتصفح الحالي.";return}
+ stop();recording=true;
+ el("play").disabled=true;el("exportPreview").disabled=true;
+ el("status").textContent="جارٍ حفظ 5 ثواني من المعاينة المرسومة محليًا...";
+ const stream=canvas.captureStream(15),parts=[];
+ let recorder;
+ try{recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:450000})}
+ catch(e){stream.getTracks().forEach(track=>track.stop());recording=false;el("play").disabled=false;el("exportPreview").disabled=false;el("status").textContent="تعذّر بدء تسجيل المعاينة: "+e.message;return}
+ const startFrame=t>=55?0:t,nowStart=performance.now();
+ let recordRaf=0;
+ function release(){recording=false;el("play").disabled=false;el("exportPreview").disabled=false;stream.getTracks().forEach(track=>track.stop());cancelAnimationFrame(recordRaf);}
+ recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};
+ recorder.onerror=()=>{release();el("status").textContent="تعذّر حفظ WebM على جهازك."};
+ recorder.onstop=()=>{
+  release();
+  if(!parts.length){el("status").textContent="لم ينتج تسجيل صالح. المعاينة المباشرة ما زالت متاحة.";return}
+  const blob=new Blob(parts,{type:mime}),url=URL.createObjectURL(blob),link=document.createElement("a");
+  link.href=url;link.download="404-storyboard-preview-5s.webm";document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+  el("status").textContent="تم تجهيز ملف WebM للتحميل. ده فيديو تخطيطي 2D صامت، مش فيديو AI.";
+ };
+ recorder.start(500);
+ function recordTick(now){
+  if(!recording)return;
+  const elapsed=Math.min(5,(now-nowStart)/1000);
+  t=Math.min(59.99,startFrame+elapsed);render();
+  if(elapsed>=5){if(recorder.state==="recording")recorder.stop();return}
+  recordRaf=requestAnimationFrame(recordTick);
+ }
+ recordRaf=requestAnimationFrame(recordTick);
+}
 async function boot(){
 try{
  const response=await fetch("./data/scene.json",{cache:"force-cache"});if(!response.ok)throw Error("تعذر تحميل ملف المشاهد");
  const data=await response.json();shots=data.shots;
  if(!Array.isArray(shots)||shots.length!==16||shots.reduce((s,x)=>s+x.duration_seconds,0)!==60)throw Error("ملف الحلقة غير صحيح");
- render();el("play").addEventListener("click",play);
+ render();el("play").addEventListener("click",play);el("exportPreview").addEventListener("click",recordPreview);
  el("prev").addEventListener("click",()=>{const a=shots.filter(s=>s.start_seconds<t-0.2);t=a.length?a[a.length-1].start_seconds:0;render()});
  el("next").addEventListener("click",()=>{const a=shots.find(s=>s.start_seconds>t+0.2);t=a?a.start_seconds:60;render()});
  el("timeline").addEventListener("input",e=>{t=Number(e.target.value)/10;render()});
