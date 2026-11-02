@@ -41,3 +41,9 @@ hr{border:0;border-top:1px solid var(--border);margin:21px 0}
 .bottom{font-size:12px;color:var(--muted);margin-top:22px}
 .bottom a{color:var(--gold);text-decoration:none}
 @media(max-width:380px){main{padding:12px 10px 60px}.panel{padding:12px}.character-grid{gap:6px}.photo{height:65px}.person{font-size:11px}}
+
+.recovery{border:1px solid #ad8e53;border-radius:14px;background:#282839;padding:13px;margin:13px 0}
+.recovery strong{color:#f5ce91;font-size:14px}
+.recovery p{margin:6px 0 0}
+.recovery .actions{gap:8px}
+.recovery .btn{display:inline-flex;align-items:center;justify-content:center;font-size:12px;line-height:1.6}
