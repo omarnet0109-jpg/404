@@ -102,7 +102,7 @@ function safeVideo(result){
 }
 // Reports what the provider actually returned instead of hiding every failure as "quota".
 function describeGpuError(error){
- const raw=String(error?.message||error||"").replace(/[\\r\\n]+/g," ").slice(0,280);
+ const raw=String(error?.message||error||"").replace(/[\r\n]+/g," ").slice(0,280);
  if(/quota|daily limit|gpu time|exhausted|limit reached|too many requests|rate.limit|429/i.test(raw))
   return "خدمة GPU رفضت المحاولة، ويبدو إنها حصة مجانية أو حد طلبات. لو عندك حساب Hugging Face مجاني، افتح النموذج الأصلي وسجّل دخولك هناك. أو جرّب بعد تجدد الحصة. التفاصيل: "+raw;
  if(/503|504|unavailable|overload|capacity|timeout|timed out|busy|queue|connection|network|fetch failed/i.test(raw))
@@ -128,7 +128,7 @@ function downloadImage(){
  if(!char?.image){message("status","اختار شخصية محفوظة بصورتها الأول.",true);return}
  const ext=char.image.type==="image/jpeg"?"jpg":char.image.type==="image/webp"?"webp":"png";
  const url=globalThis.URL.createObjectURL(char.image);
- const link=make("a");link.href=url;link.download=char.name.replace(/[^\\p{L}\\p{N}_-]/gu,"-")+"."+ext;
+ const link=make("a");link.href=url;link.download=char.name.replace(/[^\p{L}\p{N}_-]/gu,"-")+"."+ext;
  document.body.append(link);link.click();link.remove();
  setTimeout(()=>globalThis.URL.revokeObjectURL(url),30000);
  message("status","بدأ تنزيل نسخة من صورة الشخصية المحفوظة. تقدر ترفعها للنموذج الأصلي.");
