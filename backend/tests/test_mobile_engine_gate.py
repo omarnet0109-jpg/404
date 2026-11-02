@@ -9,6 +9,12 @@ JS = ROOT / "mobile-studio" / "app.js"
 
 
 class MobileEngineGateTests(TestCase):
+    def test_user_is_not_asked_for_server_keys(self):
+        html = HTML.read_text(encoding="utf-8")
+        self.assertIn("مش مطلوب منك تكتب عنوان أو مفتاح", html)
+        self.assertIn('<details class="panel" id="advancedServerSetup">', html)
+        self.assertIn("فتح المشاهد الجاهزة", html)
+
     def test_unconnected_render_and_upload_are_disabled_by_default(self):
         html = HTML.read_text(encoding="utf-8")
         self.assertIn('id="renderButton" disabled', html)
