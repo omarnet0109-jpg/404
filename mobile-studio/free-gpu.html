@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b101c">
+<title>GPU مجاني | 404 Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b101c;--panel:#172133;--fg:#f7f5f0;--muted:#a6b6cf;--gold:#e2b678;--border:#374963}
+*{box-sizing:border-box}html{font-family:Tahoma,Arial,sans-serif}body{margin:0;background:radial-gradient(circle at 95% 0,#1d324e 0,transparent 45%),var(--bg);color:var(--fg);min-height:100svh}
+main{max-width:680px;margin:0 auto;padding:16px 16px 60px}header{display:flex;align-items:center;justify-content:space-between;padding:9px 0 24px}
+header a{color:var(--gold);text-decoration:none;font-weight:700;font-size:13px}.title{font-size:30px;margin:5px 0 9px}.sub{color:var(--muted);font-size:13px;line-height:1.9;margin:0 0 18px}
+.panel{border:1px solid var(--border);background:var(--panel);border-radius:18px;padding:18px;margin:14px 0}.status{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:13px;font-weight:700}.dot{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+small,.hint{color:var(--muted);font-size:12px;line-height:1.8}
+label{display:block;font-weight:700;margin:14px 0 7px;font-size:13px}
+select,textarea,input[type=file]{width:100%;border:1px solid var(--border);border-radius:12px;background:#10192a;color:var(--fg);font:inherit;padding:12px;min-height:48px;outline:none}
+textarea{resize:vertical;direction:ltr;text-align:left;min-height:114px;line-height:1.7;font-family:monospace;font-size:12px}
+input[type=file]{font-size:12px}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:0;background:var(--gold);color:#132033;border-radius:12px;padding:13px 18px;min-height:49px;font:800 14px Tahoma,Arial;cursor:pointer;text-decoration:none;text-align:center;display:block;flex:1}
+.btn.secondary{background:#283a51;color:#f7f5f0;border:1px solid #50617e}.btn:disabled{opacity:.5;cursor:not-allowed}
+.consent{display:flex;gap:10px;align-items:flex-start;border-top:1px solid var(--border);padding-top:15px;margin:18px 0}
+.consent input{width:20px;height:20px;flex-shrink:0;accent-color:var(--gold)}
+.consent label{font-weight:400;margin:0;line-height:1.9;color:#d5e0ed}
+#notice{font-size:12px;line-height:1.9;color:var(--muted);min-height:22px;overflow-wrap:anywhere}
+#result video{width:100%;max-height:520px;border-radius:12px;background:#000}
+#result a{color:var(--gold);display:inline-block;margin:10px 0}
+.status.error{color:#ffb6ad}
+#photoPreview{max-width:100%;max-height:230px;object-fit:contain;border-radius:11px;margin-top:8px;display:none}
+@media(max-width:360px){main{padding:9px 10px 40px}.panel{padding:13px}.title{font-size:26px}}
+</style></head>
+<body><main>
+<header><a href="./">← العودة للاستوديو</a><span class="hint">404 STUDIO · FREE GPU</span></header>
+<h1 class="title">توليد فيديو مجاني</h1>
+<p class="sub">تجربة فيديو حقيقية من صورة باستخدام <b>Wan 2.2 14B Fast</b> على GPU مشتركة من Hugging Face، مباشرة من موبايلك. <b>من غير Google Colab.</b></p>
+<section class="panel">
+<div class="status"><span class="dot"></span><span>GPU عامة مجانية — محدودة وليست مضمونة</span></div>
+<p class="hint">الخدمة خارجية ومش سيرفر مملوك لـ404 Studio. الاستخدام المجاني بدون تسجيل محدود، والطوابير ممكن تتأخر أو الحصة تخلص. التجربة حوالي ثانية ونصف، صامتة وبدقة متوسطة.</p>
+</section>
+<section class="panel">
+<label for="scene">1. اختار اللقطة</label>
+<select id="scene" aria-label="اللقطة"></select>
+<label for="prompt">2. وصف حركة اللقطة (جاهز من السيناريو)</label>
+<textarea id="prompt" rows="5" maxlength="4500" aria-label="وصف اللقطة"></textarea>
+<label for="reference">3. اختار صورة الشخصية الأصلية من الموبايل</label>
+<input id="reference" type="file" accept="image/png,image/jpeg,image/webp" aria-label="صورة الشخصية">
+<img id="photoPreview" alt="معاينة الصورة المحددة">
+<p class="hint" id="photoHelp">اختار صورة الشخصية نفسها؛ مش ملف ZIP. الصور مش بتتبعت لأي مكان إلا بعد موافقتك وضغط توليد.</p>
+<div class="consent">
+<input type="checkbox" id="consent">
+<label for="consent">أوافق على إرسال الصورة ووصف المشهد إلى خدمة Hugging Face العامة لتوليد الفيديو. فاهم إن الخدمة خارجية وقد تحتفظ ببيانات التشغيل وفق شروطها.</label>
+</div>
+<button id="submit" class="btn" type="button">▶ توليد لقطة مجانية (1.5 ثانية)</button>
+<p id="notice" role="status" aria-live="polite">اختار صورة الشخصية ووافق على إرسالها قبل التوليد.</p>
+<div id="result"></div>
+</section>
+<section class="panel">
+<strong>لو الخدمة المجانية مش متاحة</strong>
+<p class="hint">ممكن تفتح نفس نموذج الفيديو مباشرة على Hugging Face. ده بديل عند تعطّل الاتصال من التطبيق، مش اشتراك مدفوع.</p>
+<div class="controls">
+<button id="copyPrompt" type="button" class="btn secondary">نسخ وصف اللقطة</button>
+<a class="btn secondary" href="https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster" target="_blank" rel="noopener noreferrer">فتح GPU العامة</a>
+</div>
+</section>
+<p class="hint">ملحوظة: نجاح إنشاء فيديو قصير لا يعني إن الحلقة 60 ثانية اكتملت أو إن الصوت المصري والليب-سينك اتعملوا. النموذج الخارجي قد يغير ملامح الشخصية، لذلك النتيجة لازم تتراجع.</p>
+<script defer src="./free-gpu.js"></script>
+</main></body></html>
