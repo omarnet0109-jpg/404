@@ -3,12 +3,13 @@
 const $=id=>document.getElementById(id);
 const vault=()=>globalThis.Studio404Vault;
 const labels={LAYLA:"ليلى",WIDAD:"الحاجة وداد",SABER:"عم صابر",ensemble:"الحارة"};
-let previewUrl=null,activePreviewId=null;
+let previewUrl=null,audioPreviewUrl=null,activePreviewId=null,dialogues=[];
 function message(value,error=false){$("status").textContent=value;$("status").style.color=error?"#ffb6ad":"#a9bbd2"}
 function make(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e}
 function bytes(n){return n>1048576?(n/1048576).toFixed(1)+" MB":(n/1024).toFixed(0)+" KB"}
 function stopPreview(){
  if(previewUrl){globalThis.URL.revokeObjectURL(previewUrl);previewUrl=null}
+ if(audioPreviewUrl){globalThis.URL.revokeObjectURL(audioPreviewUrl);audioPreviewUrl=null}
  activePreviewId=null;
 }
 async function capacity(){
@@ -46,6 +47,15 @@ async function render(){
      const player=make("video");player.controls=true;player.playsInline=true;player.preload="metadata";player.src=previewUrl;
      document.querySelectorAll(".library-item video").forEach(v=>v.remove());
      videoBox.replaceChildren(player);activePreviewId=item.id;
+     if(item.shot_id&&["LAYLA","WIDAD","SABER"].includes(item.actor)){
+       const voice=await globalThis.Studio404AudioVault.get(item.actor,item.shot_id);
+       if(voice?.file){
+         audioPreviewUrl=globalThis.URL.createObjectURL(voice.file);
+         const description=make("p","🎙️ الصوت المرتبط بهذه اللقطة محفوظ. ممكن تسمعه تحت الفيديو للمراجعة فقط، مش ليب سينك ولا ملف نهائي.","muted");
+         const sound=make("audio");sound.controls=true;sound.preload="metadata";sound.src=audioPreviewUrl;sound.style.width="100%";
+         videoBox.append(description,sound);
+       }
+     }
     }catch(e){message(e.message,true)}
    });
    download.addEventListener("click",async()=>{
@@ -76,6 +86,68 @@ async function importVideo(){
  }catch(e){message("فشل حفظ الفيديو: "+e.message,true)}
  finally{$("saveImport").disabled=false}
 }
+function shotOptions(){
+ const actor=$("audioActor").value,select=$("audioShot");
+ const previous=select.value;
+ select.replaceChildren();
+ for(const line of dialogues.filter(x=>x.speaker===actor)){
+   const option=make("option",line.shot_id.toUpperCase()+" · "+line.text.slice(0,25));
+   option.value=line.shot_id;select.append(option);
+ }
+ if([...select.options].some(o=>o.value===previous))select.value=previous;
+}
+async function refreshAudios(){
+ const list=$("audios");list.replaceChildren();
+ try{
+   const rows=await globalThis.Studio404AudioVault.list();
+   if(!rows.length){list.append(make("p","لسه مفيش أصوات محفوظة. ولّد جملة في استوديو الأصوات أو استورد WAV.","muted"));return}
+   for(const row of rows){
+     const section=make("section",undefined,"library-item");
+     section.append(make("strong",(labels[row.actor]||row.actor)+" · "+row.shot.toUpperCase()));
+     const controls=make("div",undefined,"buttons");
+     const play=make("button","▶ استماع","btn alt");
+     const download=make("button","↓ نسخة WAV","btn alt");
+     const del=make("button","حذف الصوت","btn danger");
+     const holder=make("div");
+     play.addEventListener("click",async()=>{
+       try{
+         const clip=await globalThis.Studio404AudioVault.get(row.actor,row.shot);
+         if(audioPreviewUrl)globalThis.URL.revokeObjectURL(audioPreviewUrl);
+         audioPreviewUrl=globalThis.URL.createObjectURL(clip.file);
+         const player=make("audio");player.src=audioPreviewUrl;player.controls=true;player.style.width="100%";
+         holder.replaceChildren(player);
+       }catch(e){message(e.message,true)}
+     });
+     download.addEventListener("click",async()=>{
+       try{
+         const item=await globalThis.Studio404AudioVault.get(row.actor,row.shot);
+         const uri=globalThis.URL.createObjectURL(item.file),link=make("a");
+         link.href=uri;link.download=item.name||row.actor+"-"+row.shot+".wav";
+         document.body.append(link);link.click();link.remove();
+         setTimeout(()=>globalThis.URL.revokeObjectURL(uri),60000);
+       }catch(e){message(e.message,true)}
+     });
+     del.addEventListener("click",async()=>{
+       if(!confirm("هل تحذف صوت "+labels[row.actor]+" لهذه اللقطة؟"))return;
+       try{await globalThis.Studio404AudioVault.remove(row.actor,row.shot);await refreshAudios()}
+       catch(e){message(e.message,true)}
+     });
+     controls.append(play,download,del);section.append(controls,holder);list.append(section);
+   }
+ }catch(e){message("فشل عرض الأصوات المحفوظة: "+e.message,true)}
+}
+async function importAudio(){
+ const file=$("importAudio").files?.[0],actor=$("audioActor").value,shot=$("audioShot").value;
+ if(!file){message("اختار ملف WAV أو MP3 الأول.",true);return}
+ if(!shot){message("الشخصية دي مالهاش لقطة كلام محددة.",true);return}
+ $("saveAudio").disabled=true;
+ try{
+   await globalThis.Studio404AudioVault.save(file,actor,shot,"imported-owned-file");
+   $("importAudio").value="";message("✅ الصوت اتحفظ لنفس الشخصية واللقطة على هذا الموبايل.");
+   await refreshAudios();
+ }catch(e){message(e.message,true)}
+ finally{$("saveAudio").disabled=false}
+}
 async function boot(){
  const query=new URLSearchParams(location.search);
  const preferred=query.get("shot"),actor=query.get("actor");
@@ -87,6 +159,15 @@ async function boot(){
  }
  if(/^sh(0[1-9]|1[0-6])$/.test(preferred||""))select.value=preferred;
  if(Object.keys(labels).includes(actor))$("importActor").value=actor;
+ try{
+   const res=await fetch("./data/dialogue.json",{cache:"force-cache"});
+   if(res.ok)dialogues=(await res.json()).dialogue_only||[];
+ }catch{}
+ if(["LAYLA","WIDAD","SABER"].includes(actor))$("audioActor").value=actor;
+ shotOptions();
+ if([...$("audioShot").options].some(o=>o.value===preferred))$("audioShot").value=preferred;
+ $("audioActor").addEventListener("change",shotOptions);
+ $("saveAudio").addEventListener("click",importAudio);
  $("saveImport").addEventListener("click",importVideo);
  $("persist").addEventListener("click",async()=>{
   const ok=await vault().requestPersistence();
@@ -94,6 +175,7 @@ async function boot(){
    "المتصفح لم يوافق على ضمان التخزين. استخدم «تنزيل نسخة MP4» لكل فيديو لحمايته.");
  });
  await render();
+ await refreshAudios();
 }
 window.addEventListener("pagehide",stopPreview);
 document.addEventListener("DOMContentLoaded",boot);
