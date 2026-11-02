@@ -21,7 +21,7 @@ assert.match(code,/new MediaRecorder\(combined/);
 assert.match(code,/videoVault\(\)\.saveFile\(output/);
 assert.match(code,/aSaved\.shot/);
 assert.match(code,/vSaved\.actor!==aSaved\.actor/);
-assert.match(code,/\["video\/webm;codecs=vp8,opus"/);
+assert.match(code,/video\\/webm;codecs=vp8,opus/);
 assert.match(code,/النتيجة مش ليب سينك/);
 assert.doesNotMatch(code,/fetch\(/,"Mixer must never upload files");
 const start=code.indexOf("const SUPPORTED=[");
