@@ -27,6 +27,7 @@ async function submit(){
  if(!validPhoto(file)){status("اختار صورة PNG أو JPG أو WebP بحد أقصى 12MB، مش ملف ZIP.",true);return}
  if(!$("consent").checked){status("لازم توافق أولًا على إرسال الصورة للخدمة الخارجية.",true);return}
  const prompt=$("prompt").value.trim();
+ const clipMeta={shot_id:selected?.shot_id||null,actor:selected?.speaker||"ensemble",prompt};
  if(prompt.length<15){status("وصف الحركة قصير جدًا.",true);return}
  busy=true;$("submit").disabled=true;$("result").replaceChildren();
  status("جاري الاتصال بخدمة GPU المشتركة... قد يكون هناك طابور.");
@@ -52,8 +53,23 @@ async function submit(){
         player.controls=true;player.playsInline=true;player.preload="metadata";player.src=video;
         const link=el("a","فتح وتنزيل ملف الفيديو الناتج");link.href=video;link.target="_blank";link.rel="noopener noreferrer";
         $("result").replaceChildren(player,link);
-        status("✅ خدمة GPU رجّعت ملف فيديو؛ راجع النتيجة قبل اعتمادها.");
         completed=true;
+        status("الفيديو اتولد، جاري حفظ الملف داخل مكتبتك على الموبايل...");
+        try{
+          const saved=await globalThis.Studio404Vault.saveRemote(video,clipMeta);
+          await globalThis.Studio404Vault.requestPersistence();
+          const gallery=el("a","✅ الفيديو محفوظ — افتح مكتبة فيديوهاتي");
+          gallery.href="./library.html";
+          $("result").append(gallery);
+          status("✅ الفيديو محفوظ فعليًا في مكتبتك على الجهاز. نزّل نسخة احتياطية لحمايته من حذف بيانات المتصفح.");
+        }catch(storeError){
+          const gallery=el("a","افتح المكتبة لاستيراد الفيديو بعد تنزيله");
+          gallery.href="./library.html?shot="+encodeURIComponent(clipMeta.shot_id||"")+
+            "&actor="+encodeURIComponent(clipMeta.actor);
+          $("result").append(gallery);
+          status("الفيديو اتولد لكن ما اتحفظش تلقائيًا: "+storeError.message+
+            ". افتح رابط الفيديو واحفظه في Downloads، ثم استورده في مكتبة فيديوهاتي.",true);
+        }
       }
    }
    if(!completed)throw Error("المهمة انتهت من غير فيديو. ممكن تكون الحصة المجانية انتهت.");
