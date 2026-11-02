@@ -1,88 +1,77 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0c1221"><meta name="description" content="استوديو الحي 404 — إدارة مشاهد وأصوات وتوليد فيديو بالذكاء الاصطناعي">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="./icon.svg"><link rel="stylesheet" href="./app.css">
-<title>404 Studio | استوديو الحي</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<meta name="description" content="404 Studio: حفظ الشخصيات وتوليد فيديو بالذكاء الاصطناعي من الموبايل">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="stylesheet" href="./simple.css">
+<title>404 Studio | شغلي</title>
 </head>
 <body>
-<div class="app-shell">
-<header class="topbar"><div class="brand"><span class="brand-mark">404<span class="brand-dot">.</span></span><span class="brand-label">STUDIO <small>استوديو الحي</small></span></div><div class="top-actions"><span class="state-dot" id="stateDot"></span><span id="connectionLabel">محرك ComfyUI الخاص غير متصل</span><button class="icon-button" id="installButton" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">↧</button></div></header>
 <main>
-<section class="view active" id="view-home" aria-labelledby="homeTitle">
-<div class="eyebrow"><span class="point"></span> مشروع مسلسل أصلي • الإنتاج الأول</div>
-<div class="hero"><span class="kicker">EPISODE 01  /  60 SECONDS</span><h1 id="homeTitle">الحي <em>404</em></h1><p>الشباك — الليلة اللي اتفتح فيها الممنوع.</p><div class="hero-foot"><span class="chip">🎬 كرتون 3D</span><span class="chip">9:16 عمودي</span><span class="chip">🇪🇬 مصري</span></div><div class="moon">◕</div></div>
-<div class="panel tip" id="planStatus"><strong>✓ الخطة الحالية: مجانية ومفتوحة المصدر</strong><p>إدارة المشاهد متاحة على موبايلك، وتوليد فيديوهات قصيرة عبر GPU عامة مجانية متاح من زر «توليد فيديو». محرك ComfyUI الخاص غير متصل. الخدمات المجانية محدودة وغير مضمونة، ومفيش اشتراك مدفوع مفعل.</p></div>
-<div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
-<div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
-<div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">توليد فيديو تجريبي متاح من زر GPU المجانية. استضافة ComfyUI الخاصة لم يتم توصيلها.</p></div></div>
-<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><a class="action secondary" href="./quick-preview.html" style="text-decoration:none">▶ معاينة سريعة <span>↗</span></a></div>
-<div class="panel tip" id="savedVideosLaunch" style="margin-top:15px"><strong>🎞️ مكتبتي الخاصة — فيديوهاتي محفوظة</strong><p>الفيديوهات اللي تولّدها تتخزن فعليًا على نفس الموبايل والمتصفح، وتقدر ترجع تشوفها وتنزّل نسخة احتياطية. ده حفظ محلي مش قفل دخول للموقع العام.</p><a href="./library.html" class="action primary full" style="text-decoration:none">فتح فيديوهاتي المحفوظة ↗</a></div>
-<div class="panel tip" id="mergeStudioLaunch" style="margin-top:15px"><strong>🎬 اجمع صورة الشخصية وصوتها في ملف واحد</strong><p>افتح مكتبتك وركّب صوت الشخصية مع الفيديو محليًا، من غير GPU إضافية. تركيب الصوت لا يعني مزامنة حركة الشفايف بالذكاء الاصطناعي.</p><a href="./compositor.html" class="action primary full" style="text-decoration:none">تركيب الفيديو + الصوت ↗</a></div>
-<div class="panel tip" id="voiceStudioLaunch" style="margin-top:15px"><strong>🎙️ أصوات ليلى ووداد وصابر بالمصري</strong><p>اتفتح استوديو صوت مستقل لتجربة الجمل التسعة واختيار صوت لكل شخصية، مع تثبيت مرجع صوت مرخّص للمسلسل كله. الأصوات الجاهزة للتجربة فقط.</p><a href="./voice-studio.html" class="action primary full" style="text-decoration:none">فتح استوديو الأصوات المصرية ↗</a></div>
-<div class="panel tip" id="freeExternalGpu" style="margin-top:15px"><strong>🎬 جرّب GPU مجانية حقيقية من الموبايل</strong><p>ربطنا صفحة مستقلة بنموذج Wan 2.2 14B Fast على Hugging Face ZeroGPU. الخدمة مشتركة ومحدودة يوميًا، والتوليد يبدأ فقط بعد اختيار صورتك وموافقتك على إرسالها للخدمة الخارجية.</p><a href="./free-gpu.html" class="action primary full" style="text-decoration:none">فتح مولّد الفيديو المجاني ↗</a></div>
-<div class="panel tip" style="margin-top:15px"><strong>معاينة الحلقة بدون تهنيج</strong><p>اضغط «معاينة سريعة» علشان تشوف ترتيب الـ16 لقطة والحوار فورًا من الموبايل، من غير Colab ولا GPU. دي معاينة مرسومة للتوقيت، مش توليد فيديو بالذكاء الاصطناعي.</p></div>
-<div class="section-heading"><h2>خط الإنتاج</h2></div>
-<div class="pipeline"><div><b class="on">01</b><span>السيناريو</span></div><i></i><div><b class="on">02</b><span>المراجع</span></div><i></i><div><b>03</b><span>التوليد</span></div><i></i><div><b>04</b><span>المراجعة</span></div></div>
+<header>
+<div class="brand"><strong>404<span>.</span></strong><div>STUDIO<small>مساحة شغلك</small></div></div>
+<a href="./library.html">🎞️ فيديوهاتي</a>
+</header>
+<h1>اعمل الفيديو بتاعك</h1>
+<p class="intro">شخصياتك محفوظة هنا، ولما تحتاج فيديو اختار شخصية واكتب اللي عايزه. من غير إعدادات سيرفر.</p>
+<nav class="tabs" aria-label="أقسام الاستوديو">
+<button class="tab active" id="tab-characters" type="button" aria-selected="true">👤 شخصياتي</button>
+<button class="tab" id="tab-generate" type="button" aria-selected="false">🎬 توليد فيديو</button>
+</nav>
+<section class="view" id="charactersView">
+<div class="panel">
+<h2>مكتبة الشخصيات</h2>
+<p class="sub">اضغط على شخصية لتعديل صورتها. هتفضل محفوظة على نفس الموبايل والمتصفح حتى بعد ما تقفل الصفحة.</p>
+<div class="character-grid" id="characterCards" aria-label="الشخصيات المحفوظة"></div>
+<div class="actions"><button type="button" id="newCharacter" class="btn alt">+ شخصية جديدة</button></div>
+<hr>
+<h2 id="editTitle">بيانات الشخصية</h2>
+<label for="characterName">اسم الشخصية</label>
+<input id="characterName" type="text" maxlength="60" placeholder="مثلاً: ليلى" autocomplete="off">
+<label for="characterImage">صورتها المرجعية</label>
+<input id="characterImage" type="file" accept="image/png,image/jpeg,image/webp">
+<img id="characterPreview" class="preview" hidden alt="معاينة صورة الشخصية">
+<p class="sub">لو غيّرت الصورة بعد حفظها، التطبيق هيطلب تأكيد. احتفظ بالصور الأصلية في ملفات موبايلك كنسخة احتياطية.</p>
+<div class="actions">
+<button id="saveCharacter" class="btn" type="button">حفظ الشخصية</button>
+<button id="removeCharacter" class="btn danger" type="button">حذف / إعادة ضبط</button>
+</div>
+<p id="castStatus" role="status" aria-live="polite"></p>
+</div>
 </section>
-<section class="view" id="view-shots" aria-labelledby="shotsTitle">
-<div class="page-head"><div><span class="eyebrow">الحلقة الأولى · الشباك</span><h1 id="shotsTitle">لوحة المشاهد</h1></div><button class="outline-btn" id="exportButton">تصدير JSON ↧</button></div>
-<p class="muted intro">كل لقطة لها وقت ومتحدث ووصف. تعديلاتك تُحفظ محليًا على جهازك، ولا تغير السيناريو الأصلي على GitHub.</p>
-<div id="shotsList" class="shots-list"><div class="loading">جاري تحميل السيناريو...</div></div>
+<section class="view" id="generateView" hidden>
+<div class="panel">
+<h2>توليد فيديو جديد</h2>
+<p class="sub">مساحة فاضية تبدأ منها أي مشهد جديد. اختار شخصية محفوظة واكتب وصف الحركة بنفسك.</p>
+<label for="videoCharacter">الشخصية</label>
+<select id="videoCharacter"></select>
+<label for="videoPrompt">إيه اللي يحصل في الفيديو؟</label>
+<textarea id="videoPrompt" maxlength="4500" placeholder="مثلاً: الشخصية ماشية في الحارة وبصّة ناحية الباب. الكاميرا بتتحرك ببطء..."></textarea>
+<div class="checkline">
+<input type="checkbox" id="permission">
+<label for="permission">أوافق على إرسال صورة الشخصية والوصف لخدمة توليد الفيديو المجانية الخارجية (Hugging Face). الملفات المحفوظة على الموبايل لا تُرسل إلا لما أضغط توليد.</label>
+</div>
+<div class="actions"><button id="generateVideo" class="btn" type="button">▶ توليد الفيديو</button></div>
+<p id="status" role="status" aria-live="polite">اختار شخصية محفوظة بصورتها، واكتب وصف الفيديو.</p>
+<div id="result"></div>
+<p class="note">خدمة GPU مجانية مشتركة ومحدودة، وممكن تنشغل أو توقف مؤقتًا. الفيديو الناتج صامت حاليًا؛ الصوت المصري مش مدمج تلقائيًا. هنحاول نحفظ الفيديو في مكتبتك، ولو التحميل المباشر ممنوع هيظهر رابط التنزيل.</p>
+</div>
 </section>
-<section class="view" id="view-cast" aria-labelledby="castTitle">
-<div class="page-head"><div><span class="eyebrow">Character Bible</span><h1 id="castTitle">الشخصيات الثابتة</h1></div></div>
-<p class="muted intro">ثلاث شخصيات فقط. لا يتم تبديل الوجه أو الملابس أو الصوت بين الحلقات.</p>
-<div id="castList" class="cast-list"></div><div class="panel tip"><strong>🎤 ثبت صوت كل شخصية</strong><p>مسموح تسمع عينات مختلفة قبل الاعتماد. حفظ صوت مرجعي مرخّص يثبت الهوية بين الحلقات.</p><a class="action secondary full" href="./voice-studio.html" style="text-decoration:none">فتح إعدادات أصوات الشخصيات ↗</a></div>
-<div class="panel tip"><strong>🔒 قواعد ثابتة</strong><p>الحارة القديمة، الباب الأخضر يمين الكادر، والفانوس الأصفر أعلى الباب. ممنوع إضافة ممثلين جدد أو تبديل أصوات الحوار.</p></div>
-</section>
-<section class="view" id="view-production" aria-labelledby="productionTitle">
-<div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
-<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">ComfyUI الخاص غير متصل — التوليد المجاني الخارجي متاح</strong><p id="engineStateMessage">محرك ComfyUI الخاص غير متصل. لكن تقدر تولّد لقطة حقيقية على ZeroGPU من الزر الموجود تحت. الخدمة مجانية ومحدودة، ومش محتاج سيرفر أو اشتراك.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
-<div class="panel tip" id="freeGpuLab">
-<a class="action secondary full" href="./library.html" style="text-decoration:none">🎞️ عرض الفيديوهات اللي عملتها قبل كده ↗</a>
-<a class="action primary full" href="./free-gpu.html" style="text-decoration:none">🎬 توليد لقطة حقيقية على GPU مجانية عامة ↗</a>
-<p>خدمة خارجية مستقلة عن سيرفر ComfyUI الخاص. عدد الطلبات المجانية محدود، ولا يلزم تشغيل Colab أو إدخال رابط سيرفر.</p>
-<h3>اشتغل بسرعة من الموبايل — من غير Colab</h3>
-<p>راجع ترتيب المشاهد والحوار والحركة المبدئية فورًا. المعاينة 2D مرسومة للتخطيط، مش فيديو AI. توليد فيديو AI حقيقي من الصورة يحتاج GPU متصلة، وهي غير متوفرة حاليًا في التطبيق.</p>
-<a class="action primary full" href="./quick-preview.html" style="text-decoration:none">▶ فتح المعاينة السريعة للـ16 لقطة</a>
-<details style="margin-top:12px"><summary style="cursor:pointer;color:#acb8cb">تجربة النموذج الثقيل على Colab (اختياري للمطورين)</summary>
-<p>Colab صفحة ثقيلة على الموبايل، ومش مطلوبة لاستخدام الاستوديو. استخدمها فقط عند توفر GPU مجانية وعند الرغبة بتجربة Wan 2.2.</p>
-<a class="outline-btn" href="https://colab.research.google.com/github/omarnet0109-jpg/404/blob/main/notebooks/404_wan22_free_video.ipynb" target="_blank" rel="noopener noreferrer">فتح Colab الاختياري</a>
+<div class="bottom">
+<a href="./library.html">مكتبة فيديوهاتي</a>
+<span aria-hidden="true"> · </span>
+<details style="display:inline-block"><summary style="cursor:pointer;display:inline">الأدوات المتقدمة</summary>
+<p><a href="./studio-advanced.html">الواجهة القديمة</a> · <a href="./voice-studio.html">تجربة الأصوات</a> · <a href="./compositor.html">تركيب الصوت</a></p>
 </details>
-<div class="field"><label for="localPreviewInput">لو عندك فيديو مولّد بالفعل، شوفه هنا على جهازك فقط</label><input type="file" id="localPreviewInput" accept="video/mp4,video/webm,video/quicktime"></div>
-<div id="localPreviewBox"></div>
+<p class="sub">الصور والفيديوهات المحفوظة تخص متصفحك الحالي، لكن رابط الموقع نفسه ما زال عامًا. محدش يقدر يغيّر شغلك على GitHub بدون صلاحية، لكن قفل دخول الموقع يحتاج استضافة محمية.</p>
 </div>
-<div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
-<div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
-<div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
-<div class="upload-line"><button class="outline-btn" id="uploadButton" disabled title="التوليد يحتاج اتصال GPU أولًا">رفع المرجع إلى المحرك</button><span class="muted" id="referenceStatus">المحرك غير متصل — الرفع متوقف</span></div>
-<button class="action primary full" id="renderButton" disabled title="أضف سيرفر GPU فعليًا لاختبار التوليد">توليد اللقطة المختارة ↗</button>
-<div id="jobPanel" class="panel job-panel hidden"><div class="section-heading"><h2>متابعة التوليد</h2><span id="jobStatus" class="status-pill">انتظار</span></div><p id="jobDescription"></p><div id="jobOutput"></div></div>
-<div id="productionLog" class="log" role="status" aria-live="polite">لا توجد مهام تشغيل حاليًا.</div>
-</section>
-<section class="view" id="view-settings" aria-labelledby="settingsTitle">
-<div class="page-head"><div><span class="eyebrow">ENGINE SETTINGS</span><h1 id="settingsTitle">الإعدادات</h1></div></div>
-<div class="panel tip"><h3>الخطة: مجانية الآن، مدفوعة مستقبلًا</h3><p>لم يتم ربط أي مزود مدفوع أو تفعيل دفع آلي. عندما نقرر الترقية، سنضيف مزودًا جديدًا خلف الخادم، مع حد تكلفة وموافقة صريحة. سيرفر GPU نفسه قد تكون له تكلفة حتى مع الأدوات المفتوحة المصدر.</p></div>
-<div class="panel info-panel" id="simpleEngineStatus">
-  <h3 id="simpleEngineTitle">حالة توليد الفيديو: غير متصل</h3>
-  <p id="simpleEngineMessage">دي مش بيانات ناقصة منك. لسه ما فيش سيرفر GPU مجاني متصل بالمشروع، ومش مطلوب منك تكتب عنوان أو مفتاح أو تدفع حاجة. حاليًا تقدر تراجع المشاهد وتعدّل أوصافها وتصدّر المشروع.</p>
-  <button type="button" class="action primary full" data-open="shots">فتح المشاهد الجاهزة ←</button>
-</div>
-<details class="panel" id="advancedServerSetup"><summary style="cursor:pointer;font-weight:800">إعدادات المحرك المتقدمة (للمطورين فقط)</summary>
-<p class="muted">لا تستخدم هذه الإعدادات إلا بعد تشغيل خادم ComfyUI فعلي وتجهيز رابط HTTPS ومفتاح وصول خاص به. لا تضع كلمة سر GitHub أو أي مفتاح آخر هنا.</p>
-<div><h3>ربط سيرفر التوليد</h3><p class="muted">العنوان والمفتاح يُصدرهما خادم الإنتاج الخاص، وليسا بيانات حساب GitHub.</p>
-<div class="field"><label for="serverUrl">عنوان خادم الاستوديو HTTPS</label><input id="serverUrl" type="url" autocomplete="url" placeholder="https://your-studio-backend.example"></div>
-<div class="field"><label for="serverToken">مفتاح دخول الخادم</label><input id="serverToken" type="password" autocomplete="off" placeholder="مفتاح APP_API_TOKEN"></div>
-<div class="form-actions"><button class="action primary" id="checkButton">اختبار الاتصال</button><button class="action secondary" id="saveSettings">حفظ للجلسة</button></div><p class="small muted">مفتاح الدخول يُحفظ في ذاكرة جلسة المتصفح فقط، ولا يُرسل إلى GitHub.</p></div></details>
-<div class="panel tip"><h3>تثبيت التطبيق</h3><p>من Chrome على أندرويد: القائمة ⋮ ثم «إضافة إلى الشاشة الرئيسية». ومن Safari على iPhone: مشاركة ثم «إضافة إلى الشاشة الرئيسية» بعد نشر الموقع.</p><button class="outline-btn" id="installGuide">إرشادات التثبيت</button></div>
-<div class="panel danger-zone"><h3>بيانات المسودات</h3><p class="muted">التحرير المحلي محفوظ على جهازك فقط. يمكن تصديره قبل تنظيف المتصفح.</p><button class="outline-btn" id="resetDrafts">حذف تعديلاتي المحلية</button></div>
-</section>
 </main>
-<nav class="bottom-nav" aria-label="القائمة الرئيسية"><button class="tab active" data-target="home"><span>⌂</span>الرئيسية</button><button class="tab" data-target="shots"><span>▤</span>المشاهد</button><button class="tab" data-target="cast"><span>♙</span>الشخصيات</button><button class="tab" data-target="production"><span>◉</span>المحرك</button><button class="tab" data-target="settings"><span>⚙</span>الإعدادات</button></nav>
-</div>
-<dialog id="editDialog"><form method="dialog" class="dialog-body"><div class="section-heading"><h2 id="editDialogTitle">تعديل اللقطة</h2><button class="icon-button" value="cancel" aria-label="إغلاق">✕</button></div><label for="editPrompt">وصف الحركة</label><textarea id="editPrompt" rows="8" maxlength="5000"></textarea><p class="muted small">المسودة تظل في متصفحك إلى أن تصدرها وتقرر اعتمادها.</p><div class="form-actions"><button class="action primary" id="confirmEdit" value="save">حفظ المسودة</button><button class="action secondary" value="cancel">إلغاء</button></div></form></dialog>
-<div id="toast" role="status" aria-live="polite"></div>
-<script src="./app.js" defer></script>
-</body></html>
+<script defer src="./simple-characters.js?v=1"></script>
+<script defer src="./media-vault.js?v=1"></script>
+<script defer src="./simple.js?v=1"></script>
+</body>
+</html>
