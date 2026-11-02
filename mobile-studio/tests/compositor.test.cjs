@@ -34,7 +34,7 @@ const pieces=code.slice(start,end)+
  code.slice(m,en);
 const fn=vm.runInNewContext(
  '(function(){'+pieces+';return {targetSize,availableType,matchingAudio}})()',
- {globalThis:{MediaRecorder:{isTypeSupported:t=>t==="video/webm"}},audios:[
+ {globalThis:{MediaRecorder:Object.assign(function MediaRecorderMock(){},{isTypeSupported:t=>t==="video/webm"})},audios:[
  {id:"LAYLA:sh05",actor:"LAYLA",shot:"sh05"},
  {id:"SABER:sh05",actor:"SABER",shot:"sh05"}
  ]});
