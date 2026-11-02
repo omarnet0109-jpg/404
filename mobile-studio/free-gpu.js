@@ -8,7 +8,23 @@ const $=id=>document.getElementById(id);
 let shots=[],selected=null,busy=false,previewUrl=null;
 const el=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e};
 function status(message,error=false){const n=$("notice");n.textContent=message;n.style.color=error?"#ffb6ad":"#a6b6cf"}
-function selectScene(id){selected=shots.find(s=>s.shot_id===id)||shots[0];if(selected)$("prompt").value=selected.prompt_en}
+function actorForShot(){return selected?.speaker||"ensemble"}
+async function refreshSavedReference(){
+ const actor=actorForShot();
+ const label=$("savedReferenceStatus");
+ if(!label)return;
+ try{
+  const item=await globalThis.Studio404CharacterBank.get(actor);
+  if(actor!==actorForShot())return;
+  label.textContent=item?
+    "✅ صورة "+actor+" الأصلية محفوظة في الموبايل. مش محتاج تختارها من جديد.":
+    "📷 صورة "+actor+" مش محفوظة بعد. اختار الصورة الأصلية مرة واحدة.";
+ }catch(err){label.textContent="تنبيه بشأن صورة "+actor+": "+err.message}
+}
+function selectScene(id){
+ selected=shots.find(s=>s.shot_id===id)||shots[0];
+ if(selected){$("prompt").value=selected.prompt_en;$("reference").value="";$("photoPreview").style.display="none";refreshSavedReference()}
+}
 function validPhoto(f){return !!f&&["image/png","image/jpeg","image/webp"].includes(f.type)&&f.size>0&&f.size<=12*1024*1024}
 function safeVideo(result){
  let candidate=result?.data?.[0];
@@ -23,15 +39,28 @@ function safeVideo(result){
 }
 async function submit(){
  if(busy)return;
- const file=$("reference").files?.[0];
- if(!validPhoto(file)){status("اختار صورة PNG أو JPG أو WebP بحد أقصى 12MB، مش ملف ZIP.",true);return}
  if(!$("consent").checked){status("لازم توافق أولًا على إرسال الصورة للخدمة الخارجية.",true);return}
  const prompt=$("prompt").value.trim();
- const clipMeta={shot_id:selected?.shot_id||null,actor:selected?.speaker||"ensemble",prompt};
+ const actor=actorForShot();
+ const clipMeta={shot_id:selected?.shot_id||null,actor,prompt};
  if(prompt.length<15){status("وصف الحركة قصير جدًا.",true);return}
  busy=true;$("submit").disabled=true;$("result").replaceChildren();
  status("جاري الاتصال بخدمة GPU المشتركة... قد يكون هناك طابور.");
  try{
+   const bank=globalThis.Studio404CharacterBank;
+   const chosen=$("reference").files?.[0];
+   let file;
+   if(chosen){
+      if(!validPhoto(chosen))throw Error("اختار صورة PNG أو JPG أو WebP صالحة بحجم أقل من 12MB.");
+      // Persist only the exact photo approved in the series bible.
+      await bank.approve(chosen,actor);
+      file=chosen;
+   }else{
+      const saved=await bank.get(actor);
+      if(!saved)throw Error("اختار الصورة الأصلية للشخصية "+actor+" مرة واحدة بس؛ بعد كده التطبيق هيفتكرها.");
+      file=new File([saved.blob],saved.name,{type:saved.mime});
+   }
+   await refreshSavedReference();
    // Load Gradio's API client only when the user explicitly starts an external render.
    const {Client,handle_file}=await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
    const app=await Client.connect(ID, {events:["data","status"]});
@@ -53,6 +82,12 @@ async function submit(){
         player.controls=true;player.playsInline=true;player.preload="metadata";player.src=video;
         const link=el("a","فتح وتنزيل ملف الفيديو الناتج");link.href=video;link.target="_blank";link.rel="noopener noreferrer";
         $("result").replaceChildren(player,link);
+        if(["LAYLA","WIDAD","SABER"].includes(actor)){
+           const voice=el("a","🎙️ إضافة صوت الشخصية المصري لهذه اللقطة");
+           voice.href="./voice-studio.html?actor="+encodeURIComponent(actor)+"&shot="+encodeURIComponent(clipMeta.shot_id||"");
+           voice.style.display="block";
+           $("result").append(voice);
+        }
         completed=true;
         status("الفيديو اتولد، جاري حفظ الملف داخل مكتبتك على الموبايل...");
         try{
@@ -95,6 +130,7 @@ async function boot(){
    const file=$("reference").files?.[0],preview=$("photoPreview");
    if(!validPhoto(file)){preview.style.display="none";return}
    previewUrl=URL.createObjectURL(file);preview.src=previewUrl;preview.style.display="block";
+   $("savedReferenceStatus").textContent="سيتم التحقق من بصمة الصورة وحفظها محليًا عند الضغط على توليد.";
  });
  $("submit").addEventListener("click",submit);
  $("copyPrompt").addEventListener("click",async()=>{
