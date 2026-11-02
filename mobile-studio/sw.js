@@ -1,9 +1,10 @@
 // 404 Studio mobile PWA: cached static assets are served instantly while revalidated.
-const CACHE = "404-studio-v13";
+const CACHE = "404-studio-v14";
 const CORE = [
   "./","./index.html","./app.css","./app.js","./icon.svg",
   "./manifest.webmanifest","./data/scene.json","./data/characters.json",
-  "./data/dialogue.json","./quick-preview.html","./quick-preview.js","./free-gpu.html","./free-gpu.js","./voice-studio.html","./voice-studio.js"
+  "./data/dialogue.json","./quick-preview.html","./quick-preview.js","./free-gpu.html","./free-gpu.js","./voice-studio.html","./voice-studio.js",
+  "./library.html","./library.js","./media-vault.js"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE)
