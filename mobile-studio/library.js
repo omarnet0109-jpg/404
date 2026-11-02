@@ -53,7 +53,7 @@ async function render(){
     catch(e){message(e.message,true)}
    });
    del.addEventListener("click",async()=>{
-    if(!confirm("حذف الفيديو ""+item.name+"" من مكتبة هذا الموبايل؟ لا يمكن استرجاعه من المكتبة."))return;
+    if(!confirm("حذف الفيديو "+item.name+" من مكتبة هذا الموبايل؟ لا يمكن استرجاعه من المكتبة."))return;
     try{await vault().remove(item.id);message("تم حذف الفيديو من المكتبة");await render()}
     catch(e){message(e.message,true)}
    });
