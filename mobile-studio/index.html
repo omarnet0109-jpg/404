@@ -13,6 +13,7 @@
 <section class="view active" id="view-home" aria-labelledby="homeTitle">
 <div class="eyebrow"><span class="point"></span> مشروع مسلسل أصلي • الإنتاج الأول</div>
 <div class="hero"><span class="kicker">EPISODE 01  /  60 SECONDS</span><h1 id="homeTitle">الحي <em>404</em></h1><p>الشباك — الليلة اللي اتفتح فيها الممنوع.</p><div class="hero-foot"><span class="chip">🎬 كرتون 3D</span><span class="chip">9:16 عمودي</span><span class="chip">🇪🇬 مصري</span></div><div class="moon">◕</div></div>
+<div class="panel tip" id="planStatus"><strong>✓ الخطة الحالية: مجانية ومفتوحة المصدر</strong><p>إدارة الحلقة والمشاهد متاحة على موبايلك. توليد فيديو بالذكاء الاصطناعي يحتاج GPU متصلة بمحرك ComfyUI؛ موارد GPU المجانية غير مضمونة. خيار الاشتراك المدفوع غير مفعل ولن يشتغل تلقائيًا.</p></div>
 <div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
 <div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
 <div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
@@ -33,7 +34,7 @@
 </section>
 <section class="view" id="view-production" aria-labelledby="productionTitle">
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
-<div class="panel info-panel"><strong>المحرّك: ComfyUI مفتوح المصدر</strong><p>الموبايل هو لوحة التحكم؛ التوليد الفعلي يحتاج خادم GPU شغّال ومتصل بالتطبيق. لا تُنشأ ملفات فيديو وهمية عند غيابه.</p></div>
+<div class="panel info-panel"><strong>المحرّك المجاني: ComfyUI مفتوح المصدر</strong><p>الموبايل هو لوحة التحكم؛ التوليد الفعلي يحتاج خادم GPU شغّال ومتصل بالتطبيق. لا تُنشأ ملفات فيديو وهمية عند غيابه.</p></div>
 <div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
 <div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
 <div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
@@ -44,6 +45,7 @@
 </section>
 <section class="view" id="view-settings" aria-labelledby="settingsTitle">
 <div class="page-head"><div><span class="eyebrow">ENGINE SETTINGS</span><h1 id="settingsTitle">الإعدادات</h1></div></div>
+<div class="panel tip"><h3>الخطة: مجانية الآن، مدفوعة مستقبلًا</h3><p>لم يتم ربط أي مزود مدفوع أو تفعيل دفع آلي. عندما نقرر الترقية، سنضيف مزودًا جديدًا خلف الخادم، مع حد تكلفة وموافقة صريحة. سيرفر GPU نفسه قد تكون له تكلفة حتى مع الأدوات المفتوحة المصدر.</p></div>
 <div class="panel"><h3>ربط سيرفر التوليد</h3><p class="muted">ضع عنوان خادم الـ API الخاص بك. لا تضع عنوان ComfyUI المفتوح على الإنترنت مباشرة؛ استخدم الجسر الآمن الموجود في المشروع.</p>
 <div class="field"><label for="serverUrl">عنوان خادم الاستوديو HTTPS</label><input id="serverUrl" type="url" autocomplete="url" placeholder="https://your-studio-backend.example"></div>
 <div class="field"><label for="serverToken">مفتاح دخول الخادم</label><input id="serverToken" type="password" autocomplete="off" placeholder="مفتاح APP_API_TOKEN"></div>
