@@ -1,0 +1,371 @@
+{
+  "scene_id": "episode-01-scene-001",
+  "episode": 1,
+  "episode_title_ar": "الشباك",
+  "title_ar": "الحلقة الأولى: الشباك",
+  "description_ar": "ثلاث شخصيات فقط في الحارة المصرية القديمة ليلًا. تحذير بعد منتصف الليل من فتح الشباك، يتجاهله عم صابر فتحدث ظاهرة غامضة.",
+  "location_ar": "حارة مصرية قديمة واحدة ليلًا — الباب الأخضر يمين الكادر والفانوس فوقه والشباك في الطابق الأول",
+  "time_ar": "ليل، ثم منتصف الليل",
+  "duration_seconds": 60,
+  "aspect_ratio": "9:16",
+  "fps": 24,
+  "continuity_character_bible": "characters/character_bible.json",
+  "reference_images": [
+    "ensemble",
+    "LAYLA",
+    "WIDAD",
+    "SABER"
+  ],
+  "character_reference_notes": "ABSOLUTELY LOCK the exact character faces, garments and relative scale from reference images. Layla center, Widad left, Saber right green door. Never generate any new cast. No mouth movement except the named shot speaker. The moon, balconies, stairway, door and lantern have identical geometry on every shot.",
+  "dialogue_policy": {
+    "language": "ar-EG",
+    "strict_assignment": true,
+    "no_overlapping_speech": true,
+    "no_extra_dialogue": true,
+    "no_narration": true,
+    "voice_consistency": true,
+    "speaker_mouth_only": true,
+    "others_mouth_closed": true,
+    "no_subtitles": true
+  },
+  "shots": [
+    {
+      "shot_id": "sh01",
+      "start_seconds": 0,
+      "end_seconds": 4,
+      "duration_seconds": 4,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Wide-to-medium slow dolly along wet cobbles toward aged warning notice fixed BESIDE right-side green wooden door; lantern warm, moon blue, distant tower; old paper on wall with no newly generated legible captions.",
+      "camera": "Steady slow forward dolly; opening geography",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "distant faint clock ticks"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Wide-to-medium slow dolly along wet cobbles toward aged warning notice fixed BESIDE right-side green wooden door; lantern warm, moon blue, distant tower; old paper on wall with no newly generated legible captions. Camera: Steady slow forward dolly; opening geography. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404001
+    },
+    {
+      "shot_id": "sh02",
+      "start_seconds": 4,
+      "end_seconds": 8,
+      "duration_seconds": 4,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Reveal exactly three people standing as in ensemble reference: Widad left, Layla center holding antique paper bundle, Saber right by green door. Nobody speaks, all mouths shut; slight wind in clothes.",
+      "camera": "Gentle dolly-in to three-shot",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble",
+        "LAYLA",
+        "WIDAD",
+        "SABER"
+      ],
+      "ambience_sfx": [
+        "soft wind"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Reveal exactly three people standing as in ensemble reference: Widad left, Layla center holding antique paper bundle, Saber right by green door. Nobody speaks, all mouths shut; slight wind in clothes. Camera: Gentle dolly-in to three-shot. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404002
+    },
+    {
+      "shot_id": "sh03",
+      "start_seconds": 8,
+      "end_seconds": 14,
+      "duration_seconds": 6,
+      "speaker": "LAYLA",
+      "dialogue_ar": "أنا سألت على حي النخيل بره... كلهم قالولي مفيش حارة بالاسم ده!",
+      "voice_id": "layla_ar_eg",
+      "description_ar": "المتحدث الوحيد: ليلى. Close medium framing Layla at center. She looks confused, clutching grandfather papers and speaking exclusively. SABER and WIDAD if visible in blurred background remain silent with closed lips.",
+      "camera": "Close-up on Layla, gentle push-in",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "LAYLA",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Close medium framing Layla at center. She looks confused, clutching grandfather papers and speaking exclusively. SABER and WIDAD if visible in blurred background remain silent with closed lips. Camera: Close-up on Layla, gentle push-in. Only LAYLA is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404003
+    },
+    {
+      "shot_id": "sh04",
+      "start_seconds": 14,
+      "end_seconds": 18,
+      "duration_seconds": 4,
+      "speaker": "SABER",
+      "dialogue_ar": "الخرايط مش بتعرف كل حاجة يا بنتي.",
+      "voice_id": "saber_ar_eg",
+      "description_ar": "المتحدث الوحيد: صابر. Close-up Saber standing at right green door, knitted cap and mustache, dry mocking half-smile. Only his mouth animates. Layla and Widad remain quiet.",
+      "camera": "Camera cut to Saber close-up",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "SABER",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Close-up Saber standing at right green door, knitted cap and mustache, dry mocking half-smile. Only his mouth animates. Layla and Widad remain quiet. Camera: Camera cut to Saber close-up. Only SABER is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404004
+    },
+    {
+      "shot_id": "sh05",
+      "start_seconds": 18,
+      "end_seconds": 21,
+      "duration_seconds": 3,
+      "speaker": "LAYLA",
+      "dialogue_ar": "طب وإيه حكاية الورقة دي؟",
+      "voice_id": "layla_ar_eg",
+      "description_ar": "المتحدث الوحيد: ليلى. Layla glances at notice fixed next to green wooden door on camera right, gestures toward it and asks in surprise. She alone talks.",
+      "camera": "Medium shot Layla including corner of notice",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "LAYLA",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Layla glances at notice fixed next to green wooden door on camera right, gestures toward it and asks in surprise. She alone talks. Camera: Medium shot Layla including corner of notice. Only LAYLA is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404005
+    },
+    {
+      "shot_id": "sh06",
+      "start_seconds": 21,
+      "end_seconds": 28,
+      "duration_seconds": 7,
+      "speaker": "WIDAD",
+      "dialogue_ar": "قانون الليلة... بعد الساعة 12، محدش يفتح شباك... مهما حصل.",
+      "voice_id": "widad_ar_eg",
+      "description_ar": "المتحدث الوحيد: وداد. Widad in dark embroidered shawl, serious and cautious, looks into Layla's eyes with warning. Only Widad talks; the other characters stay quiet with closed mouths.",
+      "camera": "Intimate close-up Widad, slow push-in",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "WIDAD",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Widad in dark embroidered shawl, serious and cautious, looks into Layla's eyes with warning. Only Widad talks; the other characters stay quiet with closed mouths. Camera: Intimate close-up Widad, slow push-in. Only WIDAD is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404006
+    },
+    {
+      "shot_id": "sh07",
+      "start_seconds": 28,
+      "end_seconds": 32,
+      "duration_seconds": 4,
+      "speaker": "LAYLA",
+      "dialogue_ar": "ليه؟ هو فيه إيه؟",
+      "voice_id": "layla_ar_eg",
+      "description_ar": "المتحدث الوحيد: ليلى. Layla arches one eyebrow, anxious curiosity. She speaks the sole sentence, stops, and turns eyes to Widad, who then looks silently to Saber.",
+      "camera": "Close-up Layla and silent Widad edge of frame",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "LAYLA",
+        "WIDAD",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Layla arches one eyebrow, anxious curiosity. She speaks the sole sentence, stops, and turns eyes to Widad, who then looks silently to Saber. Camera: Close-up Layla and silent Widad edge of frame. Only LAYLA is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404007
+    },
+    {
+      "shot_id": "sh08",
+      "start_seconds": 32,
+      "end_seconds": 39,
+      "duration_seconds": 7,
+      "speaker": "SABER",
+      "dialogue_ar": "أنا بفتح شباكي من أربعين سنة! هو النهارده هيتقفل ليه؟",
+      "voice_id": "saber_ar_eg",
+      "description_ar": "المتحدث الوحيد: صابر. Saber chuckles cynically near the same right green door and challenges the warning, talking alone. His mustache, cardigan, cap and exact facial identity match reference.",
+      "camera": "Medium close-up Saber",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "SABER",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Saber chuckles cynically near the same right green door and challenges the warning, talking alone. His mustache, cardigan, cap and exact facial identity match reference. Camera: Medium close-up Saber. Only SABER is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404008
+    },
+    {
+      "shot_id": "sh09",
+      "start_seconds": 39,
+      "end_seconds": 43,
+      "duration_seconds": 4,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Silent shot. Saber turns from camera, unlocks and pushes open the exact green wooden door on the right, steps inside the SAME house. Widad and Layla remain outside, no extra figures.",
+      "camera": "Fixed three-quarter view of green door; no camera teleport",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble",
+        "SABER"
+      ],
+      "ambience_sfx": [
+        "green door hinges"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Silent shot. Saber turns from camera, unlocks and pushes open the exact green wooden door on the right, steps inside the SAME house. Widad and Layla remain outside, no extra figures. Camera: Fixed three-quarter view of green door; no camera teleport. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404009
+    },
+    {
+      "shot_id": "sh10",
+      "start_seconds": 43,
+      "end_seconds": 45,
+      "duration_seconds": 2,
+      "speaker": "WIDAD",
+      "dialogue_ar": "يا صابر! بلاش العند ده!",
+      "voice_id": "widad_ar_eg",
+      "description_ar": "المتحدث الوحيد: وداد. Widad turns quickly toward disappearing Saber and calls after him with contained fear. Only Widad mouth moves. Saber does not answer; door closes behind him. Layla remains silent.",
+      "camera": "Reaction close-up Widad; match door closure",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "WIDAD",
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "green door shuts"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Widad turns quickly toward disappearing Saber and calls after him with contained fear. Only Widad mouth moves. Saber does not answer; door closes behind him. Layla remains silent. Camera: Reaction close-up Widad; match door closure. Only WIDAD is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404010
+    },
+    {
+      "shot_id": "sh11",
+      "start_seconds": 45,
+      "end_seconds": 48,
+      "duration_seconds": 3,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Silent midnight: striking distant clock; fixed location moonlit alley and unchanged right-side house. Exterior stillness. No one talks.",
+      "camera": "Upward tilt to fixed distant clock tower",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "midnight clock chimes"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Silent midnight: striking distant clock; fixed location moonlit alley and unchanged right-side house. Exterior stillness. No one talks. Camera: Upward tilt to fixed distant clock tower. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404011
+    },
+    {
+      "shot_id": "sh12",
+      "start_seconds": 48,
+      "end_seconds": 52,
+      "duration_seconds": 4,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. First-floor wooden window above same house as right green door swings open audibly without anyone visible inside. Warm lanterns flicker. No new character appears. The alley goes unnaturally quiet.",
+      "camera": "Cut to window above right door, restrained push-in",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "old wooden window creak",
+        "flickering lantern buzz",
+        "ambience cuts out"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. First-floor wooden window above same house as right green door swings open audibly without anyone visible inside. Warm lanterns flicker. No new character appears. The alley goes unnaturally quiet. Camera: Cut to window above right door, restrained push-in. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404012
+    },
+    {
+      "shot_id": "sh13",
+      "start_seconds": 52,
+      "end_seconds": 54,
+      "duration_seconds": 2,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Layla and Widad remain outside before the green door at same positions. Layla slowly raises face toward open first-floor window; Widad looks upward frightened. Both silent and mouths closed.",
+      "camera": "Locked medium two-shot; no dialogue",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "LAYLA",
+        "WIDAD",
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "eerie silence"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Layla and Widad remain outside before the green door at same positions. Layla slowly raises face toward open first-floor window; Widad looks upward frightened. Both silent and mouths closed. Camera: Locked medium two-shot; no dialogue. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404013
+    },
+    {
+      "shot_id": "sh14",
+      "start_seconds": 54,
+      "end_seconds": 57,
+      "duration_seconds": 3,
+      "speaker": "LAYLA",
+      "dialogue_ar": "هو فتح الشباك؟",
+      "voice_id": "layla_ar_eg",
+      "description_ar": "المتحدث الوحيد: ليلى. Layla eyes widened and turned up toward the now opened window. Speaking alone in worried Egyptian Arabic. Widad if visible remains mouth closed.",
+      "camera": "Close-up Layla looking upward",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "LAYLA",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Layla eyes widened and turned up toward the now opened window. Speaking alone in worried Egyptian Arabic. Widad if visible remains mouth closed. Camera: Close-up Layla looking upward. Only LAYLA is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404014
+    },
+    {
+      "shot_id": "sh15",
+      "start_seconds": 57,
+      "end_seconds": 59,
+      "duration_seconds": 2,
+      "speaker": "WIDAD",
+      "dialogue_ar": "إحنا اتأخرنا...",
+      "voice_id": "widad_ar_eg",
+      "description_ar": "المتحدث الوحيد: وداد. Widad devastated whisper, small worried expression, looks at first-floor open window. Only Widad speaks, Layla silent.",
+      "camera": "Extreme close-up Widad",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "WIDAD",
+        "ensemble"
+      ],
+      "ambience_sfx": [],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Widad devastated whisper, small worried expression, looks at first-floor open window. Only Widad speaks, Layla silent. Camera: Extreme close-up Widad. Only WIDAD is authorized to speak and lipsync; all other people's lips must stay fully closed. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404015
+    },
+    {
+      "shot_id": "sh16",
+      "start_seconds": 59,
+      "end_seconds": 60,
+      "duration_seconds": 1,
+      "speaker": null,
+      "dialogue_ar": "",
+      "voice_id": null,
+      "description_ar": "بدون كلام. Quick shot of already-open upstairs window of right-side house emitting mysterious deep-blue light, NO visible silhouette, then immediate hard cut to completely black before second 60. No title or text.",
+      "camera": "Fast push to blue light, hard cut black",
+      "camera_reference": "ensemble",
+      "visual_references": [
+        "ensemble"
+      ],
+      "ambience_sfx": [
+        "low mysterious airy tone"
+      ],
+      "prompt_en": "Same fixed narrow old Egyptian alley at full-moon night: damp stone paving, warm wall lantern above green wooden door on frame RIGHT, old plaster buildings and balconies, blue moonlight and amber reflections. Stylized cinematic 3D animated feature, exact reference images and unchanged set. Vertical 9:16. Quick shot of already-open upstairs window of right-side house emitting mysterious deep-blue light, NO visible silhouette, then immediate hard cut to completely black before second 60. No title or text. Camera: Fast push to blue light, hard cut black. All lips stay closed, absolutely no dialogue. No subtitles, no overlay text or narration.",
+      "negative_prompt": "different character, changing face, face swap, changing clothes, redesigned set, extra people, duplicate actor, captions, subtitles, watermark, logo, random typography, distorted facial features, unnatural mouth, uncontrolled camera, modern objects",
+      "seed": 404016
+    }
+  ]
+}
