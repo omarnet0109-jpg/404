@@ -29,7 +29,7 @@ assert.match(cast,/indexedDB\.open\(DB,1\)/);
 assert.match(cast,/\["LAYLA","ليلى"\]/);
 assert.match(cast,/\["WIDAD","الحاجة وداد"\]/);
 assert.match(cast,/\["SABER","عم صابر"\]/);
-assert.match(cast,/if\(chosen&&current\?\.image&&/); // photo replacement confirmation is owned by UI
+assert.match(app,/if\(chosen&&current\?\.image&&/); // photo replacement confirmation is owned by UI
 assert.match(media,/C_\[A-Za-z0-9_-\]/,"Custom character IDs retained in media metadata");
 assert.match(sw,/404-studio-v17/);
 assert.doesNotMatch(sw,/".\/app\.js"/,"Heavy legacy editor should not be precached");
