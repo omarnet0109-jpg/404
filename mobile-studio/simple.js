@@ -112,7 +112,8 @@ async function generate(){
  try{
   const {Client,handle_file}=await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
   const api=await Client.connect(SPACE_ID,{events:["data","status"]});
-  const file=new File([char.image],char.id+".png",{type:char.image.type||"image/png"});
+  const ext=char.image.type==="image/jpeg"?"jpg":char.image.type==="image/webp"?"webp":"png";
+  const file=new File([char.image],char.id+"."+ext,{type:char.image.type||"image/png"});
   const args=[handle_file(file),prompt,4,
    "changed character, different face, extra people, subtitles, watermark, flicker",
    1.5,1,1,404,false];
