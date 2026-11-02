@@ -1,0 +1,52 @@
+name: Build and deploy 404 Studio PWA
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile-studio/**"
+      - "backend/**"
+      - ".github/workflows/deploy-studio.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate JavaScript and JSON
+        run: |
+          node --check mobile-studio/app.js
+          node --check mobile-studio/sw.js
+          python -m json.tool mobile-studio/data/scene.json > /dev/null
+          python -m json.tool mobile-studio/data/characters.json > /dev/null
+          python -m json.tool mobile-studio/manifest.webmanifest > /dev/null
+      - name: Check backend
+        run: |
+          python -m pip install -r backend/requirements.txt
+          python -m unittest discover -s backend/tests -v
+  deploy:
+    needs: quality
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: mobile-studio
+      - id: deployment
+        uses: actions/deploy-pages@v4
