@@ -54,4 +54,5 @@ class MobileEngineGateTests(TestCase):
         html = HTML.read_text(encoding="utf-8")
         self.assertIn("ComfyUI", html)
         self.assertIn("GPU", html)
-        self.assertIn("مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن", html)
+        self.assertIn("الخدمات المجانية محدودة وغير مضمونة", html)
+        self.assertIn("محرك ComfyUI الخاص غير متصل", html)
