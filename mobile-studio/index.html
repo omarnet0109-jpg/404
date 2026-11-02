@@ -57,6 +57,15 @@
 </div>
 <div class="actions"><button id="generateVideo" class="btn" type="button">▶ توليد الفيديو</button></div>
 <p id="status" role="status" aria-live="polite">اختار شخصية محفوظة بصورتها، واكتب وصف الفيديو.</p>
+<section id="recovery" class="recovery" hidden aria-label="حل مشكلة التوليد">
+<strong>الفيديو ما اتولدش؟ شغلك محفوظ.</strong>
+<p class="sub">جرّب النموذج الأصلي على Hugging Face؛ التسجيل بحساب مجاني ممكن يديك حصة أكبر من التشغيل بدون حساب، لكنه مش ضمان للتوليد. نفس الحصص مشتركة، ومش هنكرر الطلب تلقائيًا.</p>
+<div class="actions">
+<a class="btn" href="https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster" target="_blank" rel="noopener noreferrer">فتح خدمة GPU الأصلية</a>
+<button class="btn alt" type="button" id="copyVideoPrompt">نسخ وصف الفيديو</button>
+</div>
+<button class="btn alt" style="width:100%;margin-top:9px" type="button" id="downloadCharacterImage">تنزيل صورة الشخصية المحفوظة</button>
+</section>
 <div id="result"></div>
 <p class="note">خدمة GPU مجانية مشتركة ومحدودة، وممكن تنشغل أو توقف مؤقتًا. الفيديو الناتج صامت حاليًا؛ الصوت المصري مش مدمج تلقائيًا. هنحاول نحفظ الفيديو في مكتبتك، ولو التحميل المباشر ممنوع هيظهر رابط التنزيل.</p>
 </div>
@@ -72,6 +81,6 @@
 </main>
 <script defer src="./simple-characters.js?v=1"></script>
 <script defer src="./media-vault.js?v=1"></script>
-<script defer src="./simple.js?v=1"></script>
+<script defer src="./simple.js?v=2"></script>
 </body>
 </html>
