@@ -37,6 +37,30 @@ class HTTPAcceptanceTests(TestCase):
         self.assertFalse(body["comfyui_connected"])
         self.assertFalse(body["video_ready"])
 
+    def test_health_requires_workflow_nodes_installed_in_comfyui(self):
+        async def comfy_status(method, route, **kwargs):
+            if route == "/queue":
+                return {"queue_running": [], "queue_pending": []}
+            if route == "/object_info":
+                return {"LoadImage": {}}
+            raise AssertionError(route)
+
+        with tempfile.TemporaryDirectory() as folder:
+            workflow = Path(folder) / "video_api.json"
+            workflow.write_text(json.dumps({
+                "1": {"class_type": "LoadImage", "inputs": {"image": "{{REFERENCE_IMAGE}}"}},
+                "2": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+                "3": {"class_type": "SaveVideo", "inputs": {"video": ["2", 0]}},
+            }), encoding="utf-8")
+            with patch.object(api, "WORKFLOW_FILE", workflow), patch.object(api, "comfy", side_effect=comfy_status):
+                result = self.client.get("/api/health", headers=self.headers)
+        self.assertEqual(result.status_code, 200)
+        body = result.json()
+        self.assertTrue(body["comfyui_connected"])
+        self.assertFalse(body["video_ready"])
+        self.assertEqual(body["workflow_status"], "nodes_missing")
+        self.assertEqual(body["missing_nodes"], ["CLIPTextEncode", "SaveVideo"])
+
     def test_render_refuses_missing_workflow(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "missing.json"
@@ -89,7 +113,11 @@ class HTTPAcceptanceTests(TestCase):
             root = Path(folder)
             workflow = root / "video_api.json"
             workflow.write_text(
-                json.dumps({"1": {"inputs": {"text": "{{PROMPT}}", "reference": "{{REFERENCE_IMAGE}}"}}}),
+                json.dumps({
+                    "1": {"class_type": "LoadImage", "inputs": {"image": "{{REFERENCE_IMAGE}}"}},
+                    "2": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+                    "3": {"class_type": "SaveVideo", "inputs": {"video": ["2", 0]}},
+                }),
                 encoding="utf-8"
             )
             with (

@@ -26,6 +26,13 @@ class MobileEngineGateTests(TestCase):
         self.assertIn('engineReady=Boolean(online)', code)
         self.assertIn('$("uploadButton").disabled=!engineReady', code)
         self.assertIn('$("renderButton").disabled=!engineReady', code)
+        self.assertIn('$("referenceFile").disabled=!engineReady', code)
+
+    def test_frontend_uses_backend_video_readiness_contract(self):
+        code = JS.read_text(encoding="utf-8")
+        check = code.split("async function checkServer(){", 1)[1].split("async function upload(){", 1)[0]
+        self.assertIn("data.video_ready", check)
+        self.assertNotIn("data.comfyui_connected&&data.workflow_configured", check)
 
     def test_no_server_is_checked_before_reference_upload(self):
         code = JS.read_text(encoding="utf-8")

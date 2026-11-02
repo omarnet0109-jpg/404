@@ -55,6 +55,9 @@ function updateOnline(online,description){
  $("connectionLabel").textContent=engineReady?"المحرك متصل":"المحرك غير متصل";
  $("uploadButton").disabled=!engineReady;
  $("renderButton").disabled=!engineReady;
+ $("referenceFile").disabled=!engineReady;
+ $("uploadButton").title=engineReady?"رفع المرجع الأصلي إلى المحرك":"التوليد يحتاج اتصال GPU وWorkflow صالحين أولًا";
+ $("renderButton").title=engineReady?"بدء توليد لقطة حقيقية":"التوليد يحتاج اتصال GPU وWorkflow صالحين أولًا";
  $("engineStateTitle").textContent=engineReady?"المحرك متصل وجاهز لاختبار التوليد":"محرك الفيديو غير متصل حاليًا";
  $("engineStateMessage").textContent=engineReady
   ?"تقدر الآن ترفع صورة مرجعية أصلية وتجرب توليد لقطة. راجع جودة النتيجة بنفسك قبل اعتمادها."
@@ -64,7 +67,7 @@ function updateOnline(online,description){
 }
 async function checkServer(){
  $("checkButton").disabled=true;
- try{const r=await request("/api/health");const data=await r.json();const ready=!!(data.comfyui_connected&&data.workflow_configured);updateOnline(ready,ready?"خادم التوليد متصل وقالب ComfyUI جاهز. قبل اعتماد النتائج، راجع الصوت وحركة الشفايف.":"وصلنا للخادم، لكن محرك ComfyUI أو قالب الفيديو غير جاهز.");toast(ready?"تم الاتصال بمحرك التوليد":"الخادم متاح، لكن التوليد غير جاهز");return ready}
+ try{const r=await request("/api/health");const data=await r.json();const ready=!!data.video_ready;let reason="وصلنا للخادم، لكن محرك ComfyUI أو قالب الفيديو غير جاهز.";if(data.workflow_status==="missing")reason="الخادم متصل، لكن ملف Workflow بصيغة API غير موجود.";else if(data.workflow_status==="invalid")reason="الخادم متصل، لكن ملف Workflow غير صالح للتوليد.";else if(data.workflow_status==="nodes_missing")reason="الخادم متصل، لكن عقد النموذج المطلوبة غير مثبتة في ComfyUI.";else if(!data.comfyui_connected)reason="الخادم متاح، لكن ComfyUI غير متصل.";updateOnline(ready,ready?"محرك الفيديو وWorkflow والعقد المطلوبة جاهزة لاختبار لقطة حقيقية.":reason);toast(ready?"تم الاتصال بمحرك التوليد":"الخادم متاح، لكن التوليد غير جاهز");return ready}
  catch(err){updateOnline(false,"ملفات المشروع جاهزة، لكن محرك توليد الفيديو غير متصل.");toast(err.message);return false}
  finally{$("checkButton").disabled=false}
 }
@@ -76,7 +79,7 @@ async function upload(){
  const kind=$("referenceType").value;$("uploadButton").disabled=true;log("جارٍ رفع "+LABEL[kind]+"...");
  try{const body=new FormData();body.append("image",file,file.name);body.append("reference_type",kind);const res=await request("/api/assets",{method:"POST",body});const data=await res.json();refs[kind]=data.asset_id;saveJSON(KEYS.refs,refs);updateRefState();toast("تم رفع المرجع لمحرك التوليد");log("تم رفع "+LABEL[kind]+" بنجاح")}
  catch(e){log(e.message);toast("تعذر رفع الصورة المرجعية")}
- finally{$("uploadButton").disabled=false}
+ finally{$("uploadButton").disabled=!engineReady}
 }
 async function render(){
  if(!engineReady){toast("المحرك غير متصل. لا يمكن توليد فيديو حقيقي الآن");return}
@@ -90,7 +93,7 @@ async function render(){
   const response=await request("/api/render",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
   const data=await response.json();$("jobPanel").classList.remove("hidden");$("jobStatus").textContent="قيد التنفيذ";$("jobDescription").textContent="تم تسجيل اللقطة "+s.shot_id+" في قائمة ComfyUI";$("jobOutput").replaceChildren();log("تم إرسال المهمة: "+data.job_id);if(polling)clearTimeout(polling);pollJob(data.job_id);
  }catch(e){log(e.message);toast("لم تبدأ عملية توليد: "+e.message)}
- finally{$("renderButton").disabled=false}
+ finally{$("renderButton").disabled=!engineReady}
 }
 async function pollJob(jobId){
  try{const response=await request("/api/jobs/"+encodeURIComponent(jobId));const data=await response.json();$("jobStatus").textContent=data.status==="complete"?"اكتمل":data.status==="failed"?"فشل":"جارٍ التوليد";

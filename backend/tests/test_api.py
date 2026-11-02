@@ -36,6 +36,27 @@ class BridgeTests(TestCase):
                 {"{{PROMPT}}":"prompt","{{REFERENCE_IMAGE}}":"file.png"}
             )
 
+    def test_ui_workflow_export_is_not_treated_as_api_workflow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "workflow.json"
+            path.write_text('{"nodes": [{"id": 1, "type": "LoadImage"}]}', encoding="utf-8")
+            result = api.inspect_workflow_template(path)
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["status"], "invalid")
+        self.assertIn("API format", result["error"])
+
+    def test_api_workflow_requires_a_video_output_node(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "workflow.json"
+            path.write_text(
+                '{"1":{"class_type":"LoadImage","inputs":{"image":"{{REFERENCE_IMAGE}}"}},'
+                '"2":{"class_type":"CLIPTextEncode","inputs":{"text":"{{PROMPT}}"}}}',
+                encoding="utf-8",
+            )
+            result = api.inspect_workflow_template(path)
+        self.assertFalse(result["valid"])
+        self.assertIn("video output", result["error"])
+
     def test_video_result_only_accepts_real_output(self):
         entry={"outputs":{"4":{"images":[{"filename":"preview.png"}]},
                           "9":{"gifs":[{"filename":"render.mp4","type":"output"}],

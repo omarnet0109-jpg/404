@@ -116,6 +116,49 @@ def inject_workflow(workflow: dict, values: dict) -> dict:
     return replace(workflow)
 
 
+def inspect_workflow_template(path: Path | None = None) -> dict:
+    """Validate a ComfyUI API graph without enqueueing a GPU job."""
+    workflow_path = path or WORKFLOW_FILE
+    if not workflow_path.is_file():
+        return {"valid": False, "status": "missing", "error": "ComfyUI API workflow file is missing", "node_types": []}
+    try:
+        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return {"valid": False, "status": "invalid", "error": f"Workflow JSON is invalid: {exc}", "node_types": []}
+    if not isinstance(workflow, dict) or isinstance(workflow.get("nodes"), list):
+        return {
+            "valid": False, "status": "invalid",
+            "error": "Workflow must be exported in ComfyUI API format, not UI format",
+            "node_types": [],
+        }
+    nodes = list(workflow.values())
+    if not nodes or any(
+        not isinstance(node, dict)
+        or not isinstance(node.get("class_type"), str)
+        or not isinstance(node.get("inputs"), dict)
+        for node in nodes
+    ):
+        return {"valid": False, "status": "invalid", "error": "Workflow is not a ComfyUI API node graph", "node_types": []}
+    try:
+        inject_workflow(workflow, {
+            "{{PROMPT}}": "preflight prompt", "{{NEGATIVE_PROMPT}}": "preflight negative prompt",
+            "{{REFERENCE_IMAGE}}": "preflight.png", "{{SEED}}": 404,
+            "{{FRAMES}}": 24, "{{WIDTH}}": 704, "{{HEIGHT}}": 1280,
+        })
+    except ValueError as exc:
+        return {"valid": False, "status": "invalid", "error": str(exc), "node_types": []}
+    node_types = sorted({node["class_type"] for node in nodes})
+    if not any(
+        "video" in node_type.lower() and ("save" in node_type.lower() or "combine" in node_type.lower())
+        for node_type in node_types
+    ):
+        return {
+            "valid": False, "status": "invalid",
+            "error": "Workflow must contain a video output node", "node_types": node_types,
+        }
+    return {"valid": True, "status": "ready", "error": "", "node_types": node_types}
+
+
 def available_videos(history_entry: dict) -> list[dict]:
     result = []
     for output in history_entry.get("outputs", {}).values():
@@ -166,17 +209,30 @@ async def engine_modes():
 @app.get("/api/health", dependencies=[Depends(require_token)])
 async def health():
     engine = require_free_engine()
-    workflow_configured = WORKFLOW_FILE.is_file()
+    workflow = inspect_workflow_template()
     try:
         await comfy("GET", "/queue")
         connected = True
     except HTTPException:
         connected = False
+    missing_nodes: list[str] = []
+    if connected and workflow["valid"]:
+        try:
+            object_info = await comfy("GET", "/object_info")
+            available_nodes = set(object_info) if isinstance(object_info, dict) else set()
+            missing_nodes = sorted(set(workflow["node_types"]) - available_nodes)
+        except HTTPException:
+            connected = False
+    workflow_status = "nodes_missing" if missing_nodes else workflow["status"]
+    video_ready = bool(connected and workflow["valid"] and not missing_nodes)
     return {
         "name": "404 Studio", "comfyui_connected": connected,
-        "workflow_configured": workflow_configured,
-        "video_ready": bool(connected and workflow_configured),
-        "engine": {**engine.public_status(), "video_engine_ready": bool(connected and workflow_configured)},
+        "workflow_configured": workflow["valid"],
+        "workflow_status": workflow_status,
+        "workflow_error": workflow["error"],
+        "missing_nodes": missing_nodes,
+        "video_ready": video_ready,
+        "engine": {**engine.public_status(), "video_engine_ready": video_ready},
         "message": "Video is generated on the remote GPU, not on the mobile device.",
     }
 
@@ -232,8 +288,11 @@ class RenderRequest(BaseModel):
 @app.post("/api/render", dependencies=[Depends(require_token)])
 async def render(request: RenderRequest):
     require_free_engine()
-    if not WORKFLOW_FILE.is_file():
+    workflow_check = inspect_workflow_template()
+    if workflow_check["status"] == "missing":
         raise HTTPException(503, "Create a ComfyUI API workflow at COMFYUI_WORKFLOW first")
+    if not workflow_check["valid"]:
+        raise HTTPException(422, "ComfyUI video workflow template is invalid: " + workflow_check["error"])
     shot = next((s for s in scene_data()["shots"] if s["shot_id"] == request.shot_id), None)
     if shot is None:
         raise HTTPException(422, "Shot does not exist in approved episode")
