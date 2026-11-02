@@ -34,12 +34,12 @@
 </section>
 <section class="view" id="view-production" aria-labelledby="productionTitle">
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
-<div class="panel info-panel"><strong>المحرّك المجاني: ComfyUI مفتوح المصدر</strong><p>الموبايل هو لوحة التحكم؛ التوليد الفعلي يحتاج خادم GPU شغّال ومتصل بالتطبيق. لا تُنشأ ملفات فيديو وهمية عند غيابه.</p></div>
+<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">تفاصيل الاتصال بالمحرك</button></div>
 <div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
 <div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
 <div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
-<div class="upload-line"><button class="outline-btn" id="uploadButton">رفع المرجع إلى المحرك</button><span class="muted" id="referenceStatus">المرجع لم يُرفع</span></div>
-<button class="action primary full" id="renderButton">توليد اللقطة المختارة ↗</button>
+<div class="upload-line"><button class="outline-btn" id="uploadButton" disabled title="التوليد يحتاج اتصال GPU أولًا">رفع المرجع إلى المحرك</button><span class="muted" id="referenceStatus">المحرك غير متصل — الرفع متوقف</span></div>
+<button class="action primary full" id="renderButton" disabled title="أضف سيرفر GPU فعليًا لاختبار التوليد">توليد اللقطة المختارة ↗</button>
 <div id="jobPanel" class="panel job-panel hidden"><div class="section-heading"><h2>متابعة التوليد</h2><span id="jobStatus" class="status-pill">انتظار</span></div><p id="jobDescription"></p><div id="jobOutput"></div></div>
 <div id="productionLog" class="log" role="status" aria-live="polite">لا توجد مهام تشغيل حاليًا.</div>
 </section>
