@@ -1,0 +1,146 @@
+{
+  "episode": 1,
+  "scene": "episode-01-scene-001",
+  "total_seconds": 60,
+  "locale": "ar-EG",
+  "dialogue_only": [
+    {
+      "shot_id": "sh03",
+      "start": 8,
+      "end": 14,
+      "speaker": "LAYLA",
+      "voice": "layla_ar_eg",
+      "text": "أنا سألت على حي النخيل بره... كلهم قالولي مفيش حارة بالاسم ده!",
+      "emotion": "استغراب، بحث عن الحقيقة"
+    },
+    {
+      "shot_id": "sh04",
+      "start": 14,
+      "end": 18,
+      "speaker": "SABER",
+      "voice": "saber_ar_eg",
+      "text": "الخرايط مش بتعرف كل حاجة يا بنتي.",
+      "emotion": "تهكم هادئ"
+    },
+    {
+      "shot_id": "sh05",
+      "start": 18,
+      "end": 21,
+      "speaker": "LAYLA",
+      "voice": "layla_ar_eg",
+      "text": "طب وإيه حكاية الورقة دي؟",
+      "emotion": "فضول"
+    },
+    {
+      "shot_id": "sh06",
+      "start": 21,
+      "end": 28,
+      "speaker": "WIDAD",
+      "voice": "widad_ar_eg",
+      "text": "قانون الليلة... بعد الساعة 12، محدش يفتح شباك... مهما حصل.",
+      "emotion": "تحذير جاد ومتحفظ"
+    },
+    {
+      "shot_id": "sh07",
+      "start": 28,
+      "end": 32,
+      "speaker": "LAYLA",
+      "voice": "layla_ar_eg",
+      "text": "ليه؟ هو فيه إيه؟",
+      "emotion": "استغراب وقلق"
+    },
+    {
+      "shot_id": "sh08",
+      "start": 32,
+      "end": 39,
+      "speaker": "SABER",
+      "voice": "saber_ar_eg",
+      "text": "أنا بفتح شباكي من أربعين سنة! هو النهارده هيتقفل ليه؟",
+      "emotion": "سخرية وعناد"
+    },
+    {
+      "shot_id": "sh10",
+      "start": 43,
+      "end": 45,
+      "speaker": "WIDAD",
+      "voice": "widad_ar_eg",
+      "text": "يا صابر! بلاش العند ده!",
+      "emotion": "نداء قلق وعاجل"
+    },
+    {
+      "shot_id": "sh14",
+      "start": 54,
+      "end": 57,
+      "speaker": "LAYLA",
+      "voice": "layla_ar_eg",
+      "text": "هو فتح الشباك؟",
+      "emotion": "قلق"
+    },
+    {
+      "shot_id": "sh15",
+      "start": 57,
+      "end": 59,
+      "speaker": "WIDAD",
+      "voice": "widad_ar_eg",
+      "text": "إحنا اتأخرنا...",
+      "emotion": "همس مرعوب"
+    }
+  ],
+  "required_voice_profiles": {
+    "layla_ar_eg": "Female Egyptian Arabic, young adult, natural clear inquisitive speech",
+    "widad_ar_eg": "Female Egyptian Arabic, senior, low firm cautious speech",
+    "saber_ar_eg": "Male Egyptian Arabic, older, husky, naturally sarcastic speech"
+  },
+  "constraints": [
+    "One exclusive speaker per line interval.",
+    "Keep identical voice profile for each speaker throughout.",
+    "Only named character lip syncs in their shot; every other character mouth closed.",
+    "No speech outside defined line intervals; no extra narration or dialogue.",
+    "Do not add captions or translation.",
+    "Dialogue timing windows are hard sync targets; review TTS pacing manually before final render."
+  ],
+  "sfx": [
+    {
+      "time_start": 0,
+      "time_end": 8,
+      "type": "distant clock ticking and soft alley night wind",
+      "no_dialogue": true
+    },
+    {
+      "time_start": 39,
+      "time_end": 43,
+      "type": "green wooden door opens",
+      "no_dialogue": true
+    },
+    {
+      "time_start": 43,
+      "time_end": 45,
+      "type": "door closes after Saber enters",
+      "no_dialogue": false
+    },
+    {
+      "time_start": 45,
+      "time_end": 48,
+      "type": "twelve midnight clock strikes begin",
+      "no_dialogue": true
+    },
+    {
+      "time_start": 48,
+      "time_end": 52,
+      "type": "wooden first-floor window creaks open, lantern flicker, alley ambience drops out",
+      "no_dialogue": true
+    },
+    {
+      "time_start": 52,
+      "time_end": 54,
+      "type": "eerie silence",
+      "no_dialogue": true
+    },
+    {
+      "time_start": 59,
+      "time_end": 60,
+      "type": "low ominous blue-light tone then abrupt cut to silence",
+      "no_dialogue": true
+    }
+  ]
+}
