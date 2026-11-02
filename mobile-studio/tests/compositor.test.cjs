@@ -18,7 +18,7 @@ assert.match(code,/context\.createMediaStreamDestination\(\)/);
 assert.match(code,/new MediaStream\(\[\.\.\.videoStream\.getVideoTracks\(\),audioTrack\]\)/);
 assert.match(code,/canvas\.captureStream\(24\)/);
 assert.match(code,/new MediaRecorder\(combined/);
-assert.match(code,/videoVault\(\)\.saveFile\(output/);
+assert.match(code,/video\/webm;codecs=vp8,opus/);
 assert.match(code,/aSaved\.shot/);
 assert.match(code,/vSaved\.actor!==aSaved\.actor/);
 assert.match(code,/video\\/webm;codecs=vp8,opus/);
