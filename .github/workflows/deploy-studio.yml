@@ -26,6 +26,7 @@ jobs:
           node --check mobile-studio/quick-preview.js
           node --check mobile-studio/sw.js
           node --test mobile-studio/tests/free-gpu.test.cjs
+          node --test mobile-studio/tests/voice-studio.test.cjs
           python -m json.tool mobile-studio/data/scene.json > /dev/null
           python -m json.tool mobile-studio/data/characters.json > /dev/null
           python -m json.tool mobile-studio/manifest.webmanifest > /dev/null
