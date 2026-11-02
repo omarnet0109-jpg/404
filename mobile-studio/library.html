@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b101c"><title>مكتبتي الخاصة | 404 Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b101c;--panel:#182337;--text:#f5f5f1;--secondary:#a9bbd2;--gold:#e1b578;--edge:#3a4b64}*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font:500 14px/1.8 Tahoma,Arial,sans-serif;margin:0}
+main{max-width:720px;margin:auto;padding:18px 16px 65px}
+header{display:flex;justify-content:space-between;gap:14px;align-items:center}
+header a{color:var(--gold);text-decoration:none;font-size:13px}
+h1{font-size:26px;margin:16px 0 0}h2{font-size:18px;margin:0 0 8px}
+.panel{border-radius:18px;background:var(--panel);border:1px solid var(--edge);padding:16px;margin:15px 0}
+small,.muted{color:var(--secondary);font-size:12px;line-height:1.9}
+label{font-size:12px;font-weight:700;display:block;margin:10px 0 5px}
+select,input[type=file]{background:#0c1626;color:var(--text);border:1px solid var(--edge);border-radius:10px;padding:10px;min-height:45px;width:100%;font:inherit}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+button,a.btn{border:0;border-radius:10px;font:800 13px Tahoma,Arial;min-height:46px;padding:12px 15px;cursor:pointer;text-align:center;text-decoration:none;display:inline-block}
+.btn{background:var(--gold);color:#122030}.btn.alt{background:#2e415b;color:var(--text);border:1px solid #526681}
+.btn.danger{background:#633642;color:white}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.buttons>*{flex:1}button:disabled{opacity:.55;cursor:not-allowed}
+.library-item{border:1px solid var(--edge);padding:13px;border-radius:13px;margin:12px 0;background:#101a2b}
+.item-head{display:flex;justify-content:space-between;gap:9px;align-items:center;flex-wrap:wrap}
+.item-head strong{font-size:14px}.item-head small{white-space:nowrap}
+video{width:100%;max-height:480px;border-radius:10px;background:black;margin-top:10px}
+#status{font-size:12px;line-height:1.9;overflow-wrap:anywhere;color:var(--secondary)}
+#empty{text-align:center;padding:20px;color:var(--secondary)}
+.notice{border-color:#af8e5b;background:#252431}
+@media(max-width:360px){main{padding:12px 10px 60px}.panel{padding:12px}}
+</style></head><body><main>
+<header><a href="./">← الاستوديو الرئيسي</a><small>404 STUDIO · MY LIBRARY</small></header>
+<h1>🎞️ فيديوهاتي المحفوظة</h1>
+<p class="muted">هتلاقي الفيديوهات اللي خزنتها هنا حتى بعد ما تخرج وترجع، على <b>نفس الموبايل والمتصفح</b>. كل فيديو محفوظ كملف فعلي، مش مجرد رابط مؤقت.</p>
+<div class="panel notice">
+<strong>🔐 خصوصية مكتبتك</strong>
+<p class="muted">الفيديوهات محفوظة على الجهاز فقط، ومش منشورة في GitHub. لكن <b>رابط تطبيق GitHub Pages نفسه ما زال عامًا</b>، والمكتبة مش قفل حساب أو تسجيل دخول. لو حد استخدم نفس الموبايل ومتصفحك ممكن يشوف الملفات. احتفظ بنسخة احتياطية لأن حذف بيانات المتصفح أو مشاكل المساحة ممكن تمسحها.</p>
+<button class="btn alt" type="button" id="persist">طلب الاحتفاظ بالتخزين على الموبايل</button>
+<p id="capacity" class="muted"></p>
+</div>
+<section class="panel">
+<h2>أضف فيديو عندك</h2>
+<p class="muted">لو عندك فيديو اتولد قبل التحديث، اختاره مرة واحدة من «التنزيلات» وهيتحفظ في المكتبة. ولو الفيديو اتولد من مولّد 404 الجديد، التطبيق هيحاول يحفظه تلقائيًا.</p>
+<label for="importVideo">اختار الفيديو (MP4 / WebM / MOV)</label>
+<input type="file" id="importVideo" accept="video/mp4,video/webm,video/quicktime,video/x-matroska,.mp4,.webm,.mov,.mkv">
+<div class="grid">
+<div><label for="importActor">الشخصية</label><select id="importActor"><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option><option value="ensemble">الحارة</option></select></div>
+<div><label for="importShot">رقم اللقطة</label><select id="importShot"></select></div>
+</div>
+<div class="buttons"><button class="btn" type="button" id="saveImport">حفظ الفيديو في مكتبتي</button><a class="btn alt" href="./free-gpu.html">🎬 توليد لقطة جديدة</a></div>
+<p id="status" role="status" aria-live="polite"></p>
+</section>
+<section class="panel">
+<div class="item-head"><h2>الفيديوهات المحفوظة</h2><span id="count" class="muted">0</span></div>
+<div id="items"></div><p id="empty" hidden>مفيش فيديو محفوظ لسه. ولّد لقطة واحفظها، أو اختار فيديو من التنزيلات.</p>
+</section>
+<script defer src="./media-vault.js?v=1"></script>
+<script defer src="./library.js?v=1"></script>
+</main></body></html>
