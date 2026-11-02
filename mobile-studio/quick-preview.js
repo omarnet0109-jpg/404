@@ -53,7 +53,7 @@ function background(shot,sec){
  ctx.fillText("لقطة "+shot.shot_id.toUpperCase()+"  |  "+(shot.speaker?names[shot.speaker]:"بدون حوار"),180,62);
  const speech=shot.dialogue_ar?.trim();
  if(speech){
-  const words=speech.split(/\\s+/),lines=[];let current="";
+  const words=speech.split(/\s+/),lines=[];let current="";
   ctx.font="bold 13px Tahoma,Arial";
   for(const word of words){
    const proposed=current?current+" "+word:word;
