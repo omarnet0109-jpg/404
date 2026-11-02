@@ -92,9 +92,11 @@ class HTTPAcceptanceTests(TestCase):
                 json.dumps({"1": {"inputs": {"text": "{{PROMPT}}", "reference": "{{REFERENCE_IMAGE}}"}}}),
                 encoding="utf-8"
             )
-            with patch.object(api, "WORKFLOW_FILE", workflow), \\
-                 patch.object(api, "DB_FILE", root / "test.db"), \\
-                 patch.object(api, "MAX_JOBS_PER_DAY", 1):
+            with (
+                patch.object(api, "WORKFLOW_FILE", workflow),
+                patch.object(api, "DB_FILE", root / "test.db"),
+                patch.object(api, "MAX_JOBS_PER_DAY", 1),
+            ):
                 with api.open_db() as db:
                     db.execute("INSERT INTO assets VALUES (?,?,?)", ("test-original", "ref.png", "LAYLA"))
                     db.execute(
