@@ -72,7 +72,7 @@ class HTTPAcceptanceTests(TestCase):
 
     def test_modified_character_photo_is_rejected(self):
         # Looks like a PNG but is NOT the exact original reference provided by the creator.
-        data = b"\\x89PNG\\r\\n\\x1a\\nreplaced portrait"
+        data = bytes.fromhex("89504e470d0a1a0a") + b"replaced portrait"
         result = self.client.post("/api/assets", headers=self.headers, files={
             "image": ("layla.png", data, "image/png"),
         }, data={"reference_type": "LAYLA"})
