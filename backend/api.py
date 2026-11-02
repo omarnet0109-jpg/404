@@ -9,6 +9,7 @@ file proxy. Do not expose ComfyUI port 8188 to the open internet.
 """
 from __future__ import annotations
 
+import hashlib
 import hmac
 import json
 import os
@@ -29,6 +30,7 @@ DB_FILE = Path(os.environ.get("STUDIO_DB_FILE", str(BASE / "backend" / "data" / 
 COMFY_URL = os.environ.get("COMFYUI_URL", "http://127.0.0.1:8188").rstrip("/")
 WORKFLOW_FILE = Path(os.environ.get("COMFYUI_WORKFLOW", str(BASE / "backend" / "workflows" / "video_api.json")))
 API_TOKEN = os.environ.get("APP_API_TOKEN", "")
+MAX_JOBS_PER_DAY = max(1, int(os.environ.get("STUDIO_DAILY_JOB_LIMIT", "12")))
 ORIGINS = [
     x.strip() for x in os.environ.get(
         "APP_ALLOWED_ORIGINS",
@@ -73,6 +75,15 @@ def require_token(authorization: str | None = Header(None)):
         authorization[7:], API_TOKEN
     ):
         raise HTTPException(401, "Invalid studio access token")
+
+
+def approved_reference_hashes() -> dict[str, str]:
+    """Only the four creator-approved original PNGs may become cast assets."""
+    bible = json.loads((BASE / "characters" / "character_bible.json").read_text(encoding="utf-8"))
+    approved = {record["id"]: record["sha256"] for record in bible["reference_images"]}
+    if set(approved) != {"ensemble", "LAYLA", "WIDAD", "SABER"}:
+        raise ValueError("Unexpected characters in approved reference bible")
+    return approved
 
 
 def scene_data() -> dict:
@@ -167,6 +178,9 @@ async def upload_image(image: UploadFile = File(...), reference_type: str = Form
         raise HTTPException(413, "Image must be non-empty and no larger than 15 MB")
     if not IMAGE_SIGNATURES[ext](body):
         raise HTTPException(415, "Image contents do not match its file extension")
+    approved_digest = approved_reference_hashes()[reference_type]
+    if not hmac.compare_digest(hashlib.sha256(body).hexdigest(), approved_digest):
+        raise HTTPException(422, "Reference image differs from the locked creator-approved original")
     safe_name = f"studio404_{uuid.uuid4().hex}{ext}"
     try:
         async with httpx.AsyncClient(timeout=90) as client:
@@ -207,7 +221,7 @@ async def render(request: RenderRequest):
         raise HTTPException(422, "Shot does not exist in approved episode")
     with open_db() as con:
         asset = con.execute("SELECT * FROM assets WHERE id=?", (request.reference_asset_id,)).fetchone()
-        active = con.execute("SELECT COUNT(*) FROM jobs").fetchone()[0]
+        today = con.execute("SELECT COUNT(*) FROM jobs WHERE created >= datetime(\'now\',\'-1 day\')").fetchone()[0]
     if asset is None:
         raise HTTPException(404, "Reference image must be uploaded to this backend")
     expected = shot.get("speaker") or "ensemble"
@@ -215,8 +229,8 @@ async def render(request: RenderRequest):
         raise HTTPException(422, "Reference image does not match the scene speaker")
     if request.frames != round(float(shot["duration_seconds"]) * 24):
         raise HTTPException(422, "Frames must match the approved shot duration at 24 fps")
-    if active >= 2000:
-        raise HTTPException(429, "Job history is full; archive previous jobs")
+    if today >= MAX_JOBS_PER_DAY:
+        raise HTTPException(429, "Daily GPU generation limit reached; review usage before running more jobs")
     try:
         raw = json.loads(WORKFLOW_FILE.read_text(encoding="utf-8"))
         workflow = inject_workflow(raw, {
