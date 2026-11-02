@@ -18,6 +18,7 @@
 <div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
 <div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
 <div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><a class="action secondary" href="./quick-preview.html" style="text-decoration:none">▶ معاينة سريعة <span>↗</span></a></div>
+<div class="panel tip" id="savedVideosLaunch" style="margin-top:15px"><strong>🎞️ مكتبتي الخاصة — فيديوهاتي محفوظة</strong><p>الفيديوهات اللي تولّدها تتخزن فعليًا على نفس الموبايل والمتصفح، وتقدر ترجع تشوفها وتنزّل نسخة احتياطية. ده حفظ محلي مش قفل دخول للموقع العام.</p><a href="./library.html" class="action primary full" style="text-decoration:none">فتح فيديوهاتي المحفوظة ↗</a></div>
 <div class="panel tip" id="voiceStudioLaunch" style="margin-top:15px"><strong>🎙️ أصوات ليلى ووداد وصابر بالمصري</strong><p>اتفتح استوديو صوت مستقل لتجربة الجمل التسعة واختيار صوت لكل شخصية، مع تثبيت مرجع صوت مرخّص للمسلسل كله. الأصوات الجاهزة للتجربة فقط.</p><a href="./voice-studio.html" class="action primary full" style="text-decoration:none">فتح استوديو الأصوات المصرية ↗</a></div>
 <div class="panel tip" id="freeExternalGpu" style="margin-top:15px"><strong>🎬 جرّب GPU مجانية حقيقية من الموبايل</strong><p>ربطنا صفحة مستقلة بنموذج Wan 2.2 14B Fast على Hugging Face ZeroGPU. الخدمة مشتركة ومحدودة يوميًا، والتوليد يبدأ فقط بعد اختيار صورتك وموافقتك على إرسالها للخدمة الخارجية.</p><a href="./free-gpu.html" class="action primary full" style="text-decoration:none">فتح مولّد الفيديو المجاني ↗</a></div>
 <div class="panel tip" style="margin-top:15px"><strong>معاينة الحلقة بدون تهنيج</strong><p>اضغط «معاينة سريعة» علشان تشوف ترتيب الـ16 لقطة والحوار فورًا من الموبايل، من غير Colab ولا GPU. دي معاينة مرسومة للتوقيت، مش توليد فيديو بالذكاء الاصطناعي.</p></div>
@@ -39,6 +40,7 @@
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
 <div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
 <div class="panel tip" id="freeGpuLab">
+<a class="action secondary full" href="./library.html" style="text-decoration:none">🎞️ عرض الفيديوهات اللي عملتها قبل كده ↗</a>
 <a class="action primary full" href="./free-gpu.html" style="text-decoration:none">🎬 توليد لقطة حقيقية على GPU مجانية عامة ↗</a>
 <p>خدمة خارجية مستقلة عن سيرفر ComfyUI الخاص. عدد الطلبات المجانية محدود، ولا يلزم تشغيل Colab أو إدخال رابط سيرفر.</p>
 <h3>اشتغل بسرعة من الموبايل — من غير Colab</h3>
