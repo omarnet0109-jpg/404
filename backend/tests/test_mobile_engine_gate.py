@@ -19,7 +19,8 @@ class MobileEngineGateTests(TestCase):
         html = HTML.read_text(encoding="utf-8")
         self.assertIn('id="renderButton" disabled', html)
         self.assertIn('id="uploadButton" disabled', html)
-        self.assertIn("محرك الفيديو غير متصل حاليًا", html)
+        self.assertIn("ComfyUI الخاص غير متصل", html)
+        self.assertIn("توليد لقطة حقيقية على GPU مجانية عامة", html)
 
     def test_online_state_controls_both_actions(self):
         code = JS.read_text(encoding="utf-8")
