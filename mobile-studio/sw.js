@@ -3,7 +3,7 @@ const CACHE = "404-studio-v13";
 const CORE = [
   "./","./index.html","./app.css","./app.js","./icon.svg",
   "./manifest.webmanifest","./data/scene.json","./data/characters.json",
-  "./data/dialogue.json","./quick-preview.html","./quick-preview.js","./free-gpu.html","./free-gpu.js","./voice-studio.html","./voice-studio.js","./voice-studio.html","./voice-studio.js"
+  "./data/dialogue.json","./quick-preview.html","./quick-preview.js","./free-gpu.html","./free-gpu.js","./voice-studio.html","./voice-studio.js"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE)
