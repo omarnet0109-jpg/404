@@ -70,6 +70,45 @@ class HTTPAcceptanceTests(TestCase):
         })
         self.assertEqual(res.status_code, 422)
 
+    def test_modified_character_photo_is_rejected(self):
+        # Looks like a PNG but is NOT the exact original reference provided by the creator.
+        data = b"\\x89PNG\\r\\n\\x1a\\nreplaced portrait"
+        result = self.client.post("/api/assets", headers=self.headers, files={
+            "image": ("layla.png", data, "image/png"),
+        }, data={"reference_type": "LAYLA"})
+        self.assertEqual(result.status_code, 422)
+        self.assertIn("locked creator", result.json()["detail"])
+
+    def test_reference_hashes_are_locked_to_only_three_characters_and_set(self):
+        approved = api.approved_reference_hashes()
+        self.assertEqual(set(approved), {"ensemble", "LAYLA", "WIDAD", "SABER"})
+        self.assertTrue(all(len(x) == 64 for x in approved.values()))
+
+    def test_daily_gpu_job_budget_blocks_more_requests(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            workflow = root / "video_api.json"
+            workflow.write_text(
+                json.dumps({"1": {"inputs": {"text": "{{PROMPT}}", "reference": "{{REFERENCE_IMAGE}}"}}}),
+                encoding="utf-8"
+            )
+            with patch.object(api, "WORKFLOW_FILE", workflow), \\
+                 patch.object(api, "DB_FILE", root / "test.db"), \\
+                 patch.object(api, "MAX_JOBS_PER_DAY", 1):
+                with api.open_db() as db:
+                    db.execute("INSERT INTO assets VALUES (?,?,?)", ("test-original", "ref.png", "LAYLA"))
+                    db.execute(
+                        "INSERT INTO jobs (id,prompt_id,shot_id) VALUES (?,?,?)",
+                        ("existing", "00000000-0000-0000-0000-000000000001", "sh03")
+                    )
+                    db.commit()
+                result = self.client.post("/api/render", headers=self.headers, json={
+                    "shot_id": "sh03", "prompt": "A cinematic close up on Layla.",
+                    "frames": 144, "seed": 40403, "reference_asset_id": "test-original",
+                })
+                self.assertEqual(result.status_code, 429)
+                self.assertIn("Daily GPU", result.json()["detail"])
+
     def test_bad_job_ids_are_rejected(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(api, "DB_FILE", Path(folder) / "test.db"):
             result = self.client.get("/api/jobs/not-a-guid", headers=self.headers)
