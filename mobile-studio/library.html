@@ -52,6 +52,20 @@ video{width:100%;max-height:480px;border-radius:10px;background:black;margin-top
 <div class="item-head"><h2>الفيديوهات المحفوظة</h2><span id="count" class="muted">0</span></div>
 <div id="items"></div><p id="empty" hidden>مفيش فيديو محفوظ لسه. ولّد لقطة واحفظها، أو اختار فيديو من التنزيلات.</p>
 </section>
+<section class="panel">
+<h2>🎙️ صوت الشخصية لنفس اللقطة</h2>
+<p class="muted">احفظ جملة الشخصية الأصلية اللي طلّعتها من استوديو الصوت هنا، وهي هتفضل موجودة لما ترجع. الأصوات التجريبية ليست مرخّصة للنشر التجاري.</p>
+<label for="importAudio">ملف الصوت (WAV / MP3 / WebM)</label>
+<input id="importAudio" type="file" accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,audio/ogg,audio/webm,audio/mp4,.wav,.mp3,.ogg,.webm,.m4a">
+<div class="grid">
+<div><label for="audioActor">الشخصية</label><select id="audioActor"><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div>
+<div><label for="audioShot">اللقطة</label><select id="audioShot"></select></div>
+</div>
+<div class="buttons"><button id="saveAudio" type="button" class="btn">حفظ صوت الشخصية</button><a class="btn alt" href="./voice-studio.html">توليد صوت مصري</a></div>
+<div id="audios"></div>
+</section>
+<p class="muted">معاينة الفيديو والصوت في المكتبة ليست ملفًا نهائيًا مدمجًا ولا مزامنة شفايف. إنتاج ملف نهائي بالصوت يحتاج تركيبًا ومراجعة مدة الحوار.</p>
 <script defer src="./media-vault.js?v=1"></script>
-<script defer src="./library.js?v=1"></script>
+<script defer src="./voice-audio-vault.js?v=1"></script>
+<script defer src="./library.js?v=2"></script>
 </main></body></html>
