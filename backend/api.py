@@ -120,16 +120,16 @@ def inspect_workflow_template(path: Path | None = None) -> dict:
     """Validate a ComfyUI API graph without enqueueing a GPU job."""
     workflow_path = path or WORKFLOW_FILE
     if not workflow_path.is_file():
-        return {"valid": False, "status": "missing", "error": "ComfyUI API workflow file is missing", "node_types": []}
+        return {"valid": False, "status": "missing", "error": "ComfyUI API workflow file is missing", "node_types": [], "model_requirements": []}
     try:
         workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        return {"valid": False, "status": "invalid", "error": f"Workflow JSON is invalid: {exc}", "node_types": []}
+        return {"valid": False, "status": "invalid", "error": f"Workflow JSON is invalid: {exc}", "node_types": [], "model_requirements": []}
     if not isinstance(workflow, dict) or isinstance(workflow.get("nodes"), list):
         return {
             "valid": False, "status": "invalid",
             "error": "Workflow must be exported in ComfyUI API format, not UI format",
-            "node_types": [],
+            "node_types": [], "model_requirements": [],
         }
     nodes = list(workflow.values())
     if not nodes or any(
@@ -138,7 +138,7 @@ def inspect_workflow_template(path: Path | None = None) -> dict:
         or not isinstance(node.get("inputs"), dict)
         for node in nodes
     ):
-        return {"valid": False, "status": "invalid", "error": "Workflow is not a ComfyUI API node graph", "node_types": []}
+        return {"valid": False, "status": "invalid", "error": "Workflow is not a ComfyUI API node graph", "node_types": [], "model_requirements": []}
     try:
         inject_workflow(workflow, {
             "{{PROMPT}}": "preflight prompt", "{{NEGATIVE_PROMPT}}": "preflight negative prompt",
@@ -146,8 +146,14 @@ def inspect_workflow_template(path: Path | None = None) -> dict:
             "{{FRAMES}}": 24, "{{WIDTH}}": 704, "{{HEIGHT}}": 1280,
         })
     except ValueError as exc:
-        return {"valid": False, "status": "invalid", "error": str(exc), "node_types": []}
+        return {"valid": False, "status": "invalid", "error": str(exc), "node_types": [], "model_requirements": []}
     node_types = sorted({node["class_type"] for node in nodes})
+    model_keys = {"unet_name", "clip_name", "vae_name", "lora_name", "control_net_name", "checkpoint_name", "ckpt_name"}
+    model_requirements = [
+        {"class_type": node["class_type"], "input": key, "filename": value}
+        for node in nodes for key, value in node["inputs"].items()
+        if key in model_keys and isinstance(value, str)
+    ]
     if not any(
         "video" in node_type.lower() and ("save" in node_type.lower() or "combine" in node_type.lower())
         for node_type in node_types
@@ -155,8 +161,25 @@ def inspect_workflow_template(path: Path | None = None) -> dict:
         return {
             "valid": False, "status": "invalid",
             "error": "Workflow must contain a video output node", "node_types": node_types,
+            "model_requirements": model_requirements,
         }
-    return {"valid": True, "status": "ready", "error": "", "node_types": node_types}
+    return {
+        "valid": True, "status": "ready", "error": "", "node_types": node_types,
+        "model_requirements": model_requirements,
+    }
+
+
+def missing_workflow_models(workflow: dict, object_info: dict) -> list[str]:
+    """Compare filenames in loader nodes with ComfyUI's live model lists."""
+    missing = []
+    for requirement in workflow["model_requirements"]:
+        node = object_info.get(requirement["class_type"], {})
+        inputs = node.get("input", {}).get("required", {}) if isinstance(node, dict) else {}
+        definition = inputs.get(requirement["input"])
+        choices = definition[0] if isinstance(definition, list) and definition else None
+        if isinstance(choices, list) and requirement["filename"] not in choices:
+            missing.append(requirement["filename"])
+    return sorted(set(missing))
 
 
 def available_videos(history_entry: dict) -> list[dict]:
@@ -216,21 +239,25 @@ async def health():
     except HTTPException:
         connected = False
     missing_nodes: list[str] = []
+    missing_models: list[str] = []
     if connected and workflow["valid"]:
         try:
             object_info = await comfy("GET", "/object_info")
             available_nodes = set(object_info) if isinstance(object_info, dict) else set()
             missing_nodes = sorted(set(workflow["node_types"]) - available_nodes)
+            if not missing_nodes:
+                missing_models = missing_workflow_models(workflow, object_info)
         except HTTPException:
             connected = False
-    workflow_status = "nodes_missing" if missing_nodes else workflow["status"]
-    video_ready = bool(connected and workflow["valid"] and not missing_nodes)
+    workflow_status = "nodes_missing" if missing_nodes else "models_missing" if missing_models else workflow["status"]
+    video_ready = bool(connected and workflow["valid"] and not missing_nodes and not missing_models)
     return {
         "name": "404 Studio", "comfyui_connected": connected,
         "workflow_configured": workflow["valid"],
         "workflow_status": workflow_status,
         "workflow_error": workflow["error"],
         "missing_nodes": missing_nodes,
+        "missing_models": missing_models,
         "video_ready": video_ready,
         "engine": {**engine.public_status(), "video_engine_ready": video_ready},
         "message": "Video is generated on the remote GPU, not on the mobile device.",

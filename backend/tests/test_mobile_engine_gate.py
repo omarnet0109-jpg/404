@@ -34,6 +34,14 @@ class MobileEngineGateTests(TestCase):
         self.assertIn("data.video_ready", check)
         self.assertNotIn("data.comfyui_connected&&data.workflow_configured", check)
 
+    def test_settings_status_updates_with_the_live_engine_state(self):
+        html = HTML.read_text(encoding="utf-8")
+        code = JS.read_text(encoding="utf-8")
+        self.assertIn('id="simpleEngineTitle"', html)
+        self.assertIn('id="simpleEngineMessage"', html)
+        self.assertIn('$("simpleEngineTitle").textContent=', code)
+        self.assertIn('$("simpleEngineMessage").textContent=', code)
+
     def test_no_server_is_checked_before_reference_upload(self):
         code = JS.read_text(encoding="utf-8")
         render = code.split("async function render(){", 1)[1].split("async function pollJob", 1)[0]

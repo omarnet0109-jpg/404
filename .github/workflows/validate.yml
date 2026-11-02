@@ -13,8 +13,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install backend test dependencies
+        run: python -m pip install -r backend/requirements.txt
       - name: Run offline tests
-        run: python -m unittest discover -s tests -v
+        run: |
+          python -m unittest discover -s tests -v
+          python -m unittest discover -s backend/tests -v
+      - name: Validate PWA and bundled workflow
+        run: |
+          node --check mobile-studio/app.js
+          node --check mobile-studio/sw.js
+          python -m json.tool mobile-studio/manifest.webmanifest > /dev/null
+          python -m json.tool backend/workflows/wan22_ti2v_5b_api.json > /dev/null
       - name: Validate episode 1 exact timing, speaker locks and references
         run: python production/check_episode.py
       - name: Validate approved scene files

@@ -17,7 +17,7 @@
 <div class="metrics"><div class="metric"><strong>16</strong><span>لقطة</span></div><div class="metric"><strong>09</strong><span>جُمل حوار</span></div><div class="metric"><strong>03</strong><span>شخصيات ثابتة</span></div></div>
 <div class="section-heading"><h2>حالة الإنتاج</h2><span class="small muted">نسخة تجريبية قابلة للتطوير</span></div>
 <div class="panel status-panel"><div class="status-icon">▦</div><div><h3>السيناريو جاهز للإنتاج</h3><p id="productionState">ملفات الحلقة والشخصيات جاهزة. الفيديو الحقيقي يحتاج اتصال محرك GPU.</p></div></div>
-<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><button class="action secondary" data-open="production">إنتاج لقطة <span>↗</span></button></div>
+<div class="quick-actions"><button class="action primary" data-open="shots">إدارة المشاهد <span>←</span></button><button class="action secondary" data-open="production">حالة محرك الفيديو <span>↗</span></button></div>
 <div class="section-heading"><h2>خط الإنتاج</h2></div>
 <div class="pipeline"><div><b class="on">01</b><span>السيناريو</span></div><i></i><div><b class="on">02</b><span>المراجع</span></div><i></i><div><b>03</b><span>التوليد</span></div><i></i><div><b>04</b><span>المراجعة</span></div></div>
 </section>
@@ -34,7 +34,7 @@
 </section>
 <section class="view" id="view-production" aria-labelledby="productionTitle">
 <div class="page-head"><div><span class="eyebrow">AI VIDEO LAB</span><h1 id="productionTitle">غرفة الإنتاج</h1></div></div>
-<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">تفاصيل الاتصال بالمحرك</button></div>
+<div class="panel info-panel" id="engineBanner" role="status" aria-live="polite"><strong id="engineStateTitle">محرك الفيديو غير متصل حاليًا</strong><p id="engineStateMessage">اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.</p><button class="outline-btn" type="button" data-open="settings" id="engineSettingsButton">لماذا التوليد متوقف؟</button></div>
 <div class="field"><label for="renderShot">اختر اللقطة</label><select id="renderShot"></select></div>
 <div class="field"><label for="renderPrompt">وصف اللقطة للمحرك</label><textarea id="renderPrompt" rows="5" maxlength="5000" placeholder="وصف الحركة والإضاءة والكاميرا"></textarea></div>
 <div class="two-col"><div class="field"><label for="referenceType">مرجع الصورة</label><select id="referenceType"><option value="ensemble">الحارة والمجموعة</option><option value="LAYLA">ليلى</option><option value="WIDAD">وداد</option><option value="SABER">صابر</option></select></div><div class="field"><label for="referenceFile">رفع صورة مرجعية</label><input id="referenceFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
@@ -47,8 +47,8 @@
 <div class="page-head"><div><span class="eyebrow">ENGINE SETTINGS</span><h1 id="settingsTitle">الإعدادات</h1></div></div>
 <div class="panel tip"><h3>الخطة: مجانية الآن، مدفوعة مستقبلًا</h3><p>لم يتم ربط أي مزود مدفوع أو تفعيل دفع آلي. عندما نقرر الترقية، سنضيف مزودًا جديدًا خلف الخادم، مع حد تكلفة وموافقة صريحة. سيرفر GPU نفسه قد تكون له تكلفة حتى مع الأدوات المفتوحة المصدر.</p></div>
 <div class="panel info-panel" id="simpleEngineStatus">
-  <h3>حالة توليد الفيديو: غير متصل</h3>
-  <p>دي مش بيانات ناقصة منك. لسه ما فيش سيرفر GPU مجاني متصل بالمشروع، ومش مطلوب منك تكتب عنوان أو مفتاح أو تدفع حاجة. حاليًا تقدر تراجع المشاهد وتعدّل أوصافها وتصدّر المشروع.</p>
+  <h3 id="simpleEngineTitle">حالة توليد الفيديو: غير متصل</h3>
+  <p id="simpleEngineMessage">دي مش بيانات ناقصة منك. لسه ما فيش سيرفر GPU مجاني متصل بالمشروع، ومش مطلوب منك تكتب عنوان أو مفتاح أو تدفع حاجة. حاليًا تقدر تراجع المشاهد وتعدّل أوصافها وتصدّر المشروع.</p>
   <button type="button" class="action primary full" data-open="shots">فتح المشاهد الجاهزة ←</button>
 </div>
 <details class="panel" id="advancedServerSetup"><summary style="cursor:pointer;font-weight:800">إعدادات المحرك المتقدمة (للمطورين فقط)</summary>
@@ -61,7 +61,7 @@
 <div class="panel danger-zone"><h3>بيانات المسودات</h3><p class="muted">التحرير المحلي محفوظ على جهازك فقط. يمكن تصديره قبل تنظيف المتصفح.</p><button class="outline-btn" id="resetDrafts">حذف تعديلاتي المحلية</button></div>
 </section>
 </main>
-<nav class="bottom-nav" aria-label="القائمة الرئيسية"><button class="tab active" data-target="home"><span>⌂</span>الرئيسية</button><button class="tab" data-target="shots"><span>▤</span>المشاهد</button><button class="tab" data-target="cast"><span>♙</span>الشخصيات</button><button class="tab" data-target="production"><span>◉</span>الإنتاج</button><button class="tab" data-target="settings"><span>⚙</span>الإعدادات</button></nav>
+<nav class="bottom-nav" aria-label="القائمة الرئيسية"><button class="tab active" data-target="home"><span>⌂</span>الرئيسية</button><button class="tab" data-target="shots"><span>▤</span>المشاهد</button><button class="tab" data-target="cast"><span>♙</span>الشخصيات</button><button class="tab" data-target="production"><span>◉</span>المحرك</button><button class="tab" data-target="settings"><span>⚙</span>الإعدادات</button></nav>
 </div>
 <dialog id="editDialog"><form method="dialog" class="dialog-body"><div class="section-heading"><h2 id="editDialogTitle">تعديل اللقطة</h2><button class="icon-button" value="cancel" aria-label="إغلاق">✕</button></div><label for="editPrompt">وصف الحركة</label><textarea id="editPrompt" rows="8" maxlength="5000"></textarea><p class="muted small">المسودة تظل في متصفحك إلى أن تصدرها وتقرر اعتمادها.</p><div class="form-actions"><button class="action primary" id="confirmEdit" value="save">حفظ المسودة</button><button class="action secondary" value="cancel">إلغاء</button></div></form></dialog>
 <div id="toast" role="status" aria-live="polite"></div>

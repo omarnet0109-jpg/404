@@ -62,12 +62,14 @@ function updateOnline(online,description){
  $("engineStateMessage").textContent=engineReady
   ?"تقدر الآن ترفع صورة مرجعية أصلية وتجرب توليد لقطة. راجع جودة النتيجة بنفسك قبل اعتمادها."
   :"اختيار صورة من الموبايل لا يولّد فيديو. ما فيش خادم GPU متصل لحد دلوقتي؛ مش مطلوب منك ترفع صورة أو تدفع اشتراك الآن. تجهيز محرّك ComfyUI المجاني يتطلب معالجة GPU منفصلة.";
+ $("simpleEngineTitle").textContent=engineReady?"حالة توليد الفيديو: جاهز للاختبار":"حالة توليد الفيديو: غير متصل";
+ $("simpleEngineMessage").textContent=engineReady?"تم التحقق من ComfyUI وWorkflow والعقد وملفات النموذج. النتيجة تظل لقطة اختبار حتى تراجع الهوية والصوت والشفايف.":"دي مش بيانات ناقصة منك. لسه ما فيش سيرفر GPU مجاني جاهز للمشروع، ومش مطلوب منك تكتب عنوان أو مفتاح أو تدفع حاجة.";
  if(description)$("productionState").textContent=description;
  updateRefState();
 }
 async function checkServer(){
  $("checkButton").disabled=true;
- try{const r=await request("/api/health");const data=await r.json();const ready=!!data.video_ready;let reason="وصلنا للخادم، لكن محرك ComfyUI أو قالب الفيديو غير جاهز.";if(data.workflow_status==="missing")reason="الخادم متصل، لكن ملف Workflow بصيغة API غير موجود.";else if(data.workflow_status==="invalid")reason="الخادم متصل، لكن ملف Workflow غير صالح للتوليد.";else if(data.workflow_status==="nodes_missing")reason="الخادم متصل، لكن عقد النموذج المطلوبة غير مثبتة في ComfyUI.";else if(!data.comfyui_connected)reason="الخادم متاح، لكن ComfyUI غير متصل.";updateOnline(ready,ready?"محرك الفيديو وWorkflow والعقد المطلوبة جاهزة لاختبار لقطة حقيقية.":reason);toast(ready?"تم الاتصال بمحرك التوليد":"الخادم متاح، لكن التوليد غير جاهز");return ready}
+ try{const r=await request("/api/health");const data=await r.json();const ready=!!data.video_ready;let reason="وصلنا للخادم، لكن محرك ComfyUI أو قالب الفيديو غير جاهز.";if(data.workflow_status==="missing")reason="الخادم متصل، لكن ملف Workflow بصيغة API غير موجود.";else if(data.workflow_status==="invalid")reason="الخادم متصل، لكن ملف Workflow غير صالح للتوليد.";else if(data.workflow_status==="nodes_missing")reason="الخادم متصل، لكن عقد النموذج المطلوبة غير مثبتة في ComfyUI.";else if(data.workflow_status==="models_missing")reason="الخادم متصل، لكن ملفات نموذج الفيديو المطلوبة غير موجودة.";else if(!data.comfyui_connected)reason="الخادم متاح، لكن ComfyUI غير متصل.";updateOnline(ready,ready?"محرك الفيديو وWorkflow والعقد وملفات النموذج جاهزة لاختبار لقطة حقيقية.":reason);toast(ready?"تم الاتصال بمحرك التوليد":"الخادم متاح، لكن التوليد غير جاهز");return ready}
  catch(err){updateOnline(false,"ملفات المشروع جاهزة، لكن محرك توليد الفيديو غير متصل.");toast(err.message);return false}
  finally{$("checkButton").disabled=false}
 }

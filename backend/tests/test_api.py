@@ -57,6 +57,13 @@ class BridgeTests(TestCase):
         self.assertFalse(result["valid"])
         self.assertIn("video output", result["error"])
 
+    def test_bundled_wan_workflow_is_api_ready(self):
+        path = api.BASE / "backend" / "workflows" / "wan22_ti2v_5b_api.json"
+        result = api.inspect_workflow_template(path)
+        self.assertTrue(result["valid"], result["error"])
+        self.assertIn("Wan22ImageToVideoLatent", result["node_types"])
+        self.assertIn("SaveVideo", result["node_types"])
+
     def test_video_result_only_accepts_real_output(self):
         entry={"outputs":{"4":{"images":[{"filename":"preview.png"}]},
                           "9":{"gifs":[{"filename":"render.mp4","type":"output"}],

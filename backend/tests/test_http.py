@@ -61,6 +61,34 @@ class HTTPAcceptanceTests(TestCase):
         self.assertEqual(body["workflow_status"], "nodes_missing")
         self.assertEqual(body["missing_nodes"], ["CLIPTextEncode", "SaveVideo"])
 
+    def test_health_requires_workflow_model_files_installed(self):
+        async def comfy_status(method, route, **kwargs):
+            if route == "/queue":
+                return {}
+            if route == "/object_info":
+                return {
+                    "UNETLoader": {"input": {"required": {"unet_name": [["another-model.safetensors"]]}}},
+                    "LoadImage": {"input": {"required": {}}},
+                    "CLIPTextEncode": {"input": {"required": {}}},
+                    "SaveVideo": {"input": {"required": {}}},
+                }
+            raise AssertionError(route)
+
+        with tempfile.TemporaryDirectory() as folder:
+            workflow = Path(folder) / "video_api.json"
+            workflow.write_text(json.dumps({
+                "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "wan.safetensors"}},
+                "2": {"class_type": "LoadImage", "inputs": {"image": "{{REFERENCE_IMAGE}}"}},
+                "3": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+                "4": {"class_type": "SaveVideo", "inputs": {"video": ["3", 0]}},
+            }), encoding="utf-8")
+            with patch.object(api, "WORKFLOW_FILE", workflow), patch.object(api, "comfy", side_effect=comfy_status):
+                result = self.client.get("/api/health", headers=self.headers)
+        body = result.json()
+        self.assertFalse(body["video_ready"])
+        self.assertEqual(body["workflow_status"], "models_missing")
+        self.assertEqual(body["missing_models"], ["wan.safetensors"])
+
     def test_render_refuses_missing_workflow(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "missing.json"
