@@ -17,7 +17,7 @@ class MobilePerformanceTests(TestCase):
 
     def test_cached_static_loads_without_waiting_for_network(self):
         sw = (PWA/"sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE = "404-studio-v10"',sw)
+        self.assertIn('const CACHE = "404-studio-v11"',sw)
         self.assertIn("caches.match(event.request)",sw)
         self.assertIn("if (cached)",sw)
         self.assertIn("return cached",sw)
