@@ -52,7 +52,7 @@ function log(s){$("productionLog").textContent=s}
 function updateOnline(online,description){
  engineReady=Boolean(online);
  $("stateDot").classList.toggle("online",engineReady);
- $("connectionLabel").textContent=engineReady?"المحرك متصل":"المحرك غير متصل";
+ $("connectionLabel").textContent=engineReady?"محرك ComfyUI الخاص متصل":"محرك ComfyUI الخاص غير متصل";
  $("uploadButton").disabled=!engineReady;
  $("renderButton").disabled=!engineReady;
  $("referenceFile").disabled=!engineReady;
