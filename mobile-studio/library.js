@@ -149,6 +149,7 @@ async function importAudio(){
  finally{$("saveAudio").disabled=false}
 }
 async function boot(){
+ try{for(const c of await globalThis.Studio404Characters.all())labels[c.id]=c.name}catch{}
  const query=new URLSearchParams(location.search);
  const preferred=query.get("shot"),actor=query.get("actor");
  const select=$("importShot");
