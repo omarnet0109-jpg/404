@@ -100,6 +100,39 @@ function safeVideo(result){
    throw Error("عنوان الفيديو غير آمن");
  return url.href;
 }
+// Reports what the provider actually returned instead of hiding every failure as "quota".
+function describeGpuError(error){
+ const raw=String(error?.message||error||"").replace(/[\\r\\n]+/g," ").slice(0,280);
+ if(/quota|daily limit|gpu time|exhausted|limit reached|too many requests|rate.limit|429/i.test(raw))
+  return "خدمة GPU رفضت المحاولة، ويبدو إنها حصة مجانية أو حد طلبات. لو عندك حساب Hugging Face مجاني، افتح النموذج الأصلي وسجّل دخولك هناك. أو جرّب بعد تجدد الحصة. التفاصيل: "+raw;
+ if(/503|504|unavailable|overload|capacity|timeout|timed out|busy|queue|connection|network|fetch failed/i.test(raw))
+  return "الخدمة مشغولة أو الاتصال اتقطع. ما اتخصمش أي مبلغ من التطبيق. جرّب لاحقًا أو افتح الخدمة الأصلية. التفاصيل: "+raw;
+ if(/403|401|forbidden|unauthorized|authentication|login|sign in|denied/i.test(raw))
+  return "الخدمة محتاجة دخول أو رفضت الطلب من التطبيق. افتح النموذج الأصلي من الزر الظاهر، من غير ما تدخل أي كلمة سر في 404 Studio. التفاصيل: "+raw;
+ return "التوليد لم يكتمل. رسالة الخدمة: "+(raw||"الخدمة لم توضح السبب")+". ممكن تفتح النموذج الأصلي للتأكد من السبب.";
+}
+function showRecovery(){ $("recovery").hidden=false }
+function hideRecovery(){ $("recovery").hidden=true }
+async function copyPrompt(){
+ const value=$("videoPrompt").value;
+ try{
+  await navigator.clipboard.writeText(value);
+  message("status","✅ تم نسخ وصف الفيديو. تقدر تلصقه في النموذج المجاني الأصلي.");
+ }catch{
+  $("videoPrompt").focus();$("videoPrompt").select();
+  message("status","تم تحديد وصف الفيديو؛ اختار «نسخ» من موبايلك.");
+ }
+}
+function downloadImage(){
+ const char=findCharacter($("videoCharacter").value);
+ if(!char?.image){message("status","اختار شخصية محفوظة بصورتها الأول.",true);return}
+ const ext=char.image.type==="image/jpeg"?"jpg":char.image.type==="image/webp"?"webp":"png";
+ const url=globalThis.URL.createObjectURL(char.image);
+ const link=make("a");link.href=url;link.download=char.name.replace(/[^\\p{L}\\p{N}_-]/gu,"-")+"."+ext;
+ document.body.append(link);link.click();link.remove();
+ setTimeout(()=>globalThis.URL.revokeObjectURL(url),30000);
+ message("status","بدأ تنزيل نسخة من صورة الشخصية المحفوظة. تقدر ترفعها للنموذج الأصلي.");
+}
 async function generate(){
  if(busy)return;
  const char=findCharacter($("videoCharacter").value);
@@ -108,6 +141,7 @@ async function generate(){
  if(prompt.length<12){message("status","اكتب وصف الحركة اللي عايزها في الفيديو (12 حرف على الأقل).",true);return}
  if(!$("permission").checked){message("status","وافق الأول على إرسال صورة الشخصية ووصف الفيديو للخدمة المجانية.",true);return}
  busy=true;$("generateVideo").disabled=true;$("result").replaceChildren();
+ hideRecovery();
  message("status","جارٍ الاتصال بمحرك الفيديو المجاني...");
  try{
   const {Client,handle_file}=await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
@@ -121,7 +155,7 @@ async function generate(){
   let completed=false;
   for await(const event of job){
    if(event.type==="status"){
-    if(event.stage==="error")throw Error("خدمة الفيديو رفضت الطلب أو خلصت الحصة المجانية");
+    if(event.stage==="error")throw Error(event.message||event.code||"الخدمة رفضت التوليد بدون سبب محدد");
     message("status",event.position!=null?
       "في انتظار دورك على GPU المجانية. ترتيب الطابور: "+event.position:
       "جاري تجهيز الفيديو على GPU المجانية...");
@@ -145,8 +179,8 @@ async function generate(){
   }
   if(!completed)throw Error("الخدمة أنهت المهمة بدون فيديو");
  }catch(e){
-  message("status","التوليد المجاني مش متاح حاليًا: "+(e.message||"خطأ اتصال")+
-   ". الشخصيات المحفوظة ما اتغيرتش.",true);
+  message("status",describeGpuError(e)+" صور شخصياتك ومكتبتك محفوظة كما هي.",true);
+  showRecovery();
  }finally{busy=false;$("generateVideo").disabled=false}
 }
 async function boot(){
@@ -157,6 +191,8 @@ async function boot(){
  $("saveCharacter").addEventListener("click",saveCharacter);
  $("removeCharacter").addEventListener("click",removeCharacter);
  $("generateVideo").addEventListener("click",generate);
+ $("copyVideoPrompt").addEventListener("click",copyPrompt);
+ $("downloadCharacterImage").addEventListener("click",downloadImage);
  try{
   await readCharacters();selectCharacter(characters[0]?.id||null);loadVideoChoices();
  }catch(e){message("castStatus","تعذر فتح مكتبة الشخصيات على المتصفح: "+e.message,true)}
