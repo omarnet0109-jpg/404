@@ -101,7 +101,8 @@ async function mix(){
   const canvas=node("canvas");canvas.width=width;canvas.height=height;
   const draw=canvas.getContext("2d",{alpha:false});
   if(!draw)throw Error("المتصفح لا يستطيع تجهيز إطار الفيديو");
-  draw.drawImage(video,0,0,width,height);
+  draw.fillStyle="#000";draw.fillRect(0,0,width,height);
+  if(video.readyState>=2)draw.drawImage(video,0,0,width,height);
   videoStream=canvas.captureStream(24);
   const source=context.createMediaElementSource(audio);
   const destination=context.createMediaStreamDestination();
@@ -119,7 +120,7 @@ async function mix(){
   });
   function paint(){
    if(!video)return;
-   try{draw.drawImage(video,0,0,width,height)}catch{}
+   if(video.readyState>=2){try{draw.drawImage(video,0,0,width,height)}catch{}}
    raf=requestAnimationFrame(paint);
   }
   recorder.start(500);
