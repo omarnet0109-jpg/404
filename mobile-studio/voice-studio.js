@@ -251,7 +251,14 @@ async function boot(){
   if(!response.ok)throw Error("تعذر تحميل حوار الحلقة.");
   const json=await response.json();dialogue=json.dialogue_only||[];
   if(dialogue.length!==9)throw Error("ملف الحوارات التسعة غير مكتمل.");
-  actorLines();await renderProfile();
+  const qs=new URLSearchParams(globalThis.location.search);
+  const requestedActor=qs.get("actor"),requestedShot=qs.get("shot");
+  if(ACTORS.includes(requestedActor))actor=requestedActor;
+  actorLines();
+  if(dialogue.some(x=>x.shot_id===requestedShot&&x.speaker===actor))
+    $("line").value=requestedShot;
+  renderLine();
+  await renderProfile();
  }catch(e){note("تعذر تحميل السيناريو: "+e.message,true);$("generate").disabled=true}
  document.querySelectorAll("[data-actor]").forEach(b=>b.addEventListener("click",()=>changeActor(b.dataset.actor)));
  $("line").addEventListener("change",renderLine);
