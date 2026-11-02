@@ -78,7 +78,7 @@ python production/assemble_episode.py
 - **التطبيق:** [mobile-studio/index.html](mobile-studio/index.html)
 - **خادم GPU الآمن:** [backend/api.py](backend/api.py)
 - **التشغيل والنشر:** [mobile-studio/README.md](mobile-studio/README.md)
-- **اختبارات النشر:** [.github/workflows/deploy-studio.yml](.github/workflows/deploy-studio.yml)
-- **GitHub Pages:** فعّل `Settings → Pages → Build and deployment → GitHub Actions` مرة واحدة، ثم تأكد من نجاح الـworkflow. الرابط المتوقع بعد النشر: `https://omarnet0109-jpg.github.io/404/`.
+- **اختبارات واجهة الموبايل:** [.github/workflows/deploy-studio.yml](.github/workflows/deploy-studio.yml) (CI فقط؛ النشر من الفرع).
+- **GitHub Pages:** داخل `Settings → Pages` اختر **Deploy from a branch** ثم `main` ثم `/(root)` ثم **Save**. الموقع المتوقع بعد نجاح النشر: `https://omarnet0109-jpg.github.io/404/` ويحوّلك إلى `/404/mobile-studio/`. لا تعتبره منشورًا قبل أن يُظهر GitHub حالة `Your site is live`.
 
 > **ليس حلقة فيديو نهائية:** من دون سيرفر GPU وملف workflow فعلي لتوليد الفيديو، التطبيق يوفر أدوات تنظيم وإدارة فقط. توليد الكلام المصري ومزامنة الشفايف والربط الصوتي النهائي ما زالوا مراحل إنتاج منفصلة، وغير مدمجين كزر واحد في الـPWA بعد.
