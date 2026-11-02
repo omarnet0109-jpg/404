@@ -32,6 +32,10 @@ jobs:
           node --check mobile-studio/library.js
           node --check mobile-studio/free-gpu.js
           node --test mobile-studio/tests/media-vault.test.cjs
+          node --check mobile-studio/character-bank.js
+          node --check mobile-studio/voice-audio-vault.js
+          node --test mobile-studio/tests/character-bank.test.cjs
+          node --test mobile-studio/tests/voice-audio-vault.test.cjs
           python -m json.tool mobile-studio/data/scene.json > /dev/null
           python -m json.tool mobile-studio/data/characters.json > /dev/null
           python -m json.tool mobile-studio/manifest.webmanifest > /dev/null
