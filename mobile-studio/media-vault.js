@@ -31,7 +31,7 @@ function safeMeta(meta={}){
  const validShot=/^sh(0[1-9]|1[0-6])$/;
  const shot=validShot.test(meta.shot_id||"")?meta.shot_id:null;
  const allowed=["LAYLA","WIDAD","SABER","ensemble"];
- const actor=allowed.includes(meta.actor)?meta.actor:"ensemble";
+ const actor=allowed.includes(meta.actor)||(/^C_[A-Za-z0-9_-]{4,64}$/).test(meta.actor||"")?meta.actor:"ensemble";
  return {shot_id:shot,actor,prompt:String(meta.prompt||"").slice(0,4500),
    source:meta.source==="zerogpu"?"zerogpu":"local-import"};
 }
