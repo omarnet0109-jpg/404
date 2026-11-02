@@ -3,7 +3,7 @@
 // Never includes paid API credentials or silently transfers users' reference photos.
 (() => {
 const ID="zerogpu-aoti/wan2-2-fp8da-aoti-faster";
-const URL="https://huggingface.co/spaces/"+ID;
+const SPACE_APP_ORIGIN="https://zerogpu-aoti-wan2-2-fp8da-aoti-faster.hf.space";
 const $=id=>document.getElementById(id);
 let shots=[],selected=null,busy=false,previewUrl=null;
 const el=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e};
@@ -16,7 +16,7 @@ function safeVideo(result){
  if(candidate?.video)candidate=candidate.video;
  const link=typeof candidate==="string"?candidate:candidate?.url;
  if(!link||typeof link!=="string")throw Error("الخدمة انتهت لكن ما رجّعتش رابط فيديو صالح");
- const uri=new URL(link,URL);
+ const uri=new globalThis.URL(link,SPACE_APP_ORIGIN);
  if(uri.protocol!=="https:"||!(uri.hostname==="huggingface.co"||uri.hostname.endsWith(".hf.space")))
    throw Error("رابط الفيديو الخارج من الخدمة غير آمن أو غير معروف");
  return uri.href;
@@ -33,7 +33,7 @@ async function submit(){
  try{
    // Load Gradio's API client only when the user explicitly starts an external render.
    const {Client,handle_file}=await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
-   const app=await Client.connect(ID);
+   const app=await Client.connect(ID, {events:["data","status"]});
    const args=[
       handle_file(file), prompt, 4,
       "face distortion, changed character, extra people, duplicate faces, captions, watermark, jitter",
