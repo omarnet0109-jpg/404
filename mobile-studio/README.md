@@ -5,9 +5,9 @@
 ### للتجربة
 - ملف البداية: `mobile-studio/index.html`
 - لا تحتاج مكتبات JavaScript أو build/npm.
-- يمكن نشر المجلد عبر GitHub Pages (الـWorkflow: `.github/workflows/deploy-studio.yml`).
+- النشر عبر GitHub Pages مباشرةً من الفرع `main` والمجلد `/(root)`؛ `index.html` في جذر المستودع يحوّل إلى `/404/mobile-studio/`، و `.nojekyll` يلغي معالجة Jekyll. ملف `.github/workflows/deploy-studio.yml` أصبح للتأكد من جودة الكود فقط وليس للنشر.
 - الوصول الحالي للمشروع: `https://github.com/omarnet0109-jpg/404/tree/main/mobile-studio`.
-- رابط Pages المتوقع **بعد تفعيل Pages والنشر الناجح**: `https://omarnet0109-jpg.github.io/404/`. لا تفترض أن الرابط يعمل قبل التحقق.
+- رابط Pages المتوقع **بعد اختيار Deploy from a branch → main → /(root) → Save ونجاح النشر**: `https://omarnet0109-jpg.github.io/404/`. لا تفترض أن الرابط يعمل قبل ظهور تأكيد النشر.
 - تثبيت على الموبايل: افتح الموقع HTTPS، ثم إضافة إلى الشاشة الرئيسية (من قائمة Chrome/Safari).
 
 ### حدود النسخة الأولى
