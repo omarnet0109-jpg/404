@@ -3,7 +3,7 @@
 const $ = id => document.getElementById(id);
 const LABEL = {LAYLA:"ليلى",WIDAD:"الحاجة وداد",SABER:"عم صابر",ensemble:"الحارة والمجموعة"};
 const KEYS = {drafts:"studio404.drafts.v1",backend:"studio404.backend",token:"studio404.token",refs:"studio404.references.v1"};
-let scene=null, bible=null, dialogue=null, drafts={}, refs={}, selected=null, editId=null, pendingInstall=null, polling=null, outputUrl=null, engineReady=false;
+let scene=null, bible=null, dialogue=null, drafts={}, refs={}, selected=null, editId=null, pendingInstall=null, polling=null, outputUrl=null, localPreviewUrl=null, engineReady=false;
 const readJSON = (key, fallback={}) => { try{return JSON.parse(localStorage.getItem(key)||"null")??fallback}catch{return fallback} };
 const saveJSON = (key,obj) => {try{localStorage.setItem(key,JSON.stringify(obj))}catch{toast("تعذر حفظ المسودة على الجهاز")} };
 const clean = value => (value??"").toString();
@@ -123,6 +123,20 @@ function bind(){
  $("referenceType").addEventListener("change",updateRefState);
  $("uploadButton").addEventListener("click",upload);$("renderButton").addEventListener("click",render);
  $("exportButton").addEventListener("click",exportScene);
+ $("localPreviewInput").addEventListener("change",e=>{
+  const file=e.target.files?.[0],box=$("localPreviewBox");
+  if(localPreviewUrl){URL.revokeObjectURL(localPreviewUrl);localPreviewUrl=null}
+  box.replaceChildren();
+  if(!file)return;
+  const allowed=["video/mp4","video/webm","video/quicktime"];
+  if(!allowed.includes(file.type)){toast("اختار فيديو MP4 أو WebM أو MOV فقط");return}
+  localPreviewUrl=URL.createObjectURL(file);
+  const element=ui("video");element.src=localPreviewUrl;element.controls=true;element.playsInline=true;element.preload="metadata";
+  element.style.width="100%";element.style.maxHeight="460px";element.style.marginTop="12px";
+  element.style.borderRadius="12px";
+  box.append(element,ui("p","muted","معاينة محلية: الفيديو مش مرفوع على GitHub ولا هو دليل على جاهزية محرك GPU."));
+ });
+
  $("saveSettings").addEventListener("click",()=>{try{serverInfo();sessionStorage.setItem(KEYS.backend,$("serverUrl").value.trim());sessionStorage.setItem(KEYS.token,$("serverToken").value);checkServer()}catch(e){toast(e.message)}});
  $("checkButton").addEventListener("click",checkServer);
  $("confirmEdit").addEventListener("click",e=>{if(!$("editPrompt").value.trim()){e.preventDefault();toast("الوصف لا يمكن أن يكون فارغًا");return}drafts[editId]=$("editPrompt").value.trim();saveJSON(KEYS.drafts,drafts);populateShots();toast("تم حفظ المسودة محليًا")});
