@@ -9,15 +9,15 @@ PWA = ROOT / "mobile-studio"
 class MobilePerformanceTests(TestCase):
     def test_static_asset_bundle_is_small(self):
         # No multi-GB AI model or bundled video should enter the mobile app.
-        names = ["index.html","app.css","app.js","quick-preview.html","quick-preview.js","free-gpu.html","free-gpu.js","library.html","library.js","media-vault.js","character-bank.js","voice-audio-vault.js","compositor.html","compositor.js","sw.js"]
+        names = ["index.html","simple.css","simple.js","simple-characters.js","media-vault.js","sw.js"]
         total = sum((PWA/name).stat().st_size for name in names)
-        self.assertLess(total, 170_000, "PWA static code grew too heavy for low-end mobile devices")
+        self.assertLess(total, 50_000, "PWA static code grew too heavy for low-end mobile devices")
         for suffix in ("safetensors","ckpt","mp4"):
             self.assertFalse(list(PWA.rglob("*."+suffix)))
 
     def test_cached_static_loads_without_waiting_for_network(self):
         sw = (PWA/"sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE = "404-studio-v16"',sw)
+        self.assertIn('const CACHE = "404-studio-v17"',sw)
         self.assertIn("caches.match(event.request)",sw)
         self.assertIn("if (cached)",sw)
         self.assertIn("return cached",sw)
@@ -38,7 +38,8 @@ class MobilePerformanceTests(TestCase):
 
     def test_main_application_links_to_free_gpu(self):
         html = (PWA/"index.html").read_text(encoding="utf-8")
-        self.assertIn('href="./free-gpu.html"', html)
+        self.assertIn('id="generateVideo"', html)
+        self.assertIn('href="./free-gpu.html"', (PWA/"studio-advanced.html").read_text(encoding="utf-8"))
         sw = (PWA/"sw.js").read_text(encoding="utf-8")
         self.assertIn('"./free-gpu.html"', sw)
         self.assertIn('"./free-gpu.js"', sw)
@@ -49,7 +50,7 @@ class MobilePerformanceTests(TestCase):
         self.assertIn("requestAnimationFrame(loop)",js)
 
     def test_colab_is_optional_not_main_production_button(self):
-        html=(PWA/"index.html").read_text(encoding="utf-8")
+        html=(PWA/"studio-advanced.html").read_text(encoding="utf-8")
         self.assertIn('href="./quick-preview.html"',html)
         self.assertIn("Colab (اختياري للمطورين)",html)
         self.assertIn("مش فيديو AI",html)
