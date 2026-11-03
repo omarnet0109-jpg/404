@@ -55,3 +55,17 @@ jobs:
         run: |
           python -m pip install -r backend/requirements.txt
           python -m unittest discover -s backend/tests -v
+      - name: Build complete source ZIP after checks pass
+        run: |
+          git archive --format=zip --output "$RUNNER_TEMP/404-Studio-Free-Complete.zip" HEAD
+          unzip -t "$RUNNER_TEMP/404-Studio-Free-Complete.zip" | tail -n 1
+          for asset in mobile-studio/index.html mobile-studio/simple.js mobile-studio/ai-speakers.js mobile-studio/voice-identities.js mobile-studio/episode-editor.js mobile-studio/clip-audio.js mobile-studio/media-vault.js mobile-studio/simple-characters.js mobile-studio/sw.js; do
+            unzip -Z1 "$RUNNER_TEMP/404-Studio-Free-Complete.zip" | grep -Fx "$asset" > /dev/null || exit 1
+          done
+      - name: Attach complete project ZIP to successful workflow run
+        uses: actions/upload-artifact@v4
+        with:
+          name: 404-Studio-Free-Complete
+          path: ${{ runner.temp }}/404-Studio-Free-Complete.zip
+          retention-days: 90
+          if-no-files-found: error
