@@ -47,6 +47,45 @@ function currentImage(){
  if(blob){previewUrl=URL.createObjectURL(blob);img.src=previewUrl;img.hidden=false}
  else{img.removeAttribute("src");img.hidden=true}
 }
+async function refreshVoiceStatus(id){
+ const status=$("voiceIdentityStatus");
+ if(!status)return;
+ try{
+  const voice=id?await globalThis.Studio404Voices.verify(id):null;
+  if(id!==selectedId)return;
+  status.textContent=voice?
+   "🔒 الصوت ثابت لهذه الشخصية · بصمة "+voice.sha256.slice(0,12)+" · محفوظ على الموبايل":
+   "لسه مفيش مرجع صوت محفوظ لهذه الشخصية.";
+  $("downloadVoiceRef").disabled=!voice;
+ }catch(e){status.textContent="تعذر التحقق من المرجع الصوتي: "+e.message;$("downloadVoiceRef").disabled=true}
+}
+async function lockVoiceRef(){
+ const actor=selectedId,item=findCharacter(actor),file=$("voiceReference").files?.[0];
+ if(!item){message("castStatus","احفظ اسم الشخصية وصورتها الأول.",true);return}
+ if(!file){message("castStatus","اختار التسجيل الأصلي للشخصية الأول.",true);return}
+ if(!$("voiceRights").checked){message("castStatus","لازم تؤكد إن معاك إذن استخدام صوت التسجيل.",true);return}
+ $("lockVoiceRef").disabled=true;
+ try{
+  const existing=await globalThis.Studio404Voices.get(actor);
+  if(existing&&!confirm("صوت "+item.name+" متثبت بالفعل. تغيير المرجع هيغيّر هويتها الصوتية في الحلقات الجديدة. تؤكد التغيير؟"))return;
+  const saved=await globalThis.Studio404Voices.save(actor,file,true,{replace:!!existing});
+  $("voiceReference").value="";$("voiceRights").checked=false;
+  await refreshVoiceStatus(actor);
+  message("castStatus",saved.unchanged?"✅ نفس صوت الشخصية محفوظ بالفعل.":
+   "✅ اتثبت صوت "+item.name+" ببصمة ثابتة. احتفظ بالتسجيل الأصلي كنسخة احتياطية.");
+ }catch(e){message("castStatus",e.message||"تعذر تثبيت الصوت",true)}
+ finally{$("lockVoiceRef").disabled=false}
+}
+async function downloadVoiceRef(){
+ try{
+  const record=await globalThis.Studio404Voices.verify(selectedId);
+  if(!record)throw Error("الشخصية دي مالهاش صوت مرجعي محفوظ");
+  const url=URL.createObjectURL(record.file),link=make("a");
+  link.href=url;link.download=record.name;document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),45000);
+  message("castStatus","تم تجهيز نسخة من صوت الشخصية المحفوظ.");
+ }catch(e){message("castStatus",e.message,true)}
+}
 function selectCharacter(id){
  selectedId=id;
  const item=findCharacter(id);
@@ -55,6 +94,8 @@ function selectCharacter(id){
  $("editTitle").textContent=item?"تعديل "+item.name:"إضافة شخصية";
  $("removeCharacter").hidden=!item;
  cardList();currentImage();
+ $("voiceReference").value="";$("voiceRights").checked=false;
+ refreshVoiceStatus(id);
  message("castStatus",item?.image?"صورة الشخصية محفوظة على جهازك.":"اختار صورة الشخصية واضغط حفظ.");
 }
 async function saveCharacter(){
@@ -167,9 +208,11 @@ async function generate(){
     completed=true;
     message("status","✅ الفيديو اتولد. جاري حفظه في مكتبتك...");
     try{
-      await vault().saveRemote(src,{actor:char.id,prompt,source:"zerogpu"});
+      const saved=await vault().saveRemote(src,{actor:char.id,prompt,source:"zerogpu"});
       await vault().requestPersistence();
-      const link=make("a","✅ الفيديو اتحفظ — فتح فيديوهاتي");link.href="./library.html";$("result").append(link);
+      const link=make("a","✅ الفيديو اتحفظ — افتح مونتاج الصوت والحلقة");
+      link.href="./episode-editor.html?video="+encodeURIComponent(saved.id);$("result").append(link);
+      const gallery=make("a","فتح فيديوهاتي");gallery.href="./library.html";$("result").append(gallery);
       message("status","✅ الفيديو محفوظ على نفس الموبايل والمتصفح. نزّل نسخة احتياطية من المكتبة.");
     }catch(saveError){
       const link=make("a","فتح المكتبة لإضافة الفيديو بعد تنزيله");link.href="./library.html";$("result").append(link);
@@ -191,6 +234,8 @@ async function boot(){
  $("saveCharacter").addEventListener("click",saveCharacter);
  $("removeCharacter").addEventListener("click",removeCharacter);
  $("generateVideo").addEventListener("click",generate);
+ $("lockVoiceRef").addEventListener("click",lockVoiceRef);
+ $("downloadVoiceRef").addEventListener("click",downloadVoiceRef);
  $("copyVideoPrompt").addEventListener("click",copyPrompt);
  $("downloadCharacterImage").addEventListener("click",downloadImage);
  try{
