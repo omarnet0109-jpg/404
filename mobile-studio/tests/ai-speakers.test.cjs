@@ -41,7 +41,7 @@ assert.match(html,/value="demo"/);
 assert.match(html,/id="licensedTranscript" hidden/);
 assert.match(html,/id="generateDialogue"/);
 assert.match(html,/id="spokenText"/);
-assert.match(html,/غير مرخّصة للنشر التجاري|غير مرخصة للنشر التجاري/);
+assert.match(html,/التجربة فقط|للتجربة فقط|غير مرخصة للنشر التجاري/);
 assert.match(editor,/mode==="licensed"\?"clone":"builtin"/);
 assert.match(editor,/preset\?\.speaker\|\|""/);
 assert.match(editor,/source\?handle_file\(source\):null/);
