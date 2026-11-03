@@ -1,5 +1,5 @@
 // 404 Studio mobile PWA: cached static assets are served instantly while revalidated.
-const CACHE = "404-studio-v20";
+const CACHE = "404-studio-v21";
 const CORE = [
   "./","./index.html","./simple.css","./simple.js","./simple-characters.js",
   "./media-vault.js","./voice-identities.js","./ai-speakers.js","./clip-audio.js","./icon.svg","./manifest.webmanifest",
