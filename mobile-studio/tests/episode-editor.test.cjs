@@ -42,7 +42,7 @@ function makeIDB(){
   const tx={oncomplete:null,onerror:null};
   tx.objectStore=()=>({
    get(id){const req={};queueMicrotask(()=>{req.result=state.get(id)||null;req.onsuccess?.()});return req},
-   put(obj){queueMicrotask(()=>{state.set(obj.actor||obj.videoId,obj);tx.oncomplete?.()})},
+   put(obj){queueMicrotask(()=>{state.set(obj.videoId||obj.actor,obj);tx.oncomplete?.()})},
    delete(id){queueMicrotask(()=>{state.delete(id);tx.oncomplete?.()})}
   });return tx;
  },createObjectStore(){}};
