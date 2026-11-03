@@ -51,7 +51,7 @@ function renderTimeline(){
   row.append(title,up,down,remove);box.append(row);
  });
  refreshAdd();
- $("exportEpisode").disabled=busy||clips.length<2||!codec();
+ $("exportEpisode").disabled=busy||clips.length<1||!codec();
  if(!clips.length)box.append(el("p","أضف لقطة من مكتبتك لبدء المونتاج."));
 }
 function move(index,direction){
@@ -220,10 +220,16 @@ function outMime(){
 }
 async function exportEpisode(){
  if(busy)return;
- if(clips.length<2){info("أضف لقطتين على الأقل علشان تخرج الحلقة.",true);return}
+ if(clips.length<1){info("أضف فيديو واحد على الأقل علشان تصدّر ملفًا بالصوت.",true);return}
  const mime=outMime();
  if(!mime||typeof HTMLCanvasElement.prototype.captureStream!=="function"){
   info("المتصفح لا يدعم تصدير فيديو بالصوت. استخدم Chrome حديث على أندرويد، مش هنطلع فيديو صامت ونعتبره صحيح.",true);return
+ }
+ // Never claim an episode has speech when no video in the timeline has attached dialogue.
+ const attached=await Promise.all(clips.map(id=>audioVault().get(id)));
+ if(!attached.some(x=>x?.file)){
+  info("لا يوجد أي ملف صوت محفوظ في الفيديوهات المختارة. ولّد صوت AI للّقطة الأول قبل التصدير.",true);
+  return;
  }
  const AudioEngine=globalThis.AudioContext||globalThis.webkitAudioContext;
  if(!AudioEngine){info("المتصفح لا يدعم تسجيل الصوت داخل الفيديو.",true);return}
