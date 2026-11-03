@@ -47,6 +47,30 @@ function currentImage(){
  if(blob){previewUrl=URL.createObjectURL(blob);img.src=previewUrl;img.hidden=false}
  else{img.removeAttribute("src");img.hidden=true}
 }
+function refreshAISpeaker(id){
+ const select=$("aiVoiceSelect"),p=globalThis.Studio404AISpeakers.get(id);
+ select.replaceChildren();
+ for(const name of globalThis.Studio404AISpeakers.SPEAKERS){
+  const opt=make("option",name);opt.value=name;select.append(opt);
+ }
+ select.value=p?.speaker||"Yara";
+ $("aiVoiceStatus").textContent=p?
+  "🔒 الصوت المصري التجريبي "+p.speaker+" ثابت للشخصية. تقدر تولّد كلام جديد بنفس هوية الصوت من مونتاج الحلقة.":
+  "اختار صوتًا مختلفًا للشخصية واضغط تثبيت.";
+ $("saveAiVoice").disabled=!id;
+}
+function saveAISpeaker(){
+ const id=selectedId,c=findCharacter(id),speaker=$("aiVoiceSelect").value;
+ if(!c){message("castStatus","احفظ الشخصية بصورتها الأول.",true);return}
+ try{
+  const before=globalThis.Studio404AISpeakers.get(id);
+  if(before?.speaker!==speaker&&!confirm("تغيير صوت "+c.name+" من "+before.speaker+
+   " إلى "+speaker+" هيخلي الصوت مختلف في الحلقات الجديدة. تؤكد؟"))return;
+  globalThis.Studio404AISpeakers.assign(id,speaker,{replace:!!before});
+  refreshAISpeaker(id);
+  message("castStatus","✅ ثبتنا صوت AI التجريبي "+speaker+" للشخصية. هنستخدم نفس الصوت عند توليد جمل جديدة.");
+ }catch(e){message("castStatus",e.message,true);refreshAISpeaker(id)}
+}
 async function refreshVoiceStatus(id){
  const status=$("voiceIdentityStatus");
  if(!status)return;
@@ -96,6 +120,7 @@ function selectCharacter(id){
  cardList();currentImage();
  $("voiceReference").value="";$("voiceRights").checked=false;
  refreshVoiceStatus(id);
+ refreshAISpeaker(id);
  message("castStatus",item?.image?"صورة الشخصية محفوظة على جهازك.":"اختار صورة الشخصية واضغط حفظ.");
 }
 async function saveCharacter(){
@@ -234,6 +259,7 @@ async function boot(){
  $("saveCharacter").addEventListener("click",saveCharacter);
  $("removeCharacter").addEventListener("click",removeCharacter);
  $("generateVideo").addEventListener("click",generate);
+ $("saveAiVoice").addEventListener("click",saveAISpeaker);
  $("lockVoiceRef").addEventListener("click",lockVoiceRef);
  $("downloadVoiceRef").addEventListener("click",downloadVoiceRef);
  $("copyVideoPrompt").addEventListener("click",copyPrompt);
