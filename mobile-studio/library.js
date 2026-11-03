@@ -37,6 +37,7 @@ async function render(){
    const download=make("button","↓ تنزيل نسخة MP4","btn");
    download.type="button";
    const del=make("button","حذف","btn danger");del.type="button";
+   const edit=make("a","🎙️ أضف صوت / مونتاج","btn alt");edit.href="./episode-editor.html?video="+encodeURIComponent(item.id);
    const videoBox=make("div");
    play.addEventListener("click",async()=>{
     try{
@@ -47,14 +48,15 @@ async function render(){
      const player=make("video");player.controls=true;player.playsInline=true;player.preload="metadata";player.src=previewUrl;
      document.querySelectorAll(".library-item video").forEach(v=>v.remove());
      videoBox.replaceChildren(player);activePreviewId=item.id;
-     if(item.shot_id&&["LAYLA","WIDAD","SABER"].includes(item.actor)){
-       const voice=await globalThis.Studio404AudioVault.get(item.actor,item.shot_id);
-       if(voice?.file){
-         audioPreviewUrl=globalThis.URL.createObjectURL(voice.file);
-         const description=make("p","🎙️ الصوت المرتبط بهذه اللقطة محفوظ. ممكن تسمعه تحت الفيديو للمراجعة فقط، مش ليب سينك ولا ملف نهائي.","muted");
-         const sound=make("audio");sound.controls=true;sound.preload="metadata";sound.src=audioPreviewUrl;sound.style.width="100%";
-         videoBox.append(description,sound);
-       }
+     const attached=await globalThis.Studio404ClipAudio.get(item.id);
+     const legacy=(!attached&&item.shot_id&&["LAYLA","WIDAD","SABER"].includes(item.actor))?
+       await globalThis.Studio404AudioVault.get(item.actor,item.shot_id):null;
+     const voice=attached||legacy;
+     if(voice?.file){
+       audioPreviewUrl=globalThis.URL.createObjectURL(voice.file);
+       const description=make("p","🎙️ ملف صوت مرتبط بالفيديو، تقدر تسمعه هنا. ده مش مزامنة شفايف.","muted");
+       const sound=make("audio");sound.controls=true;sound.preload="metadata";sound.src=audioPreviewUrl;sound.style.width="100%";
+       videoBox.append(description,sound);
      }
     }catch(e){message(e.message,true)}
    });
@@ -64,10 +66,10 @@ async function render(){
    });
    del.addEventListener("click",async()=>{
     if(!confirm("حذف الفيديو "+item.name+" من مكتبة هذا الموبايل؟ لا يمكن استرجاعه من المكتبة."))return;
-    try{await vault().remove(item.id);message("تم حذف الفيديو من المكتبة");await render()}
+    try{await vault().remove(item.id);await globalThis.Studio404ClipAudio.remove(item.id);message("تم حذف الفيديو وصوته المرتبط من المكتبة");await render()}
     catch(e){message(e.message,true)}
    });
-   actions.append(play,download,del);card.append(actions,videoBox);items.append(card);
+   actions.append(play,download,edit,del);card.append(actions,videoBox);items.append(card);
   }
   await capacity();
  }catch(e){message("تعذّر فتح مكتبة الفيديوهات: "+e.message,true)}
