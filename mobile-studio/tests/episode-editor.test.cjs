@@ -42,6 +42,7 @@ function makeIDB(){
   const tx={oncomplete:null,onerror:null};
   tx.objectStore=()=>({
    get(id){const req={};queueMicrotask(()=>{req.result=state.get(id)||null;req.onsuccess?.()});return req},
+   getAll(){const req={};queueMicrotask(()=>{req.result=[...state.values()];req.onsuccess?.()});return req},
    put(obj){queueMicrotask(()=>{state.set(obj.videoId||obj.actor,obj);tx.oncomplete?.()})},
    delete(id){queueMicrotask(()=>{state.delete(id);tx.oncomplete?.()})}
   });return tx;
@@ -61,6 +62,7 @@ function makeIDB(){
  const saved=await voices.save("LAYLA",first,true);
  assert.equal(saved.sha256.length,64);
  assert.equal((await voices.verify("LAYLA")).sha256,saved.sha256);
+ await assert.rejects(()=>voices.save("WIDAD",first,true),/مختلف لكل شخصية/);
  await assert.rejects(()=>voices.save("LAYLA",second,true),/تأكيد صريح/);
  const replaced=await voices.save("LAYLA",second,true,{replace:true});
  assert.notEqual(replaced.sha256,saved.sha256);
