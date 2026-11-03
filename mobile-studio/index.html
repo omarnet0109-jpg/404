@@ -42,6 +42,14 @@
 </div>
 <p id="castStatus" role="status" aria-live="polite"></p>
 <hr>
+<h2>🎙️ صوت AI ثابت لكل شخصية</h2>
+<p class="sub">اختار صوتًا مصريًا اصطناعيًا مختلفًا لكل شخصية واحفظه مرة واحدة. البرنامج هيستخدم نفس هوية الصوت في كل جملة جديدة.</p>
+<label for="aiVoiceSelect">الصوت المصري التجريبي</label>
+<select id="aiVoiceSelect"></select>
+<div class="actions"><button id="saveAiVoice" type="button" class="btn">🔒 تثبيت صوت AI للشخصية</button></div>
+<p id="aiVoiceStatus" class="sub" role="status"></p>
+<p class="sub">⚠️ الأصوات التجريبية في VoiceTut غير مرخّصة للنشر التجاري. ممكن تستخدمها للاختبارات فقط؛ للنشر استخدم صوتًا تملك حق استخدامه.</p>
+<details><summary style="cursor:pointer">اختياري: صوت مرخّص لنشر المسلسل</summary>
 <h2>🎙️ بصمة صوت الشخصية</h2>
 <p class="sub">اختار تسجيلًا أصليًا لصوت الشخصية مرة واحدة؛ البرنامج يثبّت نفس المرجع ويمنع تغييره بدون تأكيد. ده مرجع صوت، مش توليد تلقائي للكلام.</p>
 <p id="voiceIdentityStatus" class="sub" role="status">لم يتم تحديد صوت بعد.</p>
@@ -53,6 +61,7 @@
 </div>
 <div class="actions"><button id="lockVoiceRef" type="button" class="btn alt">🔒 تثبيت صوت الشخصية</button><button id="downloadVoiceRef" type="button" class="btn alt">↓ نسخة من صوتها</button></div>
 <p class="sub">احتفظ بالتسجيل الأصلي خارج المتصفح كنسخة احتياطية. كل شخصية لها بصمة منفصلة، والأصوات مش بتتبعت لأي خدمة عند الحفظ.</p>
+</details>
 </div>
 </section>
 <section class="view" id="generateView" hidden>
@@ -94,6 +103,7 @@
 <script defer src="./simple-characters.js?v=1"></script>
 <script defer src="./media-vault.js?v=1"></script>
 <script defer src="./voice-identities.js?v=1"></script>
-<script defer src="./simple.js?v=3"></script>
+<script defer src="./ai-speakers.js?v=1"></script>
+<script defer src="./simple.js?v=4"></script>
 </body>
 </html>
