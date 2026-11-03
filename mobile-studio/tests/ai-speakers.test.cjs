@@ -47,6 +47,8 @@ assert.match(editor,/preset\?\.speaker\|\|""/);
 assert.match(editor,/source\?handle_file\(source\):null/);
 assert.match(editor,/globalThis\.Studio404AISpeakers\.identity\(v\.actor\)/);
 assert.match(editor,/voice\.referenceHash!==expected/);
+assert.match(editor,/clips\.length<1/);
+assert.match(editor,/if\(!attached\.some\(x=>x\?\.file\)\)/);
 assert.match(editor,/await saveSound\(output,\{source:"voicetut",referenceHash:voiceIdentity\}\)/);
 assert.match(editor,/if\(!\$\("audioConsent"\)\.checked\)/);
 console.log("PASS: 3 distinct persistent AI voices, commercial trial warning, actor-specific synthesis & saved dialogue guard");
