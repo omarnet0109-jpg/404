@@ -57,7 +57,7 @@ function makeIDB(){
  const voices=voiceCtx.Studio404Voices;
  const first=new File([Buffer.alloc(600,42)],"layla.wav",{type:"audio/wav"});
  const second=new File([Buffer.alloc(600,43)],"layla-2.wav",{type:"audio/wav"});
- await assert.rejects(()=>voices.save("LAYLA",first,false),/إذن/);
+ await assert.rejects(()=>voices.save("LAYLA",first,false),/موافق/);
  const saved=await voices.save("LAYLA",first,true);
  assert.equal(saved.sha256.length,64);
  assert.equal((await voices.verify("LAYLA")).sha256,saved.sha256);
