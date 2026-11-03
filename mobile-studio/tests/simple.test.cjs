@@ -31,7 +31,7 @@ assert.match(cast,/\["WIDAD","الحاجة وداد"\]/);
 assert.match(cast,/\["SABER","عم صابر"\]/);
 assert.match(app,/if\(chosen&&current\?\.image&&/); // photo replacement confirmation is owned by UI
 assert.match(media,/C_\[A-Za-z0-9_-\]/,"Custom character IDs retained in media metadata");
-assert.match(sw,/404-studio-v20/);
+assert.match(sw,/404-studio-v21/);
 assert.doesNotMatch(sw,/".\/app\.js"/,"Heavy legacy editor should not be precached");
 assert.doesNotMatch(sw,/".\/data\/scene\.json"/,"16-shot storyboard should not block simple boot");
 console.log("PASS: minimal home, blank prompt, explicit consent, saved character photos, reusable videos and advanced backup");
