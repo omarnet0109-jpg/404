@@ -34,22 +34,31 @@ summary{cursor:pointer;font-weight:700;color:var(--gold)}
 <h2>2. صوت اللقطة</h2>
 <p id="chosenClip" class="sub">اختار لقطة من الترتيب فوق.</p>
 <p id="voiceProfileStatus" class="sub">هوية صوت الشخصية هتظهر هنا.</p>
+<h2>🎙️ ولّد الكلام بالذكاء الاصطناعي</h2>
+<p class="sub" id="aiChoiceNotice">صوت AI مصري ثابت للشخصية، مختلف عن باقي الشخصيات. الأصوات المدمجة للتجربة فقط وليست مرخصة للنشر التجاري.</p>
+<label for="voiceMode">طريقة توليد الصوت</label>
+<select id="voiceMode">
+<option value="demo">صوت AI مصري جاهز — بدون رفع تسجيل (تجربة)</option>
+<option value="licensed">صوت AI من مرجع مرخّص محفوظ للشخصية</option>
+</select>
+<label for="spokenText">الشخصية هتقول إيه بالمصري؟</label>
+<textarea id="spokenText" placeholder="اكتب جملة الشخصية بالمصري..."></textarea>
+<div id="licensedTranscript" hidden>
+<label for="referenceTranscript">نص الكلام الموجود في تسجيل المرجع المرخّص</label>
+<textarea id="referenceTranscript" placeholder="اكتب الكلام المسموع في المرجع الأصلي"></textarea>
+</div>
+<div class="checkline"><input id="audioConsent" type="checkbox"><label for="audioConsent">أوافق على إرسال نص الحوار إلى خدمة VoiceTut العامة. ولو استخدمت مرجعًا مرخّصًا أوافق على إرسال التسجيل أيضًا.</label></div>
+<div class="actions"><button id="generateDialogue" class="btn" type="button">▶ توليد صوت AI المصري وحفظه للفيديو</button></div>
+<div id="ttsResult"></div>
+<p class="sub">الخدمة مجانية ومحدودة؛ لو الحصة انتهت هنقولك السبب. اختيار نفس المتحدث بيثبّت هويته، لكنه مش ضمان تطابق النبرة 100% في كل مرة.</p>
+<details>
+<summary>اختياري: استيراد ملف صوت جاهز</summary>
 <label for="dialogueFile">صوت الجملة (WAV / MP3 / WebM)</label>
 <input id="dialogueFile" type="file" accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,audio/ogg,audio/webm,.wav,.mp3,.ogg,.webm,.m4a">
-<div class="actions"><button id="attachAudio" class="btn" type="button">حفظ صوت الفيديو</button><button id="removeAudio" class="btn alt" type="button">حذف الصوت</button></div>
-<audio id="playAudio" controls hidden></audio>
-<p id="clipAudioStatus" class="sub">كل لقطة تحتفظ بصوتها حتى بعد إغلاق التطبيق. الاستيراد اليدوي لا يضمن إن الصوت مطابق للمرجع؛ راجعه بنفسك.</p>
-<details>
-<summary>تجربة توليد الجملة بصوت الشخصية (مجاني ومحدود)</summary>
-<p class="sub">لو ثبت صوت الشخصية من «شخصياتي»، ممكن تجرب خدمة VoiceTut الخارجية. الخدمة ممكن ترفض بسبب الحصة؛ مش هنستهلك رصيد مدفوع أو نعيد المحاولة تلقائيًا.</p>
-<label for="spokenText">الجملة اللي الشخصية هتقولها بالمصري</label>
-<textarea id="spokenText" placeholder="اكتب الحوار بالمصري هنا"></textarea>
-<label for="referenceTranscript">نص الكلام الموجود في تسجيل مرجع الشخصية</label>
-<textarea id="referenceTranscript" placeholder="اكتب نفس الكلام المسموع في الملف المرجعي"></textarea>
-<div class="checkline"><input id="audioConsent" type="checkbox"><label for="audioConsent">أوافق على إرسال نص الحوار وتسجيل الصوت المرخّص إلى خدمة Hugging Face العامة عند الضغط على توليد.</label></div>
-<button id="generateDialogue" class="btn alt" style="width:100%" type="button">🎙️ تجربة توليد الصوت المصري</button>
-<div id="ttsResult"></div>
+<div class="actions"><button id="attachAudio" class="btn alt" type="button">حفظ صوت الفيديو</button><button id="removeAudio" class="btn alt" type="button">حذف الصوت</button></div>
 </details>
+<audio id="playAudio" controls hidden></audio>
+<p id="clipAudioStatus" class="sub">كل لقطة تحتفظ بصوتها حتى بعد إغلاق التطبيق.</p>
 </section>
 <section class="panel">
 <h2>3. صدّر الحلقة</h2>
@@ -62,6 +71,7 @@ summary{cursor:pointer;font-weight:700;color:var(--gold)}
 <script defer src="./media-vault.js?v=1"></script>
 <script defer src="./simple-characters.js?v=1"></script>
 <script defer src="./voice-identities.js?v=1"></script>
+<script defer src="./ai-speakers.js?v=1"></script>
 <script defer src="./clip-audio.js?v=1"></script>
-<script defer src="./episode-editor.js?v=1"></script>
+<script defer src="./episode-editor.js?v=2"></script>
 </main></body></html>
