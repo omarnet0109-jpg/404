@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<title>مونتاج الحلقة والصوت | 404 Studio</title>
+<link rel="stylesheet" href="./simple.css">
+<style>
+.editor-row{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:12px;margin:9px 0;padding:10px;background:#101d30}
+.editor-row.active{border-color:var(--gold);background:#2b3041}
+.editor-row span{flex:1;min-width:0;overflow-wrap:anywhere}
+.editor-row small{display:block;color:var(--muted);font-size:11px}
+.editor-row button{background:#304562;color:white;border:1px solid #526581;border-radius:9px;min-width:39px;min-height:41px}
+.editor-row button:disabled{opacity:.4}
+details{background:#101d30;padding:13px;border-radius:12px;margin-top:15px}
+summary{cursor:pointer;font-weight:700;color:var(--gold)}
+#playAudio{width:100%;margin:10px 0}
+#exportResult video{display:block;width:100%;max-height:460px;background:#000;border-radius:12px}
+#exportResult a{display:block;color:var(--gold);margin:10px 0;font-weight:bold}
+#editorStatus{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+</style></head><body>
+<main>
+<header><div class="brand"><strong>404<span>.</span></strong><div>STUDIO<small>مونتاج الحلقة</small></div></div><a href="./">← الاستوديو</a></header>
+<h1>🎞️ جمّع الحلقة بالصوت</h1>
+<p class="intro">اختار الفيديوهات اللي عملتها، رتبها، وحط صوت لكل لقطة. النتيجة ملف واحد محفوظ في مكتبتك.</p>
+<section class="panel">
+<h2>1. اختار الفيديوهات</h2>
+<label for="availableVideos">فيديو من مكتبتك</label>
+<select id="availableVideos"></select>
+<div class="actions"><button id="addClip" class="btn" type="button">+ أضف للمونتاج</button><a class="btn alt" href="./library.html">مكتبتي</a></div>
+<p class="sub">اضغط على لقطة لتضيف صوتها. الأسهم تغيّر ترتيب المشاهد. ترتيبك محفوظ على نفس الجهاز.</p>
+<div id="timeline" aria-label="ترتيب الفيديوهات"></div>
+</section>
+<section class="panel" id="soundPanel">
+<h2>2. صوت اللقطة</h2>
+<p id="chosenClip" class="sub">اختار لقطة من الترتيب فوق.</p>
+<p id="voiceProfileStatus" class="sub">هوية صوت الشخصية هتظهر هنا.</p>
+<label for="dialogueFile">صوت الجملة (WAV / MP3 / WebM)</label>
+<input id="dialogueFile" type="file" accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,audio/ogg,audio/webm,.wav,.mp3,.ogg,.webm,.m4a">
+<div class="actions"><button id="attachAudio" class="btn" type="button">حفظ صوت الفيديو</button><button id="removeAudio" class="btn alt" type="button">حذف الصوت</button></div>
+<audio id="playAudio" controls hidden></audio>
+<p id="clipAudioStatus" class="sub">كل لقطة تحتفظ بصوتها حتى بعد إغلاق التطبيق. الاستيراد اليدوي لا يضمن إن الصوت مطابق للمرجع؛ راجعه بنفسك.</p>
+<details>
+<summary>تجربة توليد الجملة بصوت الشخصية (مجاني ومحدود)</summary>
+<p class="sub">لو ثبت صوت الشخصية من «شخصياتي»، ممكن تجرب خدمة VoiceTut الخارجية. الخدمة ممكن ترفض بسبب الحصة؛ مش هنستهلك رصيد مدفوع أو نعيد المحاولة تلقائيًا.</p>
+<label for="spokenText">الجملة اللي الشخصية هتقولها بالمصري</label>
+<textarea id="spokenText" placeholder="اكتب الحوار بالمصري هنا"></textarea>
+<label for="referenceTranscript">نص الكلام الموجود في تسجيل مرجع الشخصية</label>
+<textarea id="referenceTranscript" placeholder="اكتب نفس الكلام المسموع في الملف المرجعي"></textarea>
+<div class="checkline"><input id="audioConsent" type="checkbox"><label for="audioConsent">أوافق على إرسال نص الحوار وتسجيل الصوت المرخّص إلى خدمة Hugging Face العامة عند الضغط على توليد.</label></div>
+<button id="generateDialogue" class="btn alt" style="width:100%" type="button">🎙️ تجربة توليد الصوت المصري</button>
+<div id="ttsResult"></div>
+</details>
+</section>
+<section class="panel">
+<h2>3. صدّر الحلقة</h2>
+<p class="sub">الدمج مجاني ويشتغل على الموبايل من غير سيرفر GPU. التصدير بياخد مدة تشغيل المقاطع تقريبًا؛ خليك فاتح الصفحة.</p>
+<div class="actions"><button id="exportEpisode" class="btn" type="button">🎬 دمج كل الفيديوهات بالصوت</button></div>
+<p id="editorStatus" role="status" aria-live="polite">أضف لقطتين على الأقل علشان تصدر فيديو واحد.</p>
+<div id="exportResult"></div>
+<p class="note">الدمج لا يحرّك الشفايف بالذكاء الاصطناعي. التصدير يعتمد على دعم Chrome لتسجيل WebM وWebAudio. الأصول تفضل محفوظة لو فشل التصدير؛ لازم تحتفظ بنسخة احتياطية من الحلقة النهائية.</p>
+</section>
+<script defer src="./media-vault.js?v=1"></script>
+<script defer src="./simple-characters.js?v=1"></script>
+<script defer src="./voice-identities.js?v=1"></script>
+<script defer src="./clip-audio.js?v=1"></script>
+<script defer src="./episode-editor.js?v=1"></script>
+</main></body></html>
