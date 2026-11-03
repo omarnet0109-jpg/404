@@ -30,6 +30,8 @@ jobs:
           node --check mobile-studio/clip-audio.js
           node --check mobile-studio/episode-editor.js
           node --test mobile-studio/tests/episode-editor.test.cjs
+          node --check mobile-studio/ai-speakers.js
+          node --test mobile-studio/tests/ai-speakers.test.cjs
           node --check mobile-studio/app.js
           node --check mobile-studio/voice-studio.js
           node --check mobile-studio/quick-preview.js
