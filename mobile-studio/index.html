@@ -41,6 +41,18 @@
 <button id="removeCharacter" class="btn danger" type="button">حذف / إعادة ضبط</button>
 </div>
 <p id="castStatus" role="status" aria-live="polite"></p>
+<hr>
+<h2>🎙️ بصمة صوت الشخصية</h2>
+<p class="sub">اختار تسجيلًا أصليًا لصوت الشخصية مرة واحدة؛ البرنامج يثبّت نفس المرجع ويمنع تغييره بدون تأكيد. ده مرجع صوت، مش توليد تلقائي للكلام.</p>
+<p id="voiceIdentityStatus" class="sub" role="status">لم يتم تحديد صوت بعد.</p>
+<label for="voiceReference">ملف صوت أصلي (WAV أو MP3)</label>
+<input id="voiceReference" type="file" accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,audio/webm,.wav,.mp3,.webm">
+<div class="checkline">
+<input id="voiceRights" type="checkbox">
+<label for="voiceRights">معايا إذن من صاحب التسجيل لاستخدام صوته في المسلسل وتوليد كلام جديد بصوته.</label>
+</div>
+<div class="actions"><button id="lockVoiceRef" type="button" class="btn alt">🔒 تثبيت صوت الشخصية</button><button id="downloadVoiceRef" type="button" class="btn alt">↓ نسخة من صوتها</button></div>
+<p class="sub">احتفظ بالتسجيل الأصلي خارج المتصفح كنسخة احتياطية. كل شخصية لها بصمة منفصلة، والأصوات مش بتتبعت لأي خدمة عند الحفظ.</p>
 </div>
 </section>
 <section class="view" id="generateView" hidden>
@@ -71,7 +83,7 @@
 </div>
 </section>
 <div class="bottom">
-<a href="./library.html">مكتبة فيديوهاتي</a>
+<a href="./library.html">مكتبة فيديوهاتي</a> · <a href="./episode-editor.html">🎞️ مونتاج الحلقة + الصوت</a>
 <span aria-hidden="true"> · </span>
 <details style="display:inline-block"><summary style="cursor:pointer;display:inline">الأدوات المتقدمة</summary>
 <p><a href="./studio-advanced.html">الواجهة القديمة</a> · <a href="./voice-studio.html">تجربة الأصوات</a> · <a href="./compositor.html">تركيب الصوت</a></p>
@@ -81,6 +93,7 @@
 </main>
 <script defer src="./simple-characters.js?v=1"></script>
 <script defer src="./media-vault.js?v=1"></script>
-<script defer src="./simple.js?v=2"></script>
+<script defer src="./voice-identities.js?v=1"></script>
+<script defer src="./simple.js?v=3"></script>
 </body>
 </html>
