@@ -33,7 +33,7 @@ function safeMeta(meta={}){
  const allowed=["LAYLA","WIDAD","SABER","ensemble"];
  const actor=allowed.includes(meta.actor)||(/^C_[A-Za-z0-9_-]{4,64}$/).test(meta.actor||"")?meta.actor:"ensemble";
  return {shot_id:shot,actor,prompt:String(meta.prompt||"").slice(0,4500),
-   source:meta.source==="zerogpu"?"zerogpu":"local-import"};
+   source:["zerogpu","local-import","assembled-audio","episode-montage"].includes(meta.source)?meta.source:"local-import"};
 }
 async function saveFile(file,meta={}){
  validateFile(file);
