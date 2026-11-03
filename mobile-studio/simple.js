@@ -64,7 +64,7 @@ function saveAISpeaker(){
  if(!c){message("castStatus","احفظ الشخصية بصورتها الأول.",true);return}
  try{
   const before=globalThis.Studio404AISpeakers.get(id);
-  if(before?.speaker!==speaker&&!confirm("تغيير صوت "+c.name+" من "+before.speaker+
+  if(before&&before.speaker!==speaker&&!confirm("تغيير صوت "+c.name+" من "+before.speaker+
    " إلى "+speaker+" هيخلي الصوت مختلف في الحلقات الجديدة. تؤكد؟"))return;
   globalThis.Studio404AISpeakers.assign(id,speaker,{replace:!!before});
   refreshAISpeaker(id);
