@@ -91,6 +91,9 @@ async function refreshSelected(){
    "🔒 الصوت المرجعي لشخصية "+(actorNames[v.actor]||v.actor)+" مثبت · "+voice.sha256.slice(0,12):
    "⚠️ مفيش صوت مرجعي ثابت للشخصية. ثبّته في «شخصياتي» قبل محاولة توليد صوت جديد.";
   if(record){
+   if(record.source==="voicetut"&&record.referenceHash!==voice?.sha256){
+    info("⚠️ صوت اللقطة اتولد بمرجع قديم أو غير موجود. لا يمكن اعتماد الحلقة قبل توحيد مرجع هذه الشخصية.",true,"clipAudioStatus");
+   }
    audioPreviewURL=URL.createObjectURL(record.file);
    $("playAudio").src=audioPreviewURL;$("playAudio").hidden=false;
    info("✅ صوت حقيقي محفوظ للّقطة دي. "+(record.source==="voicetut"?"مولّد من المرجع المثبت.":"مستورَد من ملف؛ راجع إن المتحدث الصحيح.")+
@@ -231,6 +234,11 @@ async function exportEpisode(){
    const id=clips[i],record=await vault().get(id);
    if(!record?.video)throw Error("أحد الفيديوهات مش موجود في مكتبتك");
    const voice=await audioVault().get(id);
+   if(voice?.source==="voicetut"){
+    const reference=await voices().verify(record.actor);
+    if(!reference||voice.referenceHash!==reference.sha256)
+     throw Error("صوت اللقطة "+(i+1)+" ناتج من مرجع شخصية قديم؛ ثبت نفس المرجع أو أعِد توليد الجملة علشان صوت الشخصية ما يتغيرش.");
+   }
    let audioBuffer=null;
    if(voice?.file){
     try{audioBuffer=await context.decodeAudioData(await voice.file.arrayBuffer())}
