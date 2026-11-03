@@ -45,12 +45,19 @@ async function save(actor,file,permission,{replace=false}={}){
  validActor(actor);checkFile(file);
  if(permission!==true)throw Error("لازم تكون موافق على استخدام صوت التسجيل في المشروع");
  const hash=await digest(file),existing=await get(actor);
+ const database=await open();
+ const registered=await new Promise((resolve,reject)=>{
+  const req=database.transaction(STORE,"readonly").objectStore(STORE).getAll();
+  req.onsuccess=()=>resolve(req.result||[]);
+  req.onerror=()=>reject(req.error||Error("تعذر فحص أصوات الشخصيات"));
+ });
+ if(registered.some(item=>item.actor!==actor&&item.sha256===hash))
+  throw Error("نفس تسجيل الصوت مثبت لشخصية تانية. اختار صوت مختلف لكل شخصية.");
  if(existing&&existing.sha256!==hash&&!replace)
   throw Error("صوت الشخصية متثبت بالفعل. تغيير الصوت يحتاج تأكيد صريح");
  if(existing&&existing.sha256===hash)return {actor,sha256:hash,unchanged:true};
  const record={actor,file,name:(file.name||actor+".wav").slice(0,120),
   mime:file.type||"audio/wav",sha256:hash,permission:true,locked_at:new Date().toISOString()};
- const database=await open();
  await new Promise((resolve,reject)=>{
   const tx=database.transaction(STORE,"readwrite");
   tx.objectStore(STORE).put(record);
