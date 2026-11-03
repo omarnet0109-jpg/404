@@ -87,17 +87,25 @@ async function refreshSelected(){
    audioVault().get(v.id)
   ]);
   if(id!==selected)return;
-  $("voiceProfileStatus").textContent=voice?
-   "🔒 الصوت المرجعي لشخصية "+(actorNames[v.actor]||v.actor)+" مثبت · "+voice.sha256.slice(0,12):
-   "⚠️ مفيش صوت مرجعي ثابت للشخصية. ثبّته في «شخصياتي» قبل محاولة توليد صوت جديد.";
+  const preset=globalThis.Studio404AISpeakers.get(v.actor);
+  const licensed=$("voiceMode").querySelector('option[value="licensed"]');
+  if(licensed)licensed.disabled=!voice;
+  $("voiceMode").value=preset?"demo":voice?"licensed":"demo";
+  updateVoiceMode();
+  $("voiceProfileStatus").textContent=preset?
+   "🔒 صوت AI التجريبي لهذه الشخصية: "+preset.speaker+
+     " — هيتم استخدام نفس هوية الصوت في كل فيديو جديد. (غير مرخّص للنشر التجاري)":
+   voice?"🔒 مرجع صوت مرخّص محفوظ · "+voice.sha256.slice(0,12):
+   "⚠️ اختار صوت AI للشخصية من «شخصياتي» الأول، أو ثبت مرجعًا مرخّصًا.";
   if(record){
-   if(record.source==="voicetut"&&record.referenceHash!==voice?.sha256){
-    info("⚠️ صوت اللقطة اتولد بمرجع قديم أو غير موجود. لا يمكن اعتماد الحلقة قبل توحيد مرجع هذه الشخصية.",true,"clipAudioStatus");
-   }
+   const expected=record.referenceHash?.startsWith("demo:")?
+     globalThis.Studio404AISpeakers.identity(v.actor):voice?.sha256;
+   const changed=record.source==="voicetut"&&record.referenceHash!==expected;
+   if(changed)info("⚠️ صوت الفيديو اتولد بهوية صوت قديمة. لازم تولّد الجملة من جديد قبل تصدير الحلقة.",true,"clipAudioStatus");
    audioPreviewURL=URL.createObjectURL(record.file);
    $("playAudio").src=audioPreviewURL;$("playAudio").hidden=false;
-   info("✅ صوت حقيقي محفوظ للّقطة دي. "+(record.source==="voicetut"?"مولّد من المرجع المثبت.":"مستورَد من ملف؛ راجع إن المتحدث الصحيح.")+
-     " تغيير الملف يحتاج موافقة.",false,"clipAudioStatus");
+   if(!changed)info("✅ صوت محفوظ للّقطة دي. "+(record.source==="voicetut"?"صوت ذكاء اصطناعي ثابت الهوية.":"ملف صوت مستورَد.")+
+     " راجع جودة النطق. تغيير الملف يحتاج موافقة.",false,"clipAudioStatus");
   }else info("اللقطة دي لسه صامتة. اختار ملف صوت أو جرّب التوليد من مرجع الشخصية المثبت.",false,"clipAudioStatus");
  }catch(e){info("تعذر تحميل صوت اللقطة: "+e.message,true,"clipAudioStatus")}
 }
@@ -132,21 +140,34 @@ function safeAudio(result){
   throw Error("رابط ملف الصوت الخارجي غير موثوق");
  return url.href;
 }
+function updateVoiceMode(){
+ const licensed=$("voiceMode").value==="licensed";
+ $("licensedTranscript").hidden=!licensed;
+ $("aiChoiceNotice").textContent=licensed?
+  "ذكاء اصطناعي من تسجيل مرخّص محفوظ لشخصيتك؛ نفس البصمة هتستخدم في كل توليد.":
+  "صوت AI مصري جاهز وثابت لكل شخصية. الأصوات الجاهزة تجريبية وغير مرخّصة للنشر التجاري.";
+}
 async function tryTTS(){
  if(busy)return;
  const v=activeVideo();if(!v)return;
  const line=$("spokenText").value.trim(),referenceText=$("referenceTranscript").value.trim();
- if(line.length<2||referenceText.length<4){info("اكتب الجملة المصرية ونص المرجع الصوتي اللي اتقال في التسجيل.",true,"clipAudioStatus");return}
+ const mode=$("voiceMode").value;
+ if(line.length<2){info("اكتب الجملة اللي الشخصية هتقولها بالمصري الأول.",true,"clipAudioStatus");return}
+ if(mode==="licensed"&&referenceText.length<4){info("اكتب نص الكلام المسموع في التسجيل المرجعي.",true,"clipAudioStatus");return}
  if(!$("audioConsent").checked){info("لازم توافق على إرسال الصوت والنص للخدمة الخارجية أولًا.",true,"clipAudioStatus");return}
  busy=true;$("generateDialogue").disabled=true;renderTimeline();
  info("محاولة توليد الجملة من صوت الشخصية المثبت، مجانًا حسب حصة VoiceTut...");
  try{
-  const identity=await voices().verify(v.actor);
-  if(!identity)throw Error("مفيش مرجع صوت ثابت للشخصية. ثبّته في «شخصياتي» الأول");
+  const identity=mode==="licensed"?await voices().verify(v.actor):null;
+  const preset=mode==="demo"?globalThis.Studio404AISpeakers.get(v.actor):null;
+  if(mode==="licensed"&&!identity)throw Error("مفيش مرجع صوت مرخّص محفوظ. افتح «شخصياتي» وثبّته أولًا");
+  if(mode==="demo"&&!preset)throw Error("اختار صوت AI للشخصية من «شخصياتي» أولًا");
   const {Client,handle_file}=await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
   const client=await Client.connect(SPACE_ID,{events:["data","status"]});
-  const source=new File([identity.file],identity.name,{type:identity.mime});
-  const params=[line,"arz","clone","",handle_file(source),referenceText,32,2,1,true];
+  const source=identity?new File([identity.file],identity.name,{type:identity.mime}):null;
+  const params=[line,"arz",mode==="licensed"?"clone":"builtin",preset?.speaker||"",
+    source?handle_file(source):null,mode==="licensed"?referenceText:"",32,2,1,true];
+  const voiceIdentity=mode==="licensed"?identity.sha256:globalThis.Studio404AISpeakers.identity(v.actor);
   const job=client.submit("/synthesize",params);let produced=false;
   for await(const event of job){
    if(event.type==="status"){
@@ -163,8 +184,8 @@ async function tryTTS(){
      const blob=await response.blob();
      if(!blob.type.startsWith("audio/")&&blob.type!=="application/octet-stream")throw Error("الملف مش صوت");
      const output=new File([blob],v.actor+"-"+v.id+".wav",{type:blob.type||"audio/wav"});
-     if(await saveSound(output,{source:"voicetut",referenceHash:identity.sha256}))
-      info("✅ الصوت اتولد من نفس مرجع الشخصية واتحفظ للّقطة. راجع النطق والنبرة قبل اعتمادها.");
+     if(await saveSound(output,{source:"voicetut",referenceHash:voiceIdentity}))
+      info("✅ اتولد واتحفظ صوت AI للشخصية، بنفس هوية الصوت المحددة. اسمعه قبل اعتماد اللقطة.");
     }catch(e){info("الجملة اتولدت، لكن حفظها تلقائيًا فشل: "+e.message+". نزّل WAV واستورده من زر ملف الصوت.",true)}
    }
   }
@@ -235,9 +256,11 @@ async function exportEpisode(){
    if(!record?.video)throw Error("أحد الفيديوهات مش موجود في مكتبتك");
    const voice=await audioVault().get(id);
    if(voice?.source==="voicetut"){
-    const reference=await voices().verify(record.actor);
-    if(!reference||voice.referenceHash!==reference.sha256)
-     throw Error("صوت اللقطة "+(i+1)+" ناتج من مرجع شخصية قديم؛ ثبت نفس المرجع أو أعِد توليد الجملة علشان صوت الشخصية ما يتغيرش.");
+    const expected=voice.referenceHash?.startsWith("demo:")?
+      globalThis.Studio404AISpeakers.identity(record.actor):
+      (await voices().verify(record.actor))?.sha256;
+    if(!expected||voice.referenceHash!==expected)
+     throw Error("صوت اللقطة "+(i+1)+" اتولد بصوت شخصية مختلف عن المعتمد. ولّد الكلام بنفس هوية الصوت قبل الدمج.");
    }
    let audioBuffer=null;
    if(voice?.file){
@@ -314,6 +337,7 @@ async function boot(){
  $("addClip").addEventListener("click",addClip);
  $("attachAudio").addEventListener("click",attachAudio);
  $("removeAudio").addEventListener("click",removeSound);
+ $("voiceMode").addEventListener("change",updateVoiceMode);
  $("generateDialogue").addEventListener("click",tryTTS);
  $("exportEpisode").addEventListener("click",exportEpisode);
 }
